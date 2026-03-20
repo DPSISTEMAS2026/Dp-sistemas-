@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error en el Pago - LoMas Rico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .error-icon svg {
+            width: 60px;
+            height: 60px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .error-info {
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .error-title {
+            color: #c53030;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .error-message {
+            color: #742a2a;
+            line-height: 1.6;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f7fafc;
+            transform: translateY(-2px);
+        }
+
+        .help-text {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .help-text a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="error-icon">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+        </div>
+
+        <h1>Error en el Pago</h1>
+        <p class="subtitle">No se pudo procesar tu pago</p>
+
+        <div class="error-info">
+            <div class="error-title">¿Qué sucedió?</div>
+            <div class="error-message" id="errorMessage">
+                El pago no pudo ser procesado. Por favor, verifica tus datos e intenta nuevamente.
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="javascript:history.back()" class="btn btn-primary">Intentar Nuevamente</a>
+            <a href="/" class="btn btn-secondary">Volver al Inicio</a>
+        </div>
+
+        <p class="help-text">
+            ¿Necesitas ayuda? <a href="tel:+56912345678">Contáctanos</a>
+        </p>
+    </div>
+
+    <script>
+        // Obtener razón del error
+        const params = new URLSearchParams(window.location.search);
+        const reason = params.get('reason');
+        const orderId = params.get('orderId');
+
+        const errorMessages = {
+            'no_token': 'No se recibió el token de pago. Por favor, intenta nuevamente.',
+            'transaction_failed': 'La transacción fue rechazada. Verifica tus datos de pago.',
+            'payment_rejected': 'El pago fue rechazado por tu banco o medio de pago.',
+            'server_error': 'Ocurrió un error en nuestro servidor. Por favor, intenta más tarde.',
+            'insufficient_funds': 'Fondos insuficientes. Verifica tu saldo.',
+            'invalid_card': 'Tarjeta inválida o expirada.',
+            'default': 'El pago no pudo ser procesado. Por favor, intenta nuevamente.'
+        };
+
+        const messageEl = document.getElementById('errorMessage');
+        messageEl.textContent = errorMessages[reason] || errorMessages['default'];
+
+        if (orderId) {
+            messageEl.textContent += ` (Orden: ${orderId.substring(0, 8).toUpperCase()})`;
+        }
+    </script>
+</body>
+
+</html>

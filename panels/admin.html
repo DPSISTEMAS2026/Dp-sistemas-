@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - DP Sistemas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="pos-fix.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Legacy styles kept for POS compatibility */
+        :root {
+            --orange: #E8943D;
+            /* ... legacy vars ... */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-app">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 15px;">
+                <img src="../logo-dp.svg" alt="Logo"
+                    style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                <span
+                    style="font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px;">DP
+                    Sistemas</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" onclick="navigateTo('dashboard', this)"><i
+                        data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="#" class="nav-item" onclick="navigateTo('orders', this)"><i data-lucide="shopping-bag"></i>
+                    Pedidos</a>
+                <a href="#" class="nav-item" onclick="navigateTo('pos', this)"><i data-lucide="monitor"></i> POS
+                    Venta</a>
+                <a href="#" class="nav-item" onclick="navigateTo('caja', this)"><i data-lucide="inbox"></i> Caja</a>
+                <a href="#" class="nav-item" onclick="navigateTo('products', this)"><i data-lucide="utensils"></i>
+                    Productos</a>
+                <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+                <a href="#" class="nav-item" onclick="navigateTo('reports', this)"><i data-lucide="file-bar-chart"></i>
+                    Reportes</a>
+                <a href="#" class="nav-item" onclick="navigateTo('settings', this)"><i data-lucide="settings"></i>
+                    Ajustes</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area (Grid Col 2) -->
+        <div class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <!-- Branding moved to Sidebar -->
+                    <div class="station-tabs">
+                        <button class="station-tab active" onclick="switchView('pos')">
+                            🏪 POS Venta
+                        </button>
+                        <button class="station-tab" onclick="switchView('kitchen')">
+                            �‍🍳 Monitor Cocina
+                            <span class="badge" id="badge-cocina">0</span>
+                        </button>
+                        <button class="station-tab" onclick="switchView('meson')">
+                            � Monitor Mesón
+                            <span class="badge" id="badge-meson">0</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <div class="connection-status">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span id="connection-text">Conectando...</span>
+                    </div>
+                    <button class="sound-btn" id="sound-btn" title="Sonido"><i data-lucide="bell"></i></button>
+                    <a href="/" class="btn btn-primary" style="display:flex; align-items:center; gap:5px;"><i
+                            data-lucide="store" width="16"></i> Tienda</a>
+                </div>
+            </header>
+
+            <div class="stats-controls"
+                style="max-width: 1400px; margin: 1rem auto 0; padding: 0 2rem; display:flex; justify-content: flex-end;">
+                <button class="btn btn-sm btn-primary" id="btn-today" style="pointer-events:none;">Hoy</button>
+            </div>
+
+            <!-- ADMIN DASHBOARD SECTION -->
+            <section id="dashboard-view">
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="shopping-bag"
+                                width="16"></i>
+                            Pedidos
+                            Hoy</h3>
+                        <div class="value blue" id="stat-today">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="bell" width="16"></i>
+                            Nuevos</h3>
+                        <div class="value orange" id="stat-new">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="flame" width="16"></i> En
+                            Cocina
+                        </h3>
+                        <div class="value yellow" id="stat-preparing">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle"
+                                width="16"></i>
+                            Listos
+                        </h3>
+                        <div class="value green" id="stat-ready">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="dollar-sign"
+                                width="16"></i>
+                            Ventas
+                            Hoy</h3>
+                        <div class="value green" id="stat-sales">$0</div>
+                    </div>
+                </div>
+        </div>
+        </section>
+        <section id="caja-view" style="display:none;">
+            <div id="shift-banner" class="shift-control-panel">
+                <div class="shift-info">
+                    <i data-lucide="inbox"></i>
+                    <span><strong>Caja:</strong> <span id="shift-status">Cerrada</span></span>
+                </div>
+                <button class="btn btn-sm btn-primary" id="btn-shift-toggle" onclick="showCashierLoginModal()">
+                    <i data-lucide="key"></i> Abrir Caja
+                </button>
+            </div>
+            <div id="caja-orders-container"></div>
+        </section>
+
+
+
+        <div class="operational-area">
+
+            <!-- POS VIEW SECTION -->
+            <section id="pos-view" style="display:none;">
+                <!-- POS Layout Grid -->
+                <div class="pos-container">
+
+                    <!-- Left: Product Grid -->
+                    <div class="product-selection"
+                        style="background:white; padding:20px; border-radius:12px; overflow-y:auto;">
+                        <input type="text" placeholder="🔍 Buscar producto..."
+                            style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px;">
+
+                        <div class="category-tabs"
+                            style="margin-bottom:15px; display:flex; gap:10px; overflow-x:auto; padding-bottom:5px;">
+                            <button class="btn btn-sm btn-primary" onclick="filterProducts('Todos')">Todos</button>
+                            <button class="btn btn-sm" style="background:#eee;"
+                                onclick="filterProducts('Ceviches')">Ceviches</button>
+                            <button class="btn btn-sm" style="background:#eee;"
+                                onclick="filterProducts('Calientes')">Calientes</button>
+                            <button class="btn btn-sm" style="background:#eee;"
+                                onclick="filterProducts('Bebidas')">Bebidas</button>
+                        </div>
+
+                        <div id="pos-products-grid"
+                            style="display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:15px;">
+                            <!-- Dynamic Products -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Current Cart -->
+                    <div class="current-ticket"
+                        style="background:white; padding:20px; border-radius:12px; display:flex; flex-direction:column; box-shadow: -2px 0 10px rgba(0,0,0,0.05);">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                            <h3><i data-lucide="shopping-cart"></i> Ticket Actual</h3>
+                            <button onclick="clearCart()"
+                                style="color:red; background:none; border:none; cursor:pointer;"><i
+                                    data-lucide="trash-2"></i>
+                                Vaciar</button>
+                        </div>
+
+                        <div id="cart-items" style="flex:1; overflow-y:auto;">
+                            <!-- Items go here -->
+                            <p style="text-align:center; color:#999; margin-top:20px;">Ticket vacío</p>
+                        </div>
+
+                        <div class="cart-summary" style="border-top:2px solid #eee; padding-top:15px; margin-top:15px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <span>Subtotal</span>
+                                <span id="cart-subtotal">$0</span>
+                            </div>
+                            <div
+                                style="display:flex; justify-content:space-between; font-size:1.2rem; font-weight:bold; color:var(--brown);">
+                                <span>Total</span>
+                                <span id="cart-total">$0</span>
+                            </div>
+
+                            <button onclick="showCheckoutModal()" class="btn btn-primary"
+                                style="width:100%; padding:15px; margin-top:15px; font-size:1.1rem;"><i
+                                    data-lucide="dollar-sign"></i>
+                                COBRAR</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KITCHEN / MESON / ALL VIEWS SECTION -->
+            <section id="pedidos-view">
+                <!-- Kitchen View (Hidden by default in POS mode, toggled via tabs) -->
+                <div id="kitchen-view" style="display:none;">
+                    <!-- This container is shared/reused by JS logic for rendering Monitor grids -->
+                    <div class="orders-grid" id="orders-grid"></div>
+                    <div id="empty-state" style="display:none; text-align:center; padding:40px; color:#999;">
+                        <p>No hay pedidos pendientes</p>
+                    </div>
+                </div>
+            </section>
+        </div> <!-- End .operational-area -->
+
+        <section id="productos-view" style="display:none;"></section>
+        <section id="reportes-view" style="display:none;"></section>
+        <section id="ajustes-view" style="display:none;"></section>
+
+
+
+    </div> <!-- End .main-content (grid column 2) -->
+    </div> <!-- End .admin-app (grid container) -->
+
+
+
+    <audio id="notification-sound" preload="auto">
+        <source
+            src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Onp2LbldXanqJlZeMd2JZYm+AjZaWjH9uY2FqeIaSk4x+bWNiaXeEkJGMgHFnZGl1goyPi4J0aWZpcH2IjYuEeG5qbHJ9h4uJhHpwbW5ze4WIh4R7c29wc3qDhoaCfHVycnR6gYSEgn14c3N0eX+Cg4F9eHV0dXh9gIGAfXl2dXZ4fH+AgH15d3Z2eHt+f398eXd2dnh7fn9/fHl3dnd4e35/f3x5d3Z3eHt+f398eXd2d3h7fn9/fHl3dnd4e31+fnx5d3d3eHt9fn57eXd3d3h7fX5+e3l3d3d4e31+fnx5d3d3eHt9fn58eXd3d3h7fX5+fHl3d3d4e31+fnx5d3d3eHt9fn58"
+            type="audio/wav">
+    </audio>
+
+    <script>
+        // Configuración
+        const API_URL = window.location.origin;
+        const WS_URL = API_URL.replace('http', 'ws');
+
+        let orders = [];
+        let currentStation = 'all';
+        let currentTimeframe = 'today';
+        let soundEnabled = true;
+        let ws = null;
+        let reconnectAttempts = 0;
+        window.currentView = 'dashboard'; // Global View State
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            initWebSocket();
+            initStationTabs();
+            initSound();
+            loadInitialData();
+        });
+
+        function setAdminTimeframe(tf) {
+            currentTimeframe = tf;
+            // Update UI buttons
+            document.querySelectorAll('.time-tabs button').forEach(b => {
+                b.classList.remove('btn-primary');
+            });
+            document.getElementById(`btn-${tf}`).classList.add('btn-primary');
+
+            // Reload Stats
+            updateAdminStats();
+        }
+
+        async function updateAdminStats() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/kpis?timeframe=${currentTimeframe}`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                // Map API response to Admin UI
+                // Note: The UI IDs are 'stat-today', 'stat-sales' which imply "Today", 
+                // but we are repurposing them for the selected timeframe.
+
+                if (data.dailyStats) {
+                    document.getElementById('stat-today').textContent = data.dailyStats.totalOrders;
+                    document.getElementById('stat-sales').textContent = '$' + data.dailyStats.totalSales.toLocaleString('es-CL');
+                }
+
+                if (data.statusCounts) {
+                    document.getElementById('stat-new').textContent = data.statusCounts.newOrders;
+                    document.getElementById('stat-preparing').textContent = data.statusCounts.preparingOrders;
+                    document.getElementById('stat-ready').textContent = data.statusCounts.readyOrders;
+                }
+
+                // Update labels to reflect timeframe?
+                // Optional: visual cue that "Ventas Hoy" is now "Ventas Semanal"
+                const labelMap = { 'today': 'Hoy', 'weekly': 'Semanal', 'monthly': 'Mensual' };
+                // We'd need to target the h3s inside stat-cards if we want to change text labels
+                // For now, the buttons indicate the state.
+
+            } catch (e) { console.error('Error updating stats:', e); }
+        }
+
+        // ===============================================
+        // WebSocket
+        // ===============================================
+        // ===============================================
+        // WebSocket & Data Sync
+        // ===============================================
+        let pollingInterval = null;
+
+        function initWebSocket() {
+            updateConnectionStatus('connecting');
+
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                console.log('🔌 WebSocket conectado');
+                updateConnectionStatus('connected');
+                reconnectAttempts = 0;
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const data = JSON.parse(event.data);
+                    handleWebSocketMessage(data);
+                } catch (e) { console.error('WS Data Parse Error', e); }
+            };
+
+            ws.onclose = () => {
+                console.log('🔌 WebSocket desconectado');
+                updateConnectionStatus('disconnected');
+
+                // Reconexión automática
+                const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000);
+                reconnectAttempts++;
+                setTimeout(initWebSocket, delay);
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        // Failsafe: Poll every 10 seconds to ensure consistency if WS drops or misses a packet
+        // user requirement: "dynamic information" - this guarantees eventual consistency
+        clearInterval(pollingInterval);
+        pollingInterval = setInterval(loadInitialData, 10000); // 10s silent refresh
+
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'INIT':
+                    orders = data.orders || [];
+                    orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                    renderOrders();
+                    updateAdminStats();
+                    break;
+
+                case 'NEW_ORDER':
+                    orders.unshift(data.order);
+                    renderOrders();
+                    updateAdminStats();
+                    updateBadges(); // Sync badges
+                    showNewOrderAlert();
+                    if (soundEnabled) playNotification();
+                    break;
+
+                case 'ORDER_UPDATED':
+                    const index = orders.findIndex(o => o.id === data.order.id);
+                    if (index !== -1) {
+                        orders[index] = data.order;
+                    }
+                    renderOrders();
+                    updateAdminStats();
+                    updateBadges(); // Sync badges
+                    break;
+            }
+        }
+
+        function updateConnectionStatus(status) {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('connection-text');
+
+            dot.className = 'status-dot';
+
+            switch (status) {
+                case 'connected':
+                    dot.classList.add('connected');
+                    text.textContent = 'En tiempo real';
+                    break;
+                case 'connecting':
+                    dot.classList.add('connecting');
+                    text.textContent = 'Conectando...';
+                    break;
+                case 'disconnected':
+                    dot.classList.add('offline');
+                    text.textContent = 'Reconectando...';
+                    break;
+            }
+        }
+
+        // ===============================================
+        // Cargar datos iniciales
+        // ===============================================
+        async function loadInitialData() {
+            renderOrders(); // Render static immediately
+            // updateStats(); // Removed old local generic update
+
+            try {
+                const ordersRes = await fetch(`${API_URL}/api/orders`);
+
+                // Trigger stats update
+                updateAdminStats();
+
+                if (ordersRes.ok) {
+                    const realOrders = await ordersRes.json();
+                    orders = realOrders; // Overwrite with server source of truth
+                    // Sort by timestamp desc
+                    orders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                    renderOrders();
+                }
+
+                renderOrders();
+
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+            } finally {
+                if (window.lucide) lucide.createIcons();
+            }
+        }
+
+        // ===============================================
+        // Renderizar pedidos
+        // ===============================================
+        function renderOrders() {
+            const grid = document.getElementById('orders-grid');
+            const emptyState = document.getElementById('empty-state');
+            const sectionTitle = document.getElementById('section-title');
+
+            // Defensive: if critical elements missing, stop (e.g. running in wrong view)
+            if (!grid) return;
+
+            let filteredOrders = orders;
+
+            if (currentStation === 'meson') {
+                filteredOrders = orders.filter(o => o.order_status === 'listo');
+                if (sectionTitle) sectionTitle.textContent = '🍽️ Mesón - Pedidos Listos para Entregar';
+            } else if (currentStation === 'cocina') {
+                filteredOrders = orders.filter(o => o.order_status === 'nuevo' || o.order_status === 'preparando');
+                if (sectionTitle) sectionTitle.textContent = '👨‍🍳 Cocina - Comandas Pendientes';
+            } else {
+                // 'All' view
+                const todayStr = new Date().toISOString().slice(0, 10);
+                filteredOrders = orders.filter(o => {
+                    const isToday = o.timestamp.startsWith(todayStr);
+                    const isActive = o.order_status !== 'entregado' && o.order_status !== 'cancelado';
+                    return isActive || isToday;
+                });
+                if (sectionTitle) {
+                    if (window.currentView === 'caja') {
+                        sectionTitle.innerHTML = '<i data-lucide="list"></i> Operación Diaria (Hoy + Activos)';
+                    } else if (window.currentView === 'orders') {
+                        sectionTitle.innerHTML = '<i data-lucide="shopping-bag"></i> Gestión de Pedidos';
+                    } else {
+                        // Default fallback (e.g. for POS or other stations)
+                        // Don't overwrite if it's POS, but usually renderOrders isn't primary there
+                        if (window.currentView === 'pos') {
+                            sectionTitle.innerHTML = '<i data-lucide="monitor-square"></i> Terminal de Venta (POS)';
+                        }
+                    }
+                }
+            }
+
+            if (filteredOrders.length === 0) {
+                grid.innerHTML = '';
+                if (emptyState) {
+                    emptyState.style.display = 'block';
+                    // Context-aware empty message
+                    const p = emptyState.querySelector('p');
+                    if (p) {
+                        if (window.currentView === 'caja') {
+                            p.textContent = 'Caja cerrada. Debe abrir turno';
+                        } else if (window.currentView === 'orders') {
+                            p.textContent = 'No hay pedidos activos en este momento';
+                        } else {
+                            p.textContent = 'No hay pedidos pendientes';
+                        }
+                    }
+                }
+            } else {
+                if (emptyState) emptyState.style.display = 'none';
+                grid.innerHTML = filteredOrders.map(order => renderOrderCard(order)).join('');
+            }
+
+            updateBadges();
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function renderOrderCard(order) {
+            const date = new Date(order.timestamp);
+            const timeStr = date.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = date.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit' });
+
+            const elapsed = Math.floor((Date.now() - date.getTime()) / 60000);
+            const timerClass = elapsed > 20 ? 'late' : '';
+            const timerText = elapsed < 60 ? `${elapsed} min` : `${Math.floor(elapsed / 60)}h ${elapsed % 60}m`;
+
+            const statusLabels = {
+                'por_confirmar': '<i data-lucide="clock" style="width:14px; vertical-align:text-bottom;"></i> Por Confirmar',
+                'nuevo': '<i data-lucide="sparkles" style="width:14px; vertical-align:text-bottom;"></i> Nuevo',
+                'preparando': '<i data-lucide="flame" style="width:14px; vertical-align:text-bottom;"></i> En Cocina',
+                'listo': '<i data-lucide="check-circle-2" style="width:14px; vertical-align:text-bottom;"></i> Listo',
+                'entregado': '<i data-lucide="package-check" style="width:14px; vertical-align:text-bottom;"></i> Entregado',
+                'cancelado': '<i data-lucide="x-circle" style="width:14px; vertical-align:text-bottom;"></i> Cancelado'
+            };
+            const paymentLabels = { 'efectivo': '<i data-lucide="banknote" style="width:14px; vertical-align:text-bottom;"></i> Efectivo', 'transferencia': '<i data-lucide="building-2" style="width:14px; vertical-align:text-bottom;"></i> Transferencia', 'tarjeta': '<i data-lucide="credit-card" style="width:14px; vertical-align:text-bottom;"></i> Tarjeta' };
+
+            isUrgent = elapsed > 15 && order.order_status !== 'listo' && order.order_status !== 'entregado';
+            let sourceIcon = '<i data-lucide="globe" style="width:14px; vertical-align:text-bottom;"></i>';
+            let sourceClass = 'source-web';
+            let sourceLabel = 'Web';
+
+            if (order.source === 'whatsapp') {
+                sourceIcon = '<i data-lucide="message-circle" style="width:14px; vertical-align:text-bottom;"></i>';
+                sourceClass = 'source-whatsapp';
+                sourceLabel = 'WhatsApp';
+            } else if (order.source === 'phone') {
+                sourceIcon = '<i data-lucide="phone" style="width:14px; vertical-align:text-bottom;"></i>';
+                sourceClass = 'source-phone';
+                sourceLabel = 'Teléfono';
+            } else if (order.source === 'pos') {
+                sourceIcon = '<i data-lucide="monitor" style="width:14px; vertical-align:text-bottom;"></i>';
+                sourceClass = 'source-web'; // Reusing web style or define new one
+                sourceLabel = 'Caja';
+            }
+
+            const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+
+            let actionButtons = '';
+
+            if (order.order_status === 'por_confirmar') {
+                actionButtons += `<button class="btn-status" style="background:var(--blue); color:white;" onclick="updateOrderStatus('${order.id}', 'nuevo')">✅ Aprobar (Cocina)</button>`;
+                actionButtons += `<button class="btn-status" style="background:#F44336; color:white;" onclick="updateOrderStatus('${order.id}', 'cancelado')">❌ Rechazar</button>`;
+            }
+            if (order.order_status === 'nuevo') {
+                actionButtons += `<button class="btn-status" onclick="updateOrderStatus('${order.id}', 'preparando')">👨‍🍳 Enviar a Cocina</button>`;
+            }
+            if (order.order_status === 'preparando') {
+                actionButtons += `<button class="btn-status" onclick="updateOrderStatus('${order.id}', 'listo')">✅ Listo</button>`;
+            }
+            if (order.order_status === 'listo') {
+                actionButtons += `<button class="btn-status" onclick="updateOrderStatus('${order.id}', 'entregado')">🚀 Entregar</button>`;
+            }
+            if (order.payment_status === 'pendiente') {
+                actionButtons += `<button class="btn-paid" onclick="updatePaymentStatus('${order.id}', 'pagado')">💰 Cobrar</button>`;
+            }
+            actionButtons += `<button class="btn-print" onclick="printOrder('${order.id}')">🖨️</button>`;
+
+            return `
+                <div class="order-card ${isUrgent ? 'urgent' : ''}" data-id="${order.id}">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-number">#${order.order_number}</div>
+                            <div class="order-time">${dateStr} ${timeStr}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span class="order-source ${sourceClass}">${sourceIcon} ${sourceLabel}</span>
+                            <span class="order-status status-${order.order_status}">${statusLabels[order.order_status]}</span>
+                        </div>
+                    </div>
+                    <div class="order-body">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span class="order-timer ${timerClass}">⏱️ ${timerText}</span>
+                        </div>
+                        <div class="client-info">
+                            <p>👤 <strong>${order.client_name}</strong></p>
+                            <p>📞 ${order.client_phone}</p>
+                            <p>📍 ${order.client_address}</p>
+                        </div>
+                        <div class="payment-info">
+                            <span class="payment-badge ${order.payment_status}">${paymentLabels[order.payment_method]}</span>
+                            <span class="payment-badge ${order.payment_status}">${order.payment_status === 'pagado' ? '✅ Pagado' : '⏳ Pendiente'}</span>
+                        </div>
+                        <div class="order-items">
+                            <h4>Productos</h4>
+                            ${items.map(item => `
+                                <div class="order-item">
+                                    <span><span class="order-item-qty">${item.quantity}x</span> ${item.name}</span>
+                                    <span>$${item.totalPrice.toLocaleString('es-CL')}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="order-total">
+                            <span>Total</span>
+                            <span>$${order.total.toLocaleString('es-CL')}</span>
+                        </div>
+                        ${order.notes ? `<div class="notes">📝 ${order.notes}</div>` : ''}
+                        <div class="order-actions">${actionButtons}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ===============================================
+        // Acciones
+        // ===============================================
+        async function updateOrderStatus(id, status) {
+            try {
+                const res = await fetch(`${API_URL}/api/orders/${id}/status`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+
+                if (!res.ok) throw new Error('Error actualizando estado');
+
+                if (status === 'listo' && soundEnabled) {
+                    playNotification();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al actualizar el pedido');
+            }
+        }
+
+        async function updatePaymentStatus(id, status) {
+            try {
+                const res = await fetch(`${API_URL}/api/orders/${id}/payment`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+
+                if (!res.ok) throw new Error('Error actualizando pago');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al actualizar el pago');
+            }
+        }
+
+        // ===============================================
+        // POS LOGIC (Agregado)
+        // ===============================================
+        let cart = [];
+        let shiftOpen = false;
+        let shiftOpenedAt = null;
+
+        // Globals for Products
+        let globalProductsMap = {};
+        let allProductsList = [];
+        let activeCategory = 'Todos';
+
+        // Initialize POS - Load Real Products
+        async function initPosGrid() {
+            const grid = document.getElementById('pos-products-grid');
+            if (!grid) return;
+            grid.innerHTML = '<p>Cargando productos...</p>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/products`);
+                if (!res.ok) throw new Error('Error al cargar productos');
+                const products = await res.json();
+
+                // Populate global data
+                allProductsList = products.filter(p => p.active !== 0);
+                allProductsList.forEach(p => globalProductsMap[p.name] = p);
+
+                renderProductGrid();
+            } catch (error) {
+                console.error(error);
+                grid.innerHTML = '<p style="color:red">Error cargando productos. Revise la conexión.</p>';
+            }
+        }
+
+        function filterProducts(category) {
+            activeCategory = category;
+
+            // Update buttons UI
+            document.querySelectorAll('.category-tabs .btn').forEach(btn => {
+                // Simple text check
+                if (btn.textContent.trim() === category) {
+                    btn.classList.add('btn-primary');
+                    btn.style.background = 'var(--orange)';
+                    btn.style.color = 'white';
+                } else {
+                    btn.classList.remove('btn-primary');
+                    btn.style.background = '#eee';
+                    btn.style.color = '#333';
+                }
+            });
+
+            renderProductGrid();
+        }
+
+        function renderProductGrid() {
+            const grid = document.getElementById('pos-products-grid');
+            if (!grid) return;
+
+            let filtered = allProductsList;
+            if (activeCategory !== 'Todos') {
+                if (activeCategory === 'Bebidas') {
+                    filtered = allProductsList.filter(p => p.category === 'barra' || p.category.toLowerCase().includes('bebida'));
+                } else if (activeCategory === 'Ceviches') {
+                    filtered = allProductsList.filter(p => p.name.toLowerCase().includes('ceviche') || p.category.toLowerCase().includes('ceviche'));
+                } else if (activeCategory === 'Calientes') {
+                    // Catch-all for non-ceviche kitchen items (Promos, Empanadas, etc.)
+                    // Exclude 'barra' and exclude 'ceviche'
+                    filtered = allProductsList.filter(p =>
+                        p.category !== 'barra' &&
+                        !p.name.toLowerCase().includes('ceviche') &&
+                        !p.category.toLowerCase().includes('ceviche')
+                    );
+                }
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p>No hay productos en esta categoría.</p>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => {
+                // Simple check: if img starts with / or http, it's a valid path.
+                // browser handles spaces in src automatically.
+                const hasImg = p.img && (p.img.startsWith('/') || p.img.startsWith('http'));
+
+                const imageHtml = hasImg
+                    ? `<img src="${p.img}" alt="${p.name}" style="width:100%; height:100px; object-fit:cover; border-radius:6px; margin-bottom:8px;">`
+                    : `<div style="font-size:3rem; margin-bottom:8px;">${p.img || '🍽️'}</div>`;
+
+                return `
+                    <div onclick="addToCart('${p.name}', ${p.price})" class="product-card">
+                        <div class="product-img-container">
+                            ${imageHtml}
+                            <div class="add-overlay"><i data-lucide="plus"></i></div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name" title="${p.name}">${p.name}</div>
+                            <div class="product-price">$${p.price.toLocaleString('es-CL')}</div>
+                        </div>
+                    </div>
+                `}).join('');
+
+        }
+
+        // Initialize POS
+        document.addEventListener('DOMContentLoaded', initPosGrid);
+
+        // Switch View Logic for POS
+        function switchView(viewName) {
+            // Check if user is trying to open a monitor
+            if (viewName === 'kitchen') {
+                window.open('/cocina', '_blank');
+                return;
+            }
+            if (viewName === 'meson') {
+                window.open('/meson', '_blank');
+                return;
+            }
+
+            // Standard Tab Switching for POS
+            document.querySelectorAll('.station-tab').forEach(b => b.classList.remove('active'));
+            // Find the button that calls this view
+            const buttons = document.querySelectorAll('.station-tab');
+            buttons.forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes(viewName)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Container elements
+            const posView = document.getElementById('pos-view');
+            const kitchenContainer = document.getElementById('kitchen-view');
+            const sectionTitle = document.getElementById('section-title');
+            const shiftBanner = document.getElementById('shift-banner');
+            const normalOrderGrid = document.getElementById('orders-grid'); // Original grid
+
+            if (!posView) return;
+
+            if (viewName === 'pos') {
+                if (posView) {
+                    posView.style.display = 'block'; // Section
+                    const inner = posView.querySelector('.pos-container');
+                    if (inner) inner.style.display = 'grid';
+                }
+                if (normalOrderGrid) normalOrderGrid.style.display = 'none'; // Hide main grid
+                if (kitchenContainer) kitchenContainer.style.display = 'none';
+                if (shiftBanner) shiftBanner.style.display = 'flex';
+
+                sectionTitle.textContent = '🏭 Terminal de Venta (POS)';
+                currentStation = 'all';
+            }
+        }
+
+        function addToCart(name, price) {
+            const product = globalProductsMap[name];
+            if (!product) return;
+
+            // Verificar si el producto tiene opciones configuradas
+            const hasOptions = product.options && product.options.length > 0;
+
+            if (hasOptions && typeof showProteinSelector === 'function') {
+                // Mostrar selector con las opciones reales del producto
+                showProteinSelector(name, price, (productName, finalPrice, customizations) => {
+                    // Buscar si ya existe con las mismas personalizaciones
+                    const customKey = JSON.stringify(customizations);
+                    const existing = cart.find(i =>
+                        i.name === productName &&
+                        JSON.stringify(i.customizations || []) === customKey
+                    );
+
+                    if (existing) {
+                        existing.qty++;
+                    } else {
+                        cart.push({
+                            name: productName,
+                            price: finalPrice,
+                            qty: 1,
+                            category: product.category || 'cocina',
+                            description: product.description || '',
+                            customizations: customizations
+                        });
+                    }
+                    renderCart();
+                }, product.options); // <--- Pasamos las opciones aquí
+            } else {
+                // Agregar directamente
+                const existing = cart.find(i => i.name === name && (!i.customizations || i.customizations.length === 0));
+
+                if (existing) {
+                    existing.qty++;
+                } else {
+                    cart.push({
+                        name,
+                        price,
+                        qty: 1,
+                        category: product.category || 'cocina',
+                        description: product.description || '',
+                        customizations: []
+                    });
+                }
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">Ticket vacío</p>';
+                document.getElementById('cart-total').textContent = '$0';
+                document.getElementById('cart-subtotal').textContent = '$0';
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price * item.qty;
+
+                // Generar texto de personalizaciones (Genérico)
+                let customText = '';
+                if (item.customizations && item.customizations.length > 0) {
+                    const optsNames = item.customizations.map(c => c.name).join(', ');
+                    customText = `<div style="font-size:0.8rem; color:#E65100; margin-top:2px; font-style:italic;">+ ${optsNames}</div>`;
+                }
+
+                return `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px dashed #eee; padding-bottom:5px; align-items:center;">
+                        <div>
+                            <div style="font-weight:bold; font-size:0.9rem;">${item.name}</div>
+                            ${customText}
+                            <div style="font-size:0.8rem; color:#666;">$${item.price.toLocaleString('es-CL')} x ${item.qty}</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <strong style="color:var(--brown); font-size:0.95rem;">$${(item.price * item.qty).toLocaleString('es-CL')}</strong>
+                            <button onclick="removeFromCart(${index})" style="background:#ffebee; color:red; border:1px solid #ffcdd2; border-radius:4px; padding:2px 8px; cursor:pointer; font-weight:bold;">✕</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('cart-total').textContent = '$' + total.toLocaleString('es-CL');
+            document.getElementById('cart-subtotal').textContent = '$' + Math.round(total / 1.19).toLocaleString('es-CL');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function clearCart() {
+            cart = [];
+            renderCart();
+        }
+
+        function showCheckoutModal() {
+            // Usar el nuevo sistema con calculadora de vuelto
+            if (typeof showCheckoutModalWithChange === 'function') {
+                showCheckoutModalWithChange();
+            } else {
+                // Fallback al sistema antiguo
+                if (!shiftOpen) return alert('⛔ CAJA CERRADA. Debe abrir caja para procesar ventas.');
+                if (cart.length === 0) return alert('Carrito vacío');
+                const total = document.getElementById('cart-total').textContent;
+                document.getElementById('modal-total-amount').textContent = total;
+                document.getElementById('payment-modal').style.display = 'flex';
+            }
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').style.display = 'none';
+        }
+
+        function confirmPayment(method) {
+            closePaymentModal();
+            createPosOrder(method);
+        }
+
+        async function createPosOrder(paymentMethod = 'efectivo') {
+            const total = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            // Correct Logic: Check if ANY item is 'cocina' (default) or NOT explicitly 'barra'
+            // If it has kitchen items -> 'nuevo' (Goes to Kitchen)
+            // If ALL items are 'barra' -> 'listo' (Skip Kitchen)
+            const hasKitchenItems = cart.some(i => i.category !== 'barra'); // Assume anything not 'barra' needs kitchen
+            const initialStatus = hasKitchenItems ? 'nuevo' : 'listo';
+
+            const orderData = {
+                client: {
+                    name: 'Cliente Mostrador',
+                    phone: '',
+                    address: 'Local'
+                },
+                source: 'pos',
+                paymentMethod: paymentMethod,
+                paymentStatus: 'pagado',
+                orderStatus: initialStatus,
+                items: cart.map(i => ({
+                    name: i.name,
+                    quantity: i.qty,
+                    unitPrice: i.price,
+                    totalPrice: i.price * i.qty,
+                    category: i.category,
+                    description: i.description
+                })),
+                subtotal: Math.round(total / 1.19),
+                total: total
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/api/orders`, {
+
+                    // ... fetch logic ...
+                });
+                // ...
+            } catch (e) { console.error(e); }
+        }
+
+        // ===============================================
+        // Navigation Logic
+        // ===============================================
+        function navigateTo(viewId, btnElement) {
+            console.log('[NAVIGATE]', viewId);
+            document.body.setAttribute('data-view', viewId); // Critical for CSS Layout Fixes
+
+            // DEBUG INDICATOR (Temporary)
+            let debugEl = document.getElementById('js-debug-indicator');
+            if (!debugEl) {
+                debugEl = document.createElement('div');
+                debugEl.id = 'js-debug-indicator';
+                debugEl.style.cssText = 'position:fixed; bottom:10px; right:10px; background:#111; color:#fff; padding:8px 12px; z-index:9999; font-family:monospace; font-size:12px; border-radius:4px; pointer-events:none; box-shadow:0 0 10px rgba(0,0,0,0.5);';
+                document.body.appendChild(debugEl);
+            }
+            debugEl.textContent = 'JS ACTIVO: ' + viewId;
+
+            window.currentView = viewId;
+            window.scrollTo(0, 0);
+
+            // 1. Sidebar Active State
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if (btnElement) {
+                btnElement.classList.add('active');
+            } else {
+                // Fallback for calls without btn (e.g. init)
+                const link = document.querySelector(`a[onclick*="'${viewId}'"]`);
+                if (link) link.classList.add('active');
+            }
+
+            // 2. Hide ALL Views & Wrappers
+            const views = [
+                'dashboard-view',
+                'caja-view',
+                'productos-view',
+                'reportes-view',
+                'ajustes-view',
+                'pos-view',
+                'pedidos-view'
+            ];
+            views.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
+
+            // Hide wrapper
+            const opArea = document.querySelector('.operational-area');
+            if (opArea) opArea.style.display = 'none';
+
+
+
+            // DYNAMIC STYLE INJECTION FOR POS
+            let posStyle = document.getElementById('pos-override-style');
+            if (viewId === 'pos') {
+                if (!posStyle) {
+                    posStyle = document.createElement('style');
+                    posStyle.id = 'pos-override-style';
+                    posStyle.innerHTML = `
+                        .admin-app { display: grid !important; grid-template-columns: 260px 1fr !important; width: 100vw !important; overflow-x: hidden !important; }
+                        .main-content { width: 100% !important; max-width: none !important; padding: 0 !important; }
+                        .operational-area { width: 100% !important; max-width: none !important; padding: 0 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; }
+                        #pos-view { width: 100% !important; max-width: none !important; flex: 1 !important; display: flex !important; flex-direction: column !important; }
+                        .pos-container { width: 100% !important; max-width: none !important; margin: 0 !important; height: calc(100vh - 80px) !important; display: grid !important; grid-template-columns: 1fr 420px !important; gap: 0 !important; }
+                        .pos-container .product-selection { border-radius: 0 !important; border: none !important; padding: 20px !important; }
+                        .pos-container .current-ticket { border-radius: 0 !important; border-left: 1px solid #e0e0e0 !important; box-shadow: none !important; height: 100% !important; }
+                    `;
+                    document.head.appendChild(posStyle);
+                }
+            } else {
+                if (posStyle) {
+                    posStyle.remove();
+                }
+                const posContainer = document.querySelector('.pos-container');
+                if (posContainer) posContainer.style.cssText = '';
+            }
+
+            // Helper to set Operational Area Title (Disabled)
+            const setTitle = (html) => { };
+
+            // 3. Show Selected View Logic
+            switch (viewId) {
+                case 'dashboard':
+                    const dash = document.getElementById('dashboard-view');
+                    if (dash) dash.style.display = 'block';
+
+                    // Explicit strict cleanup for Dashboard
+                    if (opArea) opArea.style.display = 'none';
+
+                    // Force hide specific inner views to prevent leaks
+                    document.getElementById('pedidos-view').style.display = 'none';
+                    document.getElementById('pos-view').style.display = 'none';
+
+                    setTitle('');
+                    break;
+
+                case 'caja':
+                    document.getElementById('caja-view').style.display = 'block';
+                    if (opArea) {
+                        opArea.style.display = 'flex';
+                        // Ensure POS is hidden explicitly
+                        const pos = document.getElementById('pos-view');
+                        if (pos) pos.style.display = 'none';
+
+                        document.getElementById('pedidos-view').style.display = 'block';
+                        setTitle('<i data-lucide="list"></i> Operación del Turno');
+                    }
+                    currentStation = 'all';
+                    renderOrders();
+                    break;
+
+                case 'orders':
+                    if (opArea) {
+                        opArea.style.display = 'flex';
+                        const pos = document.getElementById('pos-view');
+                        if (pos) pos.style.display = 'none';
+
+                        document.getElementById('pedidos-view').style.display = 'block';
+                        setTitle('<i data-lucide="shopping-bag"></i> Gestión de Pedidos');
+                    }
+                    currentStation = 'all';
+                    renderOrders();
+                    break;
+
+                case 'pos':
+                    if (opArea) {
+                        opArea.style.display = 'flex';
+                        const orders = document.getElementById('pedidos-view');
+                        if (orders) orders.style.display = 'none';
+
+                        const pos = document.getElementById('pos-view');
+                        if (pos) {
+                            pos.style.display = 'block'; // Section wrapper
+                            const inner = pos.querySelector('.pos-container');
+                            if (inner) inner.style.display = 'grid';
+                        }
+                        setTitle('<i data-lucide="monitor-square"></i> Terminal de Venta (POS)');
+                    }
+                    break;
+
+                case 'products':
+                    let prodView = document.getElementById('productos-view');
+                    if (!prodView.innerHTML.trim()) {
+                        prodView.innerHTML = `
+                            <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+                                <div style="margin-bottom: 2rem;">
+                                    <h2 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin-bottom: 0.5rem;">
+                                        <i data-lucide="utensils" style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                                        Gestión de Productos
+                                    </h2>
+                                    <p style="color: #718096; font-size: 0.95rem;">Administra la disponibilidad de productos en el menú</p>
+                                </div>
+                                <div id="menu-grid"></div>
+                            </div>
+                        `;
+                    }
+                    prodView.style.display = 'block';
+                    loadMenuManagement();
+                    break;
+
+                case 'reports':
+                    let repView = document.getElementById('reportes-view');
+                    if (!repView.innerHTML.trim()) {
+                        repView.innerHTML = `<p style="text-align:center; padding:40px; color:#999;">Módulo en construcción</p>`;
+                    }
+                    repView.style.display = 'block';
+                    break;
+
+                case 'settings':
+                    let setView = document.getElementById('ajustes-view');
+                    if (!setView.innerHTML.trim()) {
+                        setView.innerHTML = `<p style="text-align:center; padding:40px; color:#999;">Configuraciones próximamente</p>`;
+                    }
+                    setView.style.display = 'block';
+                    break;
+            }
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+
+
+        // Initialize Shift State from Backend
+        async function syncShiftState() {
+            try {
+                const res = await fetch(`${API_URL}/api/caja/actual`);
+                const activeShift = await res.json();
+
+                const statusEl = document.getElementById('shift-status');
+                const btn = document.getElementById('btn-shift-toggle');
+
+                if (activeShift) {
+                    shiftOpen = true;
+                    shiftOpenedAt = activeShift.opened_at;
+                    statusEl.textContent = 'Abierta';
+                    statusEl.style.color = '#4CAF50';
+                    btn.innerHTML = '<i data-lucide="lock" width="14"></i> Cerrar Caja (Z)';
+                    btn.style.background = '#F44336';
+                } else {
+                    shiftOpen = false;
+                    shiftOpenedAt = null;
+                    statusEl.textContent = 'Cerrada';
+                    statusEl.style.color = '#F44336';
+                    btn.innerHTML = '<i data-lucide="key" width="14"></i> Abrir Caja';
+                    btn.style.background = 'var(--orange)';
+                }
+                if (window.lucide) lucide.createIcons();
+            } catch (e) { console.error('Error syncing shift:', e); }
+        }
+
+        // Call on load
+        syncShiftState();
+
+        async function toggleShift() {
+            const statusEl = document.getElementById('shift-status');
+            const btn = document.getElementById('btn-shift-toggle');
+
+            // OPEN SHIFT
+            if (!shiftOpen) {
+                try {
+                    const res = await fetch(`${API_URL}/api/caja/abrir`, { method: 'POST' });
+                    if (!res.ok) throw new Error('Error abriendo caja');
+                    const data = await res.json();
+
+                    shiftOpen = true;
+                    shiftOpenedAt = data.opened_at;
+
+                    statusEl.textContent = 'Abierta';
+                    statusEl.style.color = '#4CAF50';
+                    btn.innerHTML = '<i data-lucide="lock" width="14"></i> Cerrar Caja (Z)';
+                    btn.style.background = '#F44336';
+                    if (window.lucide) lucide.createIcons();
+                } catch (e) { alert(e.message); }
+                return;
+            }
+
+            // CLOSE SHIFT (Z REPORT)
+            if (confirm('¿Emitir reporte Z y cerrar caja del turno actual?')) {
+                // Calculate Check Z
+                const shiftOrders = orders.filter(o =>
+                    o.source === 'pos' &&
+                    o.payment_status === 'pagado' &&
+                    o.order_status === 'entregado' &&
+                    o.timestamp >= shiftOpenedAt
+                );
+
+                const shiftTotal = shiftOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+                const shiftCount = shiftOrders.length;
+
+                // Close in Backend
+                try {
+                    const res = await fetch(`${API_URL}/api/caja/cerrar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            final_cash: shiftTotal
+                        })
+                    });
+                    if (!res.ok) throw new Error('Error cerrando caja');
+
+                    const data = await res.json();
+                    const s = data.stats;
+
+                    const msg = [
+                        `🏁 REPORTE Z - CIERRE DE CAJA`,
+                        `------------------------------`,
+                        `🕒 Inicio: ${new Date(shiftOpenedAt).toLocaleTimeString()}`,
+                        `🕒 Fin:    ${new Date(data.closed_at).toLocaleTimeString()}`,
+                        ``,
+                        `💰 TOTAL VENTAS: $${s.total_sales.toLocaleString('es-CL')}`,
+                        `🛒 Pedidos:      ${s.sales_count}`,
+                        `------------------------------`,
+                        `💵 Efectivo:     $${s.total_efectivo.toLocaleString('es-CL')}`,
+                        `💳 Tarjeta:      $${s.total_tarjeta.toLocaleString('es-CL')}`,
+                        `🏦 Transf:       $${s.total_transferencia.toLocaleString('es-CL')}`,
+                        `------------------------------`
+                    ].join('\n');
+
+                    alert(msg);
+
+                    // Reset State
+                    shiftOpen = false;
+                    shiftOpenedAt = null;
+
+                    statusEl.textContent = 'Cerrada';
+                    statusEl.style.color = '#F44336';
+                    btn.innerHTML = '<i data-lucide="key" width="14"></i> Abrir Caja';
+                    btn.style.background = 'var(--orange)';
+                    if (window.lucide) lucide.createIcons();
+                } catch (e) { alert(e.message); }
+            }
+        }
+
+        function printOrder(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+
+            const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Comanda #${order.order_number}</title>
+                    <style>
+                        body { font-family: 'Courier New', monospace; padding: 20px; max-width: 300px; }
+                        h1 { font-size: 18px; text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; }
+                        .info { margin: 10px 0; font-size: 12px; }
+                        .items { border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0; margin: 10px 0; }
+                        .item { display: flex; justify-content: space-between; margin: 5px 0; }
+                        .total { font-size: 18px; font-weight: bold; text-align: right; margin-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🐟 LoMas Rico</h1>
+                    <div class="info">
+                        <strong>Pedido: #${order.order_number}</strong><br>
+                        ${new Date(order.timestamp).toLocaleString('es-CL')}<br><br>
+                        <strong>Cliente:</strong> ${order.client_name}<br>
+                        <strong>Tel:</strong> ${order.client_phone}<br>
+                        <strong>Dir:</strong> ${order.client_address}
+                    </div>
+                    <div class="items">
+                        ${items.map(item => `<div class="item"><span>${item.quantity}x ${item.name}</span><span>$${item.totalPrice.toLocaleString('es-CL')}</span></div>`).join('')}
+                    </div>
+                    <div class="total">TOTAL: $${order.total.toLocaleString('es-CL')}</div>
+                    <div class="info"><strong>Pago:</strong> ${order.payment_method}</div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // ===============================================
+        // Tabs de Estación y Menú
+        // ===============================================
+        function initStationTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active class
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Filter views
+                    const station = tab.dataset.tab;
+                    updateActiveTab(station);
+                });
+            });
+        }
+
+        function updateActiveTab(station) {
+            currentStation = station;
+
+            // Ocultar todas las vistas principales
+            document.querySelectorAll('.orders-grid, .menu-management-view').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+
+            // Mostrar vista seleccionada
+            if (station === 'menu') {
+                const view = document.getElementById('view-menu');
+                if (view) {
+                    view.style.display = 'block';
+                    loadMenuManagement(); // Cargar datos al cambiar a pestaña menú
+                }
+            } else if (station === 'todos') {
+                const el = document.getElementById('view-todos');
+                el.style.display = 'grid';
+                el.classList.add('active');
+                renderOrders(); // Renderizar pedidos para la vista de todos
+            } else {
+                const el = document.getElementById(`view-${station}`);
+                if (el) {
+                    el.style.display = 'grid';
+                    el.classList.add('active');
+                }
+                renderOrders(); // Renderizar pedidos para las vistas de estación
+            }
+        }
+
+        // ===============================================
+        // UI Helpers
+        // ===============================================
+        function updateStats() {
+            const newOrders = orders.filter(o => o.order_status === 'nuevo').length;
+            const preparing = orders.filter(o => o.order_status === 'preparando').length;
+            const ready = orders.filter(o => o.order_status === 'listo').length;
+
+            document.getElementById('stat-new').textContent = newOrders;
+            document.getElementById('stat-preparing').textContent = preparing;
+            document.getElementById('stat-ready').textContent = ready;
+        }
+
+        // Fetch and update dashboard stats
+        async function updateAdminStats() {
+            try {
+                // Fetch real stats from Backend (same as Caja/Owner)
+                const res = await fetch(`${API_URL}/api/admin/kpis?timeframe=today`);
+                if (!res.ok) return;
+
+                const data = await res.json();
+                const stats = data.dailyStats || {};
+                const counts = data.statusCounts || {};
+
+                // Map Backend Real KPIs to Dashboard
+                const elToday = document.getElementById('stat-today');
+                const elNew = document.getElementById('stat-new');
+                const elPrep = document.getElementById('stat-preparing');
+                const elReady = document.getElementById('stat-ready');
+                const elSales = document.getElementById('stat-sales');
+
+                if (elToday) elToday.textContent = stats.totalOrders || 0;
+                if (elNew) elNew.textContent = counts.newOrders || 0;
+                if (elPrep) elPrep.textContent = counts.preparingOrders || 0; // "En Cocina" includes new+prep
+                if (elReady) elReady.textContent = counts.readyOrders || 0;
+                if (elSales) elSales.textContent = '$' + (stats.totalSales || 0).toLocaleString('es-CL');
+
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        function updateBadges() {
+            // Safe filter usage
+            const active = orders.filter(o => o.order_status !== 'entregado' && o.order_status !== 'cancelado');
+            const meson = orders.filter(o => o.order_status === 'nuevo' || o.order_status === 'listo');
+            const cocina = orders.filter(o => o.order_status === 'preparando');
+
+            // Defensive updating
+            const bTodos = document.getElementById('badge-todos');
+            const bMeson = document.getElementById('badge-meson');
+            const bCocina = document.getElementById('badge-cocina');
+
+            if (bTodos) bTodos.textContent = active.length;
+            if (bMeson) bMeson.textContent = meson.length;
+            if (bCocina) bCocina.textContent = cocina.length;
+        }
+
+
+
+        function showNewOrderAlert() {
+            // Don't show if user is already looking at orders/operations
+            if (['orders', 'caja', 'pos'].includes(window.currentView)) return;
+
+            const alert = document.getElementById('new-order-alert');
+            if (alert) {
+                alert.classList.add('show');
+                setTimeout(() => alert.classList.remove('show'), 5000); // 5s visibility
+            }
+        }
+
+        function initSound() {
+            const btn = document.getElementById('sound-btn');
+            btn.addEventListener('click', () => {
+                soundEnabled = !soundEnabled;
+                btn.textContent = soundEnabled ? '🔔' : '🔕';
+                btn.classList.toggle('muted', !soundEnabled);
+            });
+        }
+
+        function playNotification() {
+            try {
+                const audio = document.getElementById('notification-sound');
+                audio.currentTime = 0;
+                audio.play().catch(() => { });
+            } catch (e) { }
+        }
+
+        // ==========================================
+        // GESTIÓN DE MENÚ (TOGGLE DISPONIBILIDAD)
+        // ==========================================
+        async function loadMenuManagement() {
+            const container = document.getElementById('menu-grid');
+            if (!container) return;
+
+            container.innerHTML = '<div class="loading">Cargando productos...</div>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/products`);
+                const products = await res.json();
+
+                container.innerHTML = '';
+
+                if (products.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No hay productos registrados</div>';
+                    return;
+                }
+
+                products.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'menu-item-card ' + (p.active ? '' : 'inactive');
+                    card.innerHTML = `
+                        <div class="menu-item-info">
+                            <span class="menu-item-number">#${p.number}</span>
+                            <h4>${p.name}</h4>
+                            <p>$${p.price.toLocaleString('es-CL')}</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" ${p.active ? 'checked' : ''} onchange="toggleProduct(${p.number}, this.checked)">
+                            <span class="slider round"></span>
+                        </label>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading menu:', error);
+                container.innerHTML = 'Error cargando menú';
+            }
+        }
+
+        async function toggleProduct(number, active) {
+            try {
+                const card = document.getElementById(`product-card-${number}`);
+
+                // Animación de loading
+                if (card) {
+                    card.style.opacity = '0.5';
+                    card.style.pointerEvents = 'none';
+                }
+
+                await fetch(`${API_URL}/api/products/${number}/toggle`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ active })
+                });
+
+                // Actualizar visualmente con animación
+                if (card) {
+                    card.style.transition = 'all 0.3s ease';
+                    card.style.opacity = active ? '1' : '0.6';
+                    card.style.borderColor = active ? '#e2e8f0' : '#fed7d7';
+                    card.style.pointerEvents = 'auto';
+
+                    // Actualizar badge de estado
+                    const statusBadge = card.querySelector('span[style*="padding: 0.25rem 0.625rem"]');
+                    if (statusBadge) {
+                        statusBadge.textContent = active ? '✓ Activo' : '✕ Inactivo';
+                        statusBadge.style.background = active ? '#c6f6d5' : '#fed7d7';
+                        statusBadge.style.color = active ? '#22543d' : '#742a2a';
+                    }
+
+                    // Actualizar toggle switch color
+                    const toggleBg = card.querySelector('span[style*="border-radius: 24px"]');
+                    if (toggleBg) {
+                        toggleBg.style.backgroundColor = active ? '#48bb78' : '#cbd5e0';
+                    }
+
+                    // Actualizar posición del círculo del switch
+                    const toggleCircle = card.querySelector('span[style*="border-radius: 50%"]');
+                    if (toggleCircle) {
+                        toggleCircle.style.left = active ? '27px' : '3px';
+                    }
+                }
+            } catch (error) {
+                console.error('Error toggling product:', error);
+                alert('Error cambiando estado del producto');
+                // Revertir el checkbox
+                const card = document.getElementById(`product-card-${number}`);
+                if (card) {
+                    const checkbox = card.querySelector('input[type="checkbox"]');
+                    if (checkbox) checkbox.checked = !active;
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                }
+            }
+        }
+
+
+
+        // ===============================================
+        // Tabs de Estación y Menú (Override Fix)
+        // ===============================================
+        function initStationTabs() {
+            const tabs = document.querySelectorAll('.station-tab');
+            tabs.forEach(tab => {
+                tab.replaceWith(tab.cloneNode(true)); // Remove listeners
+            });
+
+            // Re-select and add listener
+            document.querySelectorAll('.station-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.station-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const station = tab.dataset.tab;
+                    updateActiveTab(station);
+                });
+            });
+        }
+
+        function updateActiveTab(station) {
+            currentStation = station;
+
+            // Ocultar todas las vistas principales
+            document.querySelectorAll('.orders-grid').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+            const menuView = document.getElementById('view-menu');
+            if (menuView) menuView.style.display = 'none';
+
+            // Mostrar vista seleccionada
+            if (station === 'menu') {
+                if (menuView) {
+                    menuView.style.display = 'block';
+                    loadMenuManagement();
+                }
+            } else {
+                let viewId = 'view-todos';
+                if (station === 'meson') viewId = 'view-meson';
+                if (station === 'cocina') viewId = 'view-cocina';
+
+                const el = document.getElementById(viewId);
+                if (el) {
+                    el.style.display = 'grid';
+                    el.classList.add('active');
+                }
+                renderOrders();
+            }
+        }
+
+        // ==========================================
+        // GESTIÓN DE MENÚ (Rediseñado - Grid Limpio)
+        // ==========================================
+        async function loadMenuManagement() {
+            const container = document.getElementById('menu-grid');
+            if (!container) return;
+
+            container.innerHTML = '<div style="text-align:center; padding:40px; color:#999;">Cargando productos...</div>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/products?all=true`);
+                const products = await res.json();
+
+                container.innerHTML = '';
+
+                if (products.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding:40px; color:#999;">No hay productos registrados</div>';
+                    return;
+                }
+
+                // Group by category
+                const groups = {};
+                products.forEach(p => {
+                    const cat = p.category || 'Otros';
+                    if (!groups[cat]) groups[cat] = [];
+                    groups[cat].push(p);
+                });
+
+                // Category name mapping for better display
+                const categoryNames = {
+                    'promos': '🎁 PROMOCIONES',
+                    'ceviches': '🐟 CEVICHES',
+                    'tropical': '🥭 TROPICAL & BOWLS',
+                    'crudos': '🍣 CRUDOS & ROLLS',
+                    'empanadas': '🥟 EMPANADAS',
+                    'agregados': '🍟 AGREGADOS',
+                    'bebidas': '🥤 BEBIDAS',
+                    'barra': '🍹 BARRA',
+                    'compartir': '👥 COMPARTIR'
+                };
+
+                // Render by group
+                Object.keys(groups).sort().forEach(category => {
+                    const groupItems = groups[category];
+                    const displayName = categoryNames[category.toLowerCase()] || category.toUpperCase();
+
+                    const section = document.createElement('div');
+                    section.style.cssText = 'margin-bottom: 3rem;';
+
+                    section.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0;">
+                            <h3 style="font-size: 1.25rem; font-weight: 700; color: #2d3748; margin: 0;">${displayName}</h3>
+                            <span style="background: #edf2f7; color: #4a5568; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; font-weight: 600;">${groupItems.length} productos</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
+                            ${groupItems.map(p => `
+                                <div id="product-card-${p.number}" 
+                                     style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); transition: all 0.3s; border: 2px solid ${p.active ? '#e2e8f0' : '#fed7d7'}; ${!p.active ? 'opacity: 0.6;' : ''}"
+                                     onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)'; this.style.transform='translateY(-2px)';"
+                                     onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
+                                    
+                                    <!-- Image -->
+                                    <div style="position: relative; width: 100%; height: 140px; overflow: hidden; background: #f7fafc;">
+                                        <img src="${p.img || 'Fotos_Restaurante/Logo Restaurante.png'}" 
+                                             alt="${p.name}"
+                                             style="width: 100%; height: 100%; object-fit: cover;"
+                                             onerror="this.src='Fotos_Restaurante/Logo Restaurante.png'">
+                                        <div style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: white; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">
+                                            #${p.number}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Content -->
+                                    <div style="padding: 1rem;">
+                                        <h4 style="font-size: 0.95rem; font-weight: 600; color: #2d3748; margin: 0 0 0.5rem 0; line-height: 1.3; min-height: 2.6rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                            ${p.name}
+                                        </h4>
+                                        
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                            <span style="font-size: 1.1rem; font-weight: 700; color: #e8943d;">
+                                                $${p.price.toLocaleString('es-CL')}
+                                            </span>
+                                            <span style="padding: 0.25rem 0.625rem; border-radius: 8px; font-size: 0.75rem; font-weight: 600; ${p.active ? 'background: #c6f6d5; color: #22543d;' : 'background: #fed7d7; color: #742a2a;'}">
+                                                ${p.active ? '✓ Activo' : '✕ Inactivo'}
+                                            </span>
+                                        </div>
+                                        
+                                        <!-- Toggle Switch -->
+                                        <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0.5rem; background: #f7fafc; border-radius: 8px;">
+                                            <span style="font-size: 0.875rem; font-weight: 500; color: #4a5568;">
+                                                Disponible en menú
+                                            </span>
+                                            <div style="position: relative; width: 48px; height: 24px;">
+                                                <input type="checkbox" 
+                                                       ${p.active ? 'checked' : ''} 
+                                                       onchange="toggleProduct(${p.number}, this.checked)"
+                                                       style="opacity: 0; width: 0; height: 0;">
+                                                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: ${p.active ? '#48bb78' : '#cbd5e0'}; transition: 0.3s; border-radius: 24px;">
+                                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: ${p.active ? '27px' : '3px'}; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);"></span>
+                                                </span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.appendChild(section);
+                });
+
+                if (window.lucide) lucide.createIcons();
+
+            } catch (error) {
+                console.error('Error loading menu:', error);
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#e53e3e;">Error cargando menú. Por favor, recarga la página.</div>';
+            }
+        }
+    </script>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:30px; border-radius:12px; width:400px; text-align:center;">
+            <h3><i data-lucide="credit-card"></i> Procesar Pago</h3>
+            <p style="font-size:1.5rem; font-weight:bold; color:var(--brown); margin:20px 0;" id="modal-total-amount">$0
+            </p>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:20px;">
+                <button onclick="confirmPayment('efectivo')" class="btn"
+                    style="background:#4CAF50; color:white; padding:15px;"><i data-lucide="banknote"></i>
+                    Efectivo</button>
+                <button onclick="confirmPayment('tarjeta')" class="btn"
+                    style="background:#2196F3; color:white; padding:15px;"><i data-lucide="credit-card"></i>
+                    Débito/Crédito</button>
+                <button onclick="confirmPayment('transferencia')" class="btn"
+                    style="background:#9C27B0; color:white; padding:15px;"><i data-lucide="building-2"></i>
+                    Transferencia</button>
+            </div>
+
+            <button onclick="closePaymentModal()"
+                style="background:none; border:none; color:#666; cursor:pointer; text-decoration:underline;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Sistema de Caja -->
+    <script src="cash-system.js"></script>
+
+</body>
+
+</html>

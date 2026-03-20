@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago Pendiente - LoMas Rico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pending-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .pending-icon svg {
+            width: 60px;
+            height: 60px;
+            stroke: white;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .pending-info {
+            background: #fffbeb;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .pending-title {
+            color: #92400e;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .pending-message {
+            color: #78350f;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .help-text {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        .steps {
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .step {
+            display: flex;
+            align-items: start;
+            margin-bottom: 12px;
+            color: #78350f;
+        }
+
+        .step-number {
+            background: #fbbf24;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="pending-icon">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+        </div>
+
+        <h1>Pago Pendiente</h1>
+        <p class="subtitle">Estamos procesando tu pago</p>
+
+        <div class="pending-info">
+            <div class="pending-title">¿Qué significa esto?</div>
+            <div class="pending-message">
+                Tu pago está siendo procesado. Esto puede tomar algunos minutos dependiendo del método de pago
+                seleccionado.
+            </div>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>Recibirás un correo de confirmación cuando se apruebe el pago</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>Puedes verificar el estado en "Mis Pedidos"</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>Si tienes dudas, contáctanos con tu número de orden</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <strong style="color: #92400e;">Número de Orden:</strong>
+                <div class="order-id" id="orderId">-</div>
+            </div>
+        </div>
+
+        <a href="/" class="btn">Volver al Inicio</a>
+
+        <p class="help-text">
+            El proceso puede tomar hasta 48 horas hábiles
+        </p>
+    </div>
+
+    <script>
+        // Obtener parámetros de la URL
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('orderId');
+        const provider = params.get('provider');
+
+        if (orderId) {
+            document.getElementById('orderId').textContent = orderId.substring(0, 8).toUpperCase();
+        }
+
+        // Auto-refresh cada 30 segundos para verificar estado
+        let refreshCount = 0;
+        const maxRefresh = 10; // Máximo 5 minutos
+
+        const checkStatus = setInterval(() => {
+            refreshCount++;
+            if (refreshCount >= maxRefresh) {
+                clearInterval(checkStatus);
+                return;
+            }
+
+            // Aquí podrías hacer una llamada AJAX para verificar el estado
+            // fetch(`/api/orders/${orderId}`)
+            //   .then(res => res.json())
+            //   .then(data => {
+            //     if (data.payment_status === 'pagado') {
+            //       window.location.href = `/payment/success?orderId=${orderId}`;
+            //     }
+            //   });
+        }, 30000);
+    </script>
+</body>
+
+</html>

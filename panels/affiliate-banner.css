@@ -1,0 +1,144 @@
+/* ===============================================
+   AFFILIATE BANNER STYLES
+   =============================================== */
+
+.affiliate-banner {
+    background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+    padding: 24px 20px;
+    margin: 0;
+    animation: slideDown 0.6s ease-out;
+}
+
+.affiliate-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.affiliate-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.affiliate-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.affiliate-icon svg {
+    width: 32px;
+    height: 32px;
+    color: white;
+}
+
+.affiliate-text {
+    flex: 1;
+    min-width: 250px;
+}
+
+.affiliate-text h3 {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.affiliate-text p {
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.affiliate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #FF6B35;
+    padding: 14px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+}
+
+.affiliate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    gap: 12px;
+}
+
+.affiliate-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.affiliate-btn:hover svg {
+    transform: translateX(4px);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .affiliate-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .affiliate-icon {
+        margin: 0 auto;
+    }
+
+    .affiliate-text h3 {
+        font-size: 1.3rem;
+    }
+
+    .affiliate-text p {
+        font-size: 0.9rem;
+    }
+
+    .affiliate-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .affiliate-banner {
+        padding: 20px 16px;
+    }
+
+    .affiliate-text h3 {
+        font-size: 1.2rem;
+    }
+
+    .affiliate-text p {
+        font-size: 0.85rem;
+    }
+}

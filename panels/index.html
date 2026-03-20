@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DP Sistemas - Soluciones Gastronómicas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="affiliate-banner.css">
+    <link rel="stylesheet" href="compact-products.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <img src="../logo-dp.svg" alt="DP Sistemas"
+                    style="object-fit: cover; width: 70px; height: 70px; border-radius: 8px;">
+            </a>
+            <div class="header-actions" style="display:flex; align-items:center; gap:15px;">
+                <button class="login-btn" id="login-btn" onclick="openLoginModal()"
+                    style="background:transparent; border:1px solid var(--primary-color); color:var(--primary-color); padding: 6px 16px; border-radius:20px; font-weight:bold; cursor:pointer; transition:0.3s; font-family:var(--font-body);">
+                    Ingresar
+                </button>
+                <div id="user-profile" style="display:none; align-items:center; gap:12px; cursor:pointer;"
+                    title="Ver Perfil">
+                    <span style="font-size:0.9rem; font-weight:bold; color:var(--text-dark);">Hola, Usuario</span>
+                    <img src="https://ui-avatars.com/api/?name=User&background=random"
+                        style="width:36px; height:36px; border-radius:50%; border:2px solid var(--primary-color);">
+                </div>
+                <!-- Cart Button -->
+                <button class="cart-btn" id="cart-btn" style="margin:0;">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Compact -->
+    <section class="hero-banner">
+        <div class="banner-container">
+            <img src="Fotos_Restaurante/bannerceviche_1741146109LpxLw3.png" alt="LoMas Rico - Ceviches Gourmet"
+                class="banner-img">
+        </div>
+        <div class="banner-buttons">
+            <a href="#menu" class="btn-banner-primary">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                </svg>
+                Ver Menú
+            </a>
+            <a href="https://wa.me/56965787208?text=Hola!%20Quiero%20hacer%20un%20pedido" class="btn-banner-whatsapp"
+                target="_blank">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                </svg>
+                WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- Affiliate Program Banner -->
+    <section class="affiliate-banner" id="affiliate-banner" style="display: none;">
+        <div class="affiliate-container">
+            <div class="affiliate-content">
+                <div class="affiliate-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <div class="affiliate-text">
+                    <h3>🎁 ¡Únete a nuestro Club VIP!</h3>
+                    <p>Descuentos exclusivos • Envíos gratis • Promociones especiales • Puntos por compra</p>
+                </div>
+                <a href="/afiliados.html" class="affiliate-btn">
+                    Registrarme Ahora
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Desktop Category Nav -->
+    <nav class="desktop-nav" id="menu">
+        <div class="desktop-nav-scroll">
+            <button class="desktop-cat-btn active" data-category="promos">🎁 PROMOS</button>
+            <button class="desktop-cat-btn" data-category="ceviches">🐟 CEVICHES</button>
+            <button class="desktop-cat-btn" data-category="tropical">🥭 TROPICAL & BOWLS</button>
+            <button class="desktop-cat-btn" data-category="crudos">🍣 CRUDOS & ROLLS</button>
+            <button class="desktop-cat-btn" data-category="empanadas">🥟 EMPANADAS</button>
+            <button class="desktop-cat-btn" data-category="agregados">🍟 AGREGADOS</button>
+            <button class="desktop-cat-btn" data-category="bebidas">🥤 BEBIDAS</button>
+            <button class="desktop-cat-btn" data-category="compartir">👥 COMPARTIR</button>
+        </div>
+    </nav>
+
+    <!-- Menu Section with Accordions -->
+    <main class="menu-section">
+        <div class="container">
+
+            <!-- PROMOS -->
+            <div class="menu-accordion" id="cat-promos" data-title="🎁 PROMOCIONES ESPECIALES">
+                <button class="accordion-header active" data-category="promos">
+                    <span class="accordion-icon">🎁</span>
+                    <span class="accordion-title">PROMOS</span>
+                    <span class="accordion-count">10 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content open">
+                    <div class="products-grid" id="grid-promos">
+                        <div class="loading-products">Cargando promociones...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CEVICHES -->
+            <div class="menu-accordion" id="cat-ceviches" data-title="🐟 CEVICHES CLÁSICOS">
+                <button class="accordion-header" data-category="ceviches">
+                    <span class="accordion-icon">🐟</span>
+                    <span class="accordion-title">CEVICHES</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-ceviches"></div>
+                </div>
+            </div>
+
+            <!-- TROPICAL -->
+            <div class="menu-accordion" id="cat-tropical" data-title="🥭 TROPICAL & BOWLS">
+                <button class="accordion-header" data-category="tropical">
+                    <span class="accordion-icon">🥭</span>
+                    <span class="accordion-title">TROPICAL & BOWLS</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-tropical"></div>
+                </div>
+            </div>
+
+            <!-- CRUDOS & HANDROLLS -->
+            <div class="menu-accordion" id="cat-crudos" data-title="🍣 CRUDOS & HAND ROLLS">
+                <button class="accordion-header" data-category="crudos">
+                    <span class="accordion-icon">🍣</span>
+                    <span class="accordion-title">CRUDOS & HAND ROLLS</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-crudos"></div>
+                </div>
+            </div>
+
+            <!-- EMPANADAS -->
+            <div class="menu-accordion" id="cat-empanadas" data-title="🥟 EMPANADAS ARTESANALES">
+                <button class="accordion-header" data-category="empanadas">
+                    <span class="accordion-icon">🥟</span>
+                    <span class="accordion-title">EMPANADAS</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-empanadas"></div>
+                </div>
+            </div>
+
+            <!-- AGREGADOS -->
+            <div class="menu-accordion" id="cat-agregados" data-title="🍟 AGREGADOS">
+                <button class="accordion-header" data-category="agregados">
+                    <span class="accordion-icon">🍟</span>
+                    <span class="accordion-title">AGREGADOS</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-agregados"></div>
+                </div>
+            </div>
+
+            <!-- BEBIDAS -->
+            <div class="menu-accordion" id="cat-bebidas" data-title="🥤 BEBIDAS">
+                <button class="accordion-header" data-category="bebidas">
+                    <span class="accordion-icon">🥤</span>
+                    <span class="accordion-title">BEBIDAS</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-bebidas"></div>
+                </div>
+            </div>
+
+            <!-- PARA COMPARTIR -->
+            <div class="menu-accordion" id="cat-compartir" data-title="👥 PARA COMPARTIR">
+                <button class="accordion-header" data-category="compartir">
+                    <span class="accordion-icon">👥</span>
+                    <span class="accordion-title">PARA COMPARTIR</span>
+                    <span class="accordion-count">0 productos</span>
+                    <svg class="accordion-arrow" viewBox="0 0 24 24">
+                        <path d="M7 10l5 5 5-5z" />
+                    </svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="products-grid" id="grid-compartir"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>🛒 Tu Pedido</h3>
+            <button class="cart-close" id="cart-close">✕</button>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-empty show" id="cart-empty">
+            <span>🐟</span>
+            <p>Tu carrito está vacío</p>
+            <small>Agrega productos para hacer tu pedido</small>
+        </div>
+        <div class="cart-footer" id="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0</span>
+            </div>
+            <button class="btn-checkout" id="btn-checkout">
+                Continuar con el Pedido
+            </button>
+        </div>
+    </aside>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">✕</button>
+            <h2>📋 Completa tu Pedido</h2>
+
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label>Nombre completo *</label>
+                    <input type="text" id="client-name" required placeholder="Ej: Juan Pérez">
+                </div>
+
+                <div class="form-group">
+                    <label>Teléfono *</label>
+                    <input type="tel" id="client-phone" required placeholder="Ej: 912345678">
+                </div>
+
+                <div class="form-group">
+                    <label>Email (opcional)</label>
+                    <input type="email" id="client-email" placeholder="Ej: cliente@correo.com">
+                </div>
+
+                <div class="form-group">
+                    <label>Dirección de entrega *</label>
+                    <textarea id="client-address" required placeholder="Calle, número, depto, comuna..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Método de pago *</label>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="efectivo" required>
+                            <span class="payment-box">
+                                <span class="payment-icon">💵</span>
+                                <span>Efectivo</span>
+                            </span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="transferencia">
+                            <span class="payment-box">
+                                <span class="payment-icon">🏦</span>
+                                <span>Transferencia</span>
+                            </span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="payment" value="tarjeta">
+                            <span class="payment-box">
+                                <span class="payment-icon">💳</span>
+                                <span>Tarjeta</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Notas adicionales</label>
+                    <textarea id="client-notes" placeholder="Sin cebolla, extra limón, etc..."></textarea>
+                </div>
+
+                <div class="order-summary">
+                    <h4>Resumen del Pedido</h4>
+                    <div id="checkout-items"></div>
+                    <div class="order-total">
+                        <span>Total a pagar:</span>
+                        <span id="checkout-total">$0</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-send-order">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                    </svg>
+                    Enviar Pedido por WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/56965787208?text=Hola!%20Quiero%20hacer%20un%20pedido" class="whatsapp-float"
+        target="_blank">
+        <svg viewBox="0 0 24 24">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+
+
+    <!-- Chatbox Floating Button -->
+    <button id="chat-btn" class="whatsapp-float" style="right:96px; background:#3B82F6;">💬</button>
+
+    <div id="chat-panel" class="chat-panel">
+        <div class="chat-header">
+            <div class="chat-brand">
+                <img src="../logo-dp.svg" alt="DP Sistemas" class="chat-logo" style="object-fit: cover;">
+                <div class="chat-title">
+                    <div class="title">Chat de Pedidos</div>
+                    <div class="subtitle">Estamos listos para ayudarte</div>
+                </div>
+            </div>
+            <button id="chat-close" class="chat-close">✕</button>
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <div class="chat-input-area">
+            <textarea id="chat-input" placeholder="Escribe tu mensaje y presiona Enter..." rows="1"
+                class="chat-input"></textarea>
+            <button id="chat-send" class="chat-send">Enviar</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <svg viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg>
+        <span id="toast-message">Producto agregado</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-simple">
+        <div class="container">
+            <div class="footer-content">
+                <img src="../logo-dp.svg" alt="DP Sistemas" class="footer-logo" style="object-fit: cover;">
+                <div class="footer-info">
+                    <p><a href="https://www.google.com/maps/search/?api=1&query=-36.82154715639318,-73.06089257581762"
+                            target="_blank">📍 Ver ubicación en mapa</a></p>
+                    <p>📞 +56 9 6578 7208</p>
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/cevichelomasrico/?hl=es" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/cevichelomassrico/?locale=es_LA" target="_blank">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <p class="copyright">© 2024 LoMas Rico - Ceviches Gourmet</p>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-overlay"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+        <div class="modal-content"
+            style="background:white; padding:30px; border-radius:16px; width:90%; max-width:400px; text-align:center; position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+            <button onclick="closeLoginModal()"
+                style="position:absolute; top:15px; right:15px; background:transparent; border:none; font-size:1.5rem; cursor:pointer;">×</button>
+
+            <h2 style="font-family:'Bebas Neue'; color:var(--text-dark); margin-bottom:10px;">Iniciar Sesión</h2>
+            <p style="color:#666; margin-bottom:25px;">Accede para gestionar tus pedidos y direcciones</p>
+
+            <button onclick="loginSimulate('google')"
+                style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:30px; background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; font-weight:600; color:#444; transition:all 0.2s;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20">
+                Continuar con Google
+            </button>
+
+            <button onclick="loginSimulate('facebook')"
+                style="width:100%; padding:12px; margin-bottom:20px; border:none; border-radius:30px; background:#1877F2; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; font-weight:600; transition:all 0.2s;">
+                <svg viewBox="0 0 24 24" width="20" fill="white">
+                    <path
+                        d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02z" />
+                </svg>
+                Continuar con Facebook
+            </button> <!-- closing tag was missing in thought process but present here -->
+
+            <p style="font-size:0.8rem; color:#999;">Al continuar aceptas nuestros Términos y Condiciones</p>
+        </div>
+    </div>
+
+    <script>
+        function openLoginModal() {
+            document.getElementById('login-modal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').style.display = 'none';
+        }
+
+        function loginSimulate(provider) {
+            const btnGoogle = document.querySelector('button[onclick="loginSimulate(\'google\')"]');
+            const btnFb = document.querySelector('button[onclick="loginSimulate(\'facebook\')"]');
+
+            // Loading state
+            if (provider === 'google') btnGoogle.innerHTML = 'Conectando...';
+            else btnFb.innerHTML = 'Conectando...';
+
+            setTimeout(async () => {
+                // Success
+                closeLoginModal();
+
+                // Update header
+                document.getElementById('login-btn').style.display = 'none';
+                const profile = document.getElementById('user-profile');
+                profile.style.display = 'flex';
+
+                // Set name based on provider
+                const name = provider === 'google' ? 'Juan Pérez' : 'Maria Silva';
+                const email = provider === 'google' ? 'juan@gmail.com' : 'maria@facebook.com';
+                const phone = '+56912345678'; // En producción vendría del OAuth
+
+                profile.querySelector('span').textContent = 'Hola, ' + name.split(' ')[0];
+                profile.querySelector('img').src = `https://ui-avatars.com/api/?name=${name}&background=random`;
+
+                // OCULTAR BANNER DE AFILIADOS
+                const affiliateBanner = document.getElementById('affiliate-banner');
+                if (affiliateBanner) {
+                    affiliateBanner.style.display = 'none';
+                }
+
+                // REGISTRAR/VERIFICAR AFILIADO AUTOMÁTICAMENTE
+                try {
+                    // Intentar login de afiliado
+                    let affiliateResponse = await fetch('/api/affiliates/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, phone })
+                    });
+
+                    let affiliate;
+
+                    if (!affiliateResponse.ok) {
+                        // No existe, registrar automáticamente
+                        const registerResponse = await fetch('/api/affiliates/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name,
+                                email,
+                                phone,
+                                newsletter: true
+                            })
+                        });
+
+                        const registerData = await registerResponse.json();
+                        affiliate = registerData.affiliate;
+
+                        // Mostrar mensaje de bienvenida con puntos
+                        showToast(`¡Bienvenido al Club VIP! Has ganado 100 puntos 🎁`);
+                    } else {
+                        const loginData = await affiliateResponse.json();
+                        affiliate = loginData.affiliate;
+
+                        // Mostrar puntos actuales
+                        showToast(`Bienvenido ${name.split(' ')[0]}! Tienes ${affiliate.points} puntos`);
+                    }
+
+                    // Guardar afiliado en sessionStorage
+                    sessionStorage.setItem('affiliate', JSON.stringify(affiliate));
+
+                    // Mostrar badge VIP en el perfil
+                    const vipBadges = {
+                        bronze: '🥉',
+                        silver: '🥈',
+                        gold: '🥇'
+                    };
+                    const badge = vipBadges[affiliate.vip_level] || '';
+                    profile.querySelector('span').textContent = `Hola, ${name.split(' ')[0]} ${badge}`;
+
+                } catch (error) {
+                    console.error('Error con sistema de afiliados:', error);
+                    showToast('Sesión iniciada con éxito');
+                }
+
+                // Reset buttons for next time
+                if (provider === 'google') {
+                    btnGoogle.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="20"> Continuar con Google';
+                } else {
+                    btnFb.innerHTML = '<svg viewBox="0 0 24 24" width="20" fill="white"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02z"/></svg> Continuar con Facebook';
+                }
+
+            }, 1000);
+        }
+
+        // MOSTRAR BANNER SOLO SI NO ESTÁ LOGUEADO
+        window.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = sessionStorage.getItem('affiliate');
+            const affiliateBanner = document.getElementById('affiliate-banner');
+
+            if (!isLoggedIn && affiliateBanner) {
+                affiliateBanner.style.display = 'block';
+            }
+        });
+    </script>
+    <!-- OPTIONS SELECTION MODAL -->
+    <div id="options-modal" class="modal">
+        <div class="modal-content options-modal-content">
+            <span class="close-modal" id="options-close">&times;</span>
+            <h2 id="options-product-name" style="margin-bottom: 5px;">Personaliza</h2>
+            <p id="options-product-desc" style="font-size: 0.9em; color: #666; margin-bottom: 15px;"></p>
+
+            <div id="options-container" class="options-body">
+                <!-- Dynamic Content Here -->
+            </div>
+
+            <div class="modal-footer"
+                style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+                <div class="price-summary" style="font-weight: bold; font-size: 1.2em;">Total: <span
+                        id="options-total-price">$0</span></div>
+                <button id="confirm-options-btn" class="btn-primary" style="padding: 10px 25px;">Agregar al
+                    Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Estilos para el modal de opciones */
+        #options-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content.options-modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #options-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        #options-close:hover {
+            color: #000;
+        }
+
+        .options-group-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .option-row:hover {
+            background-color: #e9ecef;
+        }
+
+        .option-row label {
+            cursor: pointer;
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .option-row input {
+            cursor: pointer;
+            transform: scale(1.2);
+        }
+
+        .option-price {
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .required-badge {
+            background: #e74c3c;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+    </style>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

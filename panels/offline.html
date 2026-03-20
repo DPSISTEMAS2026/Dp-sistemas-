@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sin Conexión - LoMas Rico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            background: white;
+            border-radius: 24px;
+            padding: 48px 32px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .icon svg {
+            width: 60px;
+            height: 60px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #718096;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #fef3c7;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 24px;
+        }
+
+        .status.online {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f59e0b;
+            animation: blink 1.5s ease-in-out infinite;
+        }
+
+        .status.online .status-dot {
+            background: #10b981;
+            animation: none;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .retry-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            font-size: 14px;
+            color: #4a5568;
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="offline-container">
+        <div class="icon">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M8.111 16.404a5.5 5.5 0 0 1 7.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <line x1="2" y1="2" x2="22" y2="22" stroke-linecap="round" />
+            </svg>
+        </div>
+
+        <h1>Sin Conexión a Internet</h1>
+        <p>No pudimos conectarnos al servidor. Verifica tu conexión e intenta nuevamente.</p>
+
+        <div class="status" id="status">
+            <span class="status-dot"></span>
+            <span id="status-text">Desconectado</span>
+        </div>
+
+        <button class="retry-btn" onclick="location.reload()">
+            Reintentar Conexión
+        </button>
+
+        <div class="info-box">
+            <h3>Modo Offline Activo</h3>
+            <ul>
+                <li>Los pedidos se guardarán localmente</li>
+                <li>Se sincronizarán automáticamente al reconectar</li>
+                <li>Puedes seguir trabajando normalmente</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Detectar cuando se recupera la conexión
+        window.addEventListener('online', () => {
+            const status = document.getElementById('status');
+            const statusText = document.getElementById('status-text');
+
+            status.classList.add('online');
+            statusText.textContent = 'Conectado';
+
+            // Notificar al Service Worker
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'ONLINE'
+                });
+            }
+
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        });
+
+        // Actualizar estado inicial
+        if (navigator.onLine) {
+            const status = document.getElementById('status');
+            const statusText = document.getElementById('status-text');
+            status.classList.add('online');
+            statusText.textContent = 'Conectado';
+        }
+    </script>
+</body>
+
+</html>

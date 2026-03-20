@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Dueño - DP Sistemas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <div class="admin-app">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 15px;">
+                <img src="../logo-dp.svg" alt="Logo"
+                    style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                <span
+                    style="font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px;">DP
+                    Sistemas</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" onclick="navigateTo('dashboard', this)">
+                    <i data-lucide="layout-dashboard"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('products', this)">
+                    <i data-lucide="utensils"></i> Productos y Recetas
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('inventory', this)">
+                    <i data-lucide="package"></i> Inventario
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('margins', this)">
+                    <i data-lucide="trending-up"></i> Rentabilidad
+                </a>
+                <a href="#" class="nav-item" onclick="navigateTo('reports', this)">
+                    <i data-lucide="file-bar-chart"></i> Reportes
+                </a>
+                <div style="height:1px; background:var(--border); margin:10px 0;"></div>
+                <a href="/admin.html" class="nav-item">
+                    <i data-lucide="monitor"></i> Panel Admin
+                </a>
+                <a href="/" class="nav-item">
+                    <i data-lucide="store"></i> Tienda
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <h1 style="font-size: 1.5rem; font-weight: 700; color: #2d3748; margin: 0;">
+                        <i data-lucide="briefcase" style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                        Panel de Dueño
+                    </h1>
+                </div>
+                <div class="header-actions">
+                    <div class="connection-status">
+                        <span class="status-dot" id="status-dot"></span>
+                        <span id="connection-text">Conectando...</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DASHBOARD VIEW -->
+            <section id="dashboard-view">
+                <!-- Time Filter -->
+                <div
+                    style="max-width: 1400px; margin: 1rem auto 0; padding: 0 2rem; display:flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <p style="color: #718096; font-size: 0.95rem;" id="current-date"></p>
+                    </div>
+                    <div class="time-tabs"
+                        style="background:#fff; padding:5px; border-radius:8px; display:inline-flex; gap:5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <button class="btn btn-sm btn-primary" id="btn-today"
+                            onclick="setKpiTimeframe('today')">Hoy</button>
+                        <button class="btn btn-sm" id="btn-weekly" onclick="setKpiTimeframe('weekly')">Semanal</button>
+                        <button class="btn btn-sm" id="btn-monthly"
+                            onclick="setKpiTimeframe('monthly')">Mensual</button>
+                    </div>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="stats" style="max-width: 1400px; margin: 1.5rem auto; padding: 0 2rem;">
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="dollar-sign" width="16"></i>
+                            Ventas <span id="kpi-label">Hoy</span>
+                        </h3>
+                        <div class="value green" id="kpi-sales">$0</div>
+                        <span style="font-size: 0.85rem; color: #718096;">Total del período</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="shopping-bag" width="16"></i>
+                            Pedidos <span id="kpi-label-2">Hoy</span>
+                        </h3>
+                        <div class="value blue" id="kpi-orders">0</div>
+                        <span style="font-size: 0.85rem; color: #718096;">Transacciones</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="receipt" width="16"></i>
+                            Ticket Promedio
+                        </h3>
+                        <div class="value orange" id="kpi-ticket">$0</div>
+                        <span style="font-size: 0.85rem; color: #718096;">Por pedido</span>
+                    </div>
+                    <div class="stat-card">
+                        <h3 style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="trending-up" width="16"></i>
+                            Margen Promedio
+                        </h3>
+                        <div class="value" style="color: #48bb78;" id="kpi-margin">0%</div>
+                        <span style="font-size: 0.85rem; color: #718096;">Global</span>
+                    </div>
+                </div>
+
+                <!-- INVENTORY ALERTS PANEL -->
+                <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem 1.5rem;">
+                    <div id="alerts-panel" style="display:none;">
+                        <div
+                            style="background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%); border: 2px solid #fc8181; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(252, 129, 129, 0.2); margin-bottom: 1.5rem;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h3
+                                        style="font-size: 1.25rem; font-weight: 700; color: #c53030; margin: 0 0 0.5rem 0; display: flex; align-items: center; gap: 10px;">
+                                        <i data-lucide="alert-triangle" width="24" style="color: #e53e3e;"></i>
+                                        Alertas de Inventario
+                                    </h3>
+                                    <p style="color: #742a2a; margin: 0; font-size: 0.9rem;">
+                                        <span id="alerts-count">0</span> ingredientes con stock bajo afectando <span
+                                            id="affected-products-count">0</span> productos
+                                    </p>
+                                </div>
+                                <button
+                                    onclick="navigateTo('inventory', document.querySelector('[onclick*=inventory]'))"
+                                    class="btn btn-sm"
+                                    style="background: #c53030; color: white; display: flex; align-items: center; gap: 6px;">
+                                    <i data-lucide="package" width="14"></i>
+                                    Ir a Inventario
+                                </button>
+                            </div>
+                            <div id="alerts-list"
+                                style="display: grid; gap: 0.75rem; max-height: 400px; overflow-y: auto;">
+                                <!-- Alerts will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Products -->
+                <div style="max-width: 1400px; margin: 0 auto; padding: 0 2rem 2rem;">
+                    <div
+                        style="background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <h3
+                            style="font-size: 1.25rem; font-weight: 700; color: #2d3748; margin: 0 0 1.5rem 0; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="trophy" width="20"></i>
+                            Top 5 Productos Más Vendidos
+                        </h3>
+                        <div id="top-products-list" style="display: grid; gap: 0.75rem;">
+                            <p style="text-align:center; padding:2rem; color:#999;">Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRODUCTS & RECIPES VIEW -->
+            <section id="products-view" style="display:none;">
+                <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+                    <div
+                        style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin: 0 0 0.5rem 0;">
+                                <i data-lucide="utensils"
+                                    style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                                Productos y Recetas
+                            </h2>
+                            <p style="color: #718096; font-size: 0.95rem;">Configura los ingredientes de cada plato para
+                                controlar costos y stock.</p>
+                        </div>
+                    </div>
+
+                    <!-- Filtros Productos -->
+                    <div
+                        style="background: white; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #edf2f7;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <div style="position: relative;">
+                                <i data-lucide="search"
+                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0; width: 16px;"></i>
+                                <input type="text" id="products-search" placeholder="Buscar plato o bebida..."
+                                    onkeyup="filterProducts()"
+                                    style="width: 100%; padding: 0.6rem 0.6rem 0.6rem 2.2rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border 0.2s;"
+                                    onfocus="this.style.borderColor='#3182ce'"
+                                    onblur="this.style.borderColor='#e2e8f0'">
+                            </div>
+                        </div>
+                        <div style="flex: 0 0 200px;">
+                            <select id="products-category-filter" onchange="filterProducts()"
+                                style="width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; background: white;">
+                                <option value="">Todas las Categorías</option>
+                            </select>
+                        </div>
+                        <div style="flex: 0 0 180px;">
+                            <select id="products-sort" onchange="filterProducts()"
+                                style="width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; background: white; color: #4a5568; font-weight:500;">
+                                <option value="margin_desc">Mayor - Menor (Margen $)</option>
+                                <option value="margin_asc">Menor - Mayor (Margen $)</option>
+                                <option value="percent_desc">Mayor % Rentabilidad</option>
+                                <option value="percent_asc">Menor % Rentabilidad</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div
+                        style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #f7fafc;">
+                                <tr>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.85rem;">
+                                        Producto</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.85rem;">
+                                        Precio Venta</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.85rem;">
+                                        Costo Receta</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.85rem;">
+                                        Rentabilidad</th>
+                                    <th
+                                        style="padding: 1rem; text-align: center; font-weight: 600; color: #4a5568; font-size: 0.85rem;">
+                                        Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-recipes-body">
+                                <tr>
+                                    <td colspan="5" style="text-align:center; padding:2rem; color:#a0aec0;">Cargando
+                                        productos...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- INVENTORY VIEW -->
+            <section id="inventory-view" style="display:none;">
+                <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+                    <div
+                        style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin: 0 0 0.5rem 0;">
+                                <i data-lucide="package"
+                                    style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                                Inventario de Insumos
+                            </h2>
+                            <p style="color: #718096; font-size: 0.95rem;">Gestiona los ingredientes y su stock</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showAddIngredientModal()"
+                            style="display:flex; align-items:center; gap:8px;">
+                            <i data-lucide="plus" width="16"></i> Nuevo Insumo
+                        </button>
+                    </div>
+
+                    <!-- Filtros -->
+                    <div
+                        style="background: white; padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #edf2f7;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <div style="position: relative;">
+                                <i data-lucide="search"
+                                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #a0aec0; width: 16px;"></i>
+                                <input type="text" id="inventory-search" placeholder="Buscar insumo..."
+                                    onkeyup="filterInventory()"
+                                    style="width: 100%; padding: 0.6rem 0.6rem 0.6rem 2.2rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border 0.2s;"
+                                    onfocus="this.style.borderColor='#3182ce'"
+                                    onblur="this.style.borderColor='#e2e8f0'">
+                            </div>
+                        </div>
+                        <div style="flex: 0 0 250px;">
+                            <select id="inventory-category-filter" onchange="filterInventory()"
+                                style="width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem; outline: none; background-color: white;">
+                                <option value="">Todas las Categorías</option>
+                                <option value="🐟 Pescados y Mariscos">🐟 Pescados y Mariscos</option>
+                                <option value="🥦 Verduras y Frutas">🥦 Verduras y Frutas</option>
+                                <option value="🥫 Abarrotes">🥫 Abarrotes</option>
+                                <option value="🥛 Lácteos y Refrigerados">🥛 Lácteos y Refrigerados</option>
+                                <option value="👨‍🍳 Sub-Recetas y Salsas">👨‍🍳 Sub-Recetas y Salsas</option>
+                                <option value="📦 Envases e Insumos">📦 Envases e Insumos</option>
+                                <option value="General">Otros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Table -->
+                    <div
+                        style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #f7fafc;">
+                                <tr>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Insumo</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Unidad</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Costo Unitario</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Stock Actual</th>
+                                    <th
+                                        style="padding: 1rem; text-align: center; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ingredients-table-body">
+                                <tr>
+                                    <td colspan="5" style="padding: 3rem; text-align: center; color: #999;">
+                                        Cargando insumos...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MARGINS VIEW -->
+            <section id="margins-view" style="display:none;">
+                <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin: 0 0 0.5rem 0;">
+                            <i data-lucide="trending-up"
+                                style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                            Análisis de Márgenes
+                        </h2>
+                        <p style="color: #718096; font-size: 0.95rem;">Rentabilidad por producto</p>
+                    </div>
+
+                    <!-- Margins Table -->
+                    <div
+                        style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead style="background: #f7fafc;">
+                                <tr>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Producto</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Precio Venta</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Costo</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Margen $</th>
+                                    <th
+                                        style="padding: 1rem; text-align: left; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Margen %</th>
+                                    <th
+                                        style="padding: 1rem; text-align: center; font-weight: 600; color: #4a5568; font-size: 0.875rem;">
+                                        Receta</th>
+                                </tr>
+                            </thead>
+                            <tbody id="margin-table-body">
+                                <tr>
+                                    <td colspan="6" style="padding: 3rem; text-align: center; color: #999;">
+                                        Cargando análisis de márgenes...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REPORTS VIEW -->
+            <section id="reports-view" style="display:none;">
+                <div style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <h2 style="font-size: 1.8rem; font-weight: 700; color: #2d3748; margin: 0 0 0.5rem 0;">
+                            <i data-lucide="file-bar-chart"
+                                style="width:24px; height:24px; vertical-align:text-bottom;"></i>
+                            Reportes Avanzados
+                        </h2>
+                        <p style="color: #718096; font-size: 0.95rem;">Análisis detallado del negocio</p>
+                    </div>
+
+                    <div
+                        style="background: white; border-radius: 12px; padding: 3rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                        <i data-lucide="construction"
+                            style="width:64px; height:64px; color: #cbd5e0; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #4a5568; margin: 0 0 0.5rem 0;">Módulo en Construcción</h3>
+                        <p style="color: #718096; margin: 0;">Los reportes avanzados estarán disponibles próximamente
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Add Ingredient Modal -->
+    <div id="ingredient-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #2d3748;">
+                    <i data-lucide="plus-circle" width="20"></i> Nuevo Insumo
+                </h3>
+                <button onclick="closeModal('ingredient-modal')"
+                    style="background: none; border: none; cursor: pointer; color: #718096; font-size: 1.5rem;">&times;</button>
+            </div>
+            <form id="ingredient-form">
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #4a5568;">Nombre del
+                        Insumo</label>
+                    <input type="text" name="name" required placeholder="Ej: Pescado Reineta"
+                        style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem;">
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #4a5568;">Unidad de
+                        Medida</label>
+                    <select name="unit" required
+                        style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem;">
+                        <option value="">Seleccionar...</option>
+                        <option value="kg">Kilogramos (kg)</option>
+                        <option value="g">Gramos (g)</option>
+                        <option value="L">Litros (L)</option>
+                        <option value="ml">Mililitros (ml)</option>
+                        <option value="unidad">Unidad</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #4a5568;">Costo por
+                        Unidad ($)</label>
+                    <input type="number" name="cost" required step="0.01" placeholder="0"
+                        style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem;">
+                </div>
+                <div class="form-group">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #4a5568;">Stock
+                        Inicial</label>
+                    <input type="number" name="stock" required step="0.01" placeholder="0"
+                        style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 0.95rem;">
+                </div>
+                <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                    <button type="button" onclick="closeModal('ingredient-modal')" class="btn"
+                        style="flex: 1; background: #e2e8f0; color: #4a5568;">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar Insumo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Advanced Product Modal (Opciones + Receta) -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content"
+            style="max-width: 900px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+
+            <!-- Header -->
+            <div
+                style="padding: 1.5rem; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; background: #fff;">
+                <h3 id="product-modal-title" style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #2d3748;">
+                    <i data-lucide="settings" width="20"></i> Configurar Producto
+                </h3>
+                <button onclick="closeProductModal()"
+                    style="background: none; border: none; cursor: pointer; color: #718096; font-size: 1.5rem;">&times;</button>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div style="display: flex; background: #f7fafc; border-bottom: 1px solid #e2e8f0; padding: 0 1.5rem;">
+                <button onclick="switchTab('options')" id="tab-btn-options" class="tab-btn active"
+                    style="padding: 1rem; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: #4a5568; transition: all 0.2s;">
+                    📋 Menú y Opciones (Cliente)
+                </button>
+                <button onclick="switchTab('recipe')" id="tab-btn-recipe" class="tab-btn"
+                    style="padding: 1rem; background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: 600; color: #718096; transition: all 0.2s;">
+                    🍳 Receta y Costos (Interno)
+                </button>
+            </div>
+
+            <!-- Scrollable Content Area -->
+            <div style="flex: 1; overflow-y: auto; padding: 1.5rem; background: #fff;">
+
+                <!-- TAB 1: OPTIONS (MENU) -->
+                <div id="tab-options" class="tab-content">
+                    <div
+                        style="background: #fff8eb; border: 1px solid #fbd38d; padding: 1.25rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="margin:0 0 10px 0; color: #c05621; font-size: 0.95rem;">Nueva Opción de
+                            Personalización</h4>
+                        <div
+                            style="display: grid; grid-template-columns: 140px 1fr 100px auto auto; gap: 10px; align-items: end;">
+                            <div>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:bold; color:#744210; margin-bottom:4px;">Tipo</label>
+                                <select id="opt-type"
+                                    style="width:100%; padding:8px; border:1px solid #fbd38d; border-radius:4px;">
+                                    <option value="protein">Proteína (Principal)</option>
+                                    <option value="addon">Agregado (Extra)</option>
+                                    <option value="drink">Bebida (Combo)</option>
+                                    <option value="side">Acompañamiento</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:bold; color:#744210; margin-bottom:4px;">Nombre
+                                    Opción</label>
+                                <input type="text" id="opt-name" placeholder="Ej: Salmón, Sin Cebolla..."
+                                    style="width:100%; padding:8px; border:1px solid #fbd38d; border-radius:4px;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display:block; font-size:0.75rem; font-weight:bold; color:#744210; margin-bottom:4px;">Precio
+                                    Extra</label>
+                                <input type="number" id="opt-price" placeholder="0" value="0"
+                                    style="width:100%; padding:8px; border:1px solid #fbd38d; border-radius:4px;">
+                            </div>
+                            <div style="text-align:center; padding-bottom:8px;">
+                                <label
+                                    style="font-size:0.75rem; font-weight:bold; color:#744210;">Obligatorio</label><br>
+                                <input type="checkbox" id="opt-req" style="transform: scale(1.2);">
+                            </div>
+                            <button onclick="addOptionToProduct()" class="btn btn-primary"
+                                style="height:35px; background: #c05621; border:none;">
+                                <i data-lucide="plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <h4 style="color: #2d3748; margin-bottom: 10px;">Opciones Configuradas</h4>
+                    <div id="options-list-container">
+                        <p style="color:#999;">Cargando...</p>
+                    </div>
+                </div>
+
+                <!-- TAB 2: RECIPE (COSTS) -->
+                <div id="tab-recipe" class="tab-content" style="display:none;">
+                    <div
+                        style="background: #e6fffa; border: 1px solid #b2f5ea; padding: 1.25rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h4 style="margin:0 0 10px 0; color: #2c7a7b; font-size: 0.95rem;">Agregar Ingrediente a Costo
+                        </h4>
+                        <div
+                            style="display: grid; grid-template-columns: 1fr auto auto; gap: 0.75rem; align-items: end;">
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 4px; font-weight: 600; color: #234e52; font-size: 0.75rem;">Ingrediente</label>
+                                <select id="ingredient-select"
+                                    style="width: 100%; padding: 0.5rem; border: 1px solid #b2f5ea; border-radius: 6px;">
+                                    <option value="">Seleccionar...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; margin-bottom: 4px; font-weight: 600; color: #234e52; font-size: 0.75rem;">
+                                    Cantidad <span id="ingredient-unit-label"
+                                        style="font-weight:normal; color:#718096"></span>
+                                </label>
+                                <input type="number" id="ingredient-qty" step="0.01" placeholder="0"
+                                    style="width: 100px; padding: 0.5rem; border: 1px solid #b2f5ea; border-radius: 6px;">
+                            </div>
+                            <button onclick="addIngredientToRecipe()" class="btn"
+                                style="background: #319795; color: white;">
+                                <i data-lucide="plus" width="16"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead style="background: #f7fafc;">
+                            <tr>
+                                <th style="padding: 0.75rem; text-align: left; font-size: 0.85rem; color: #4a5568;">
+                                    Ingrediente</th>
+                                <th style="padding: 0.75rem; text-align: left; font-size: 0.85rem; color: #4a5568;">
+                                    Cantidad</th>
+                                <th style="padding: 0.75rem; text-align: left; font-size: 0.85rem; color: #4a5568;">
+                                    Costo</th>
+                                <th style="padding: 0.75rem; text-align: center; font-size: 0.85rem; color: #4a5568;">
+                                    Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipe-table-body">
+                            <tr>
+                                <td colspan="4" style="text-align:center; padding:1rem; color:#999;">Vacío</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div style="padding: 1rem; border-top: 1px solid #e2e8f0; text-align: right; background: #fff;">
+                <button onclick="closeProductModal()" class="btn"
+                    style="background:#e2e8f0; color:#4a5568;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+        const WS_URL = API_URL.replace('http', 'ws');
+        let currentView = 'dashboard';
+        let currentTimeframe = 'today';
+        let ws = null;
+        let allIngredients = [];
+        let currentProductNumber = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initWebSocket();
+            loadKPIs();
+            loadInventoryAlerts(); // Load inventory alerts on dashboard
+            loadIngredients();
+            updateDate();
+            if (window.lucide) lucide.createIcons();
+
+            // UI: Actualizar unidad al seleccionar ingrediente
+            const ingSelect = document.getElementById('ingredient-select');
+            if (ingSelect) {
+                ingSelect.addEventListener('change', (e) => {
+                    const option = e.target.selectedOptions[0];
+                    const label = document.getElementById('ingredient-unit-label');
+                    if (label) {
+                        label.textContent = option.dataset.unit ? `(${option.dataset.unit})` : '';
+                    }
+                });
+            }
+        });
+
+        function updateDate() {
+            const date = new Date().toLocaleDateString('es-CL', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('current-date').textContent = date.charAt(0).toUpperCase() + date.slice(1);
+        }
+
+        // WebSocket
+        function initWebSocket() {
+            updateConnectionStatus('connecting');
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                console.log('🔌 WS Conectado Panel Dueño');
+                updateConnectionStatus('connected');
+            };
+
+            ws.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                if (data.type === 'NEW_ORDER' || data.type === 'ORDER_UPDATED') {
+                    loadKPIs();
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('🔌 WS Desconectado');
+                updateConnectionStatus('disconnected');
+                setTimeout(initWebSocket, 3000);
+            };
+        }
+
+        function updateConnectionStatus(status) {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('connection-text');
+
+            dot.className = 'status-dot';
+
+            switch (status) {
+                case 'connected':
+                    dot.classList.add('connected');
+                    text.textContent = 'En tiempo real';
+                    break;
+                case 'connecting':
+                    dot.classList.add('connecting');
+                    text.textContent = 'Conectando...';
+                    break;
+                case 'disconnected':
+                    dot.classList.add('offline');
+                    text.textContent = 'Reconectando...';
+                    break;
+            }
+        }
+
+        // Navigation
+        function navigateTo(viewId, btnElement) {
+            currentView = viewId;
+
+            // Update sidebar
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            // Hide all views
+            document.querySelectorAll('#dashboard-view, #inventory-view, #margins-view, #reports-view, #products-view').forEach(el => {
+                el.style.display = 'none';
+            });
+
+            // Show selected view
+            const viewMap = {
+                'dashboard': 'dashboard-view',
+                'inventory': 'inventory-view',
+                'margins': 'margins-view',
+                'reports': 'reports-view',
+                'products': 'products-view'
+            };
+
+            const targetView = document.getElementById(viewMap[viewId]);
+            if (targetView) {
+                targetView.style.display = 'block';
+
+                // Load data for specific views
+                if (viewId === 'margins' || viewId === 'dashboard') loadKPIs();
+                if (viewId === 'inventory' || viewId === 'products') loadIngredients();
+                if (viewId === 'products') loadProductsRecipes();
+            }
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // ===============================================
+        // PRODUCTS & RECIPES MANAGEMENT (STRATEGIC VIEW)
+        // ===============================================
+        let allProductMargins = [];
+
+        async function loadProductsRecipes() {
+            try {
+                // Re-usamos el endpoint de KPIs porque trae el análisis pre-calculado
+                const res = await fetch(`${API_URL}/api/admin/kpis?timeframe=today`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                if (data.productMargins) {
+                    allProductMargins = data.productMargins;
+
+                    // Poblar filtro de categorías dinámicamente
+                    const cats = [...new Set(allProductMargins.map(p => p.category || 'General'))].sort();
+                    const sel = document.getElementById('products-category-filter');
+                    if (sel) {
+                        sel.innerHTML = '<option value="">Todas las Categorías</option>';
+                        cats.forEach(c => {
+                            const opt = document.createElement('option');
+                            opt.value = c;
+                            opt.textContent = c;
+                            sel.appendChild(opt);
+                        });
+                    }
+
+                    filterProducts(); // Render inicial
+                } else {
+                    document.getElementById('products-recipes-body').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No hay datos disponibles.</td></tr>';
+                }
+
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+            }
+        }
+
+        function filterProducts() {
+            const term = document.getElementById('products-search') ? document.getElementById('products-search').value.toLowerCase() : '';
+            const cat = document.getElementById('products-category-filter') ? document.getElementById('products-category-filter').value : '';
+            const sort = document.getElementById('products-sort') ? document.getElementById('products-sort').value : 'margin_desc';
+
+            const tbody = document.getElementById('products-recipes-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            // 1. Filtrar
+            let filtered = allProductMargins.filter(p => {
+                const matchName = p.name.toLowerCase().includes(term);
+                const matchCat = cat ? (p.category === cat) : true;
+                return matchName && matchCat;
+            });
+
+            // 2. Ordenar
+            filtered.sort((a, b) => {
+                const mPerA = parseFloat(a.marginPercent);
+                const mPerB = parseFloat(b.marginPercent);
+
+                if (sort === 'margin_desc') return b.margin - a.margin;
+                if (sort === 'margin_asc') return a.margin - b.margin;
+                if (sort === 'percent_desc') return mPerB - mPerA;
+                if (sort === 'percent_asc') return mPerA - mPerB;
+                return 0;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:2rem;">No hay productos que coincidan.</td></tr>';
+                return;
+            }
+
+            // 3. Renderizar
+            filtered.forEach(p => {
+                const margin = parseFloat(p.marginPercent);
+                let color = '#48bb78'; // Verde (Bueno)
+                let label = 'Excelente';
+                let alertBg = '#f0fff4'; // Fondo verde claro
+
+                if (margin < 30) {
+                    color = '#e53e3e'; // Rojo
+                    label = 'Crítico';
+                    alertBg = '#fff5f5';
+                }
+                else if (margin < 50) {
+                    color = '#dd6b20'; // Naranja
+                    label = 'Regular';
+                    alertBg = '#fffaf0';
+                }
+
+                // Barra de costo visual
+                const costPercent = Math.min(100, (p.cost / p.price) * 100) || 0;
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #e2e8f0';
+                tr.style.transition = 'background 0.2s';
+                tr.onmouseover = () => tr.style.background = '#f7fafc';
+                tr.onmouseout = () => tr.style.background = 'white';
+
+                tr.innerHTML = `
+                    <td style="padding: 1rem;">
+                        <div style="font-weight: 600; color: #2d3748; font-size: 0.95rem;">${p.name}</div>
+                        <div style="font-size: 0.75rem; color: #718096; background: #edf2f7; display: inline-block; padding: 2px 6px; border-radius: 4px; margin-top: 4px;">
+                           ${p.category}
+                        </div>
+                    </td>
+                    <td style="padding: 1rem; color: #4a5568; font-weight:500;">$${p.price.toLocaleString('es-CL')}</td>
+                    <td style="padding: 1rem;">
+                        <div style="display:flex; justify-content:space-between; font-size: 0.85rem; color: #718096;">
+                            <span>$${Math.round(p.cost).toLocaleString('es-CL')}</span>
+                            <span>${costPercent.toFixed(0)}%</span>
+                        </div>
+                        <div style="width: 100%; height: 6px; background: #edf2f7; border-radius: 3px; margin-top: 4px; overflow:hidden;">
+                            <div style="width: ${costPercent}%; height: 100%; background: #a0aec0; border-radius: 3px;"></div>
+                        </div>
+                    </td>
+                    <td style="padding: 1rem;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-size: 1.1rem; font-weight: 700; color: ${color};">${margin}%</span>
+                            <span style="font-size: 0.7rem; border: 1px solid ${color}; color: ${color}; background: ${alertBg}; padding: 1px 6px; border-radius: 99px; font-weight:600;">${label}</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #718096; margin-top:2px;">$${Math.round(p.margin).toLocaleString('es-CL')} de utilidad</div>
+                    </td>
+                    <td style="padding: 1rem; text-align: center;">
+                        <button onclick="openRecipeModal(${p.number}, '${p.name}')" 
+                            class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; border: 1px solid #e2e8f0; background:white; color:#4a5568; box-shadow:0 1px 2px rgba(0,0,0,0.05);">
+                            <i data-lucide="edit-3" style="width:14px; margin-right:5px;"></i> Configurar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // KPI Functions
+        function setKpiTimeframe(tf) {
+            currentTimeframe = tf;
+
+            document.querySelectorAll('.time-tabs button').forEach(b => {
+                b.classList.remove('btn-primary');
+            });
+            document.getElementById(`btn-${tf}`).classList.add('btn-primary');
+
+            const labelMap = { 'today': 'Hoy', 'weekly': 'Esta Semana', 'monthly': 'Este Mes' };
+            document.getElementById('kpi-label').textContent = labelMap[tf];
+            document.getElementById('kpi-label-2').textContent = labelMap[tf];
+
+            loadKPIs();
+        }
+
+        async function loadKPIs() {
+            try {
+                const res = await fetch(`${API_URL}/api/admin/kpis?timeframe=${currentTimeframe}`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                // Update KPI cards
+                if (data.dailyStats) {
+                    document.getElementById('kpi-sales').textContent = '$' + data.dailyStats.totalSales.toLocaleString('es-CL');
+                    document.getElementById('kpi-orders').textContent = data.dailyStats.totalOrders;
+                    document.getElementById('kpi-ticket').textContent = '$' + data.dailyStats.averageTicket.toLocaleString('es-CL');
+                }
+
+                // Top Products
+                if (data.topProducts && data.topProducts.length > 0) {
+                    const list = document.getElementById('top-products-list');
+                    list.innerHTML = '';
+                    data.topProducts.forEach((p, index) => {
+                        const item = document.createElement('div');
+                        item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #f7fafc; border-radius: 8px; transition: all 0.2s;';
+                        item.onmouseover = () => item.style.background = '#edf2f7';
+                        item.onmouseout = () => item.style.background = '#f7fafc';
+
+                        const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+                        item.innerHTML = `
+                            <span style="display: flex; align-items: center; gap: 1rem;">
+                                <span style="font-size: 1.5rem;">${medals[index]}</span>
+                                <span style="font-weight: 600; color: #2d3748;">${p.name}</span>
+                            </span>
+                            <span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 700;">
+                                ${p.qty} unidades
+                            </span>
+                        `;
+                        list.appendChild(item);
+                    });
+                }
+
+                // Margins Table
+                if (data.productMargins && data.productMargins.length > 0) {
+                    const tbody = document.getElementById('margin-table-body');
+                    if (tbody) {
+                        tbody.innerHTML = '';
+                        let totalMargin = 0;
+                        let count = 0;
+
+                        data.productMargins.forEach(p => {
+                            const marginPercent = parseFloat(p.marginPercent);
+                            const marginClass = marginPercent > 50 ? 'high-margin' : 'low-margin';
+
+                            const tr = document.createElement('tr');
+                            tr.style.borderBottom = '1px solid #e2e8f0';
+                            tr.innerHTML = `
+                                <td style="padding: 1rem; color: #2d3748; font-weight: 500;">${p.name}</td>
+                                <td style="padding: 1rem; color: #4a5568;">$${p.price.toLocaleString('es-CL')}</td>
+                                <td style="padding: 1rem; color: #4a5568;">$${p.cost.toLocaleString('es-CL')}</td>
+                                <td style="padding: 1rem; color: ${p.margin > 0 ? '#48bb78' : '#f56565'}; font-weight: 700;">$${p.margin.toLocaleString('es-CL')}</td>
+                                <td style="padding: 1rem;">
+                                    <span style="padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; font-weight: 600; ${marginPercent > 50 ? 'background: #c6f6d5; color: #22543d;' : 'background: #fed7d7; color: #742a2a;'}">
+                                        ${p.marginPercent}%
+                                    </span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center;">
+                                    <button class="btn btn-sm btn-primary" onclick="openRecipeModal(${p.number}, '${p.name}')">
+                                        <i data-lucide="edit" width="14"></i> Editar
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+
+                            if (p.price > 0) {
+                                totalMargin += marginPercent;
+                                count++;
+                            }
+                        });
+
+                        if (count > 0) {
+                            document.getElementById('kpi-margin').textContent = Math.round(totalMargin / count) + '%';
+                        }
+
+                        if (window.lucide) lucide.createIcons();
+                    }
+                }
+
+            } catch (e) {
+                console.error('Error loading KPIs:', e);
+            }
+        }
+
+        // ===============================================
+        // INVENTORY ALERTS
+        // ===============================================
+        async function loadInventoryAlerts() {
+            try {
+                const res = await fetch(`${API_URL}/api/inventory/alerts`);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                const alertsPanel = document.getElementById('alerts-panel');
+                const alertsList = document.getElementById('alerts-list');
+                const alertsCount = document.getElementById('alerts-count');
+                const affectedCount = document.getElementById('affected-products-count');
+
+                if (data.stats.totalAlerts === 0) {
+                    alertsPanel.style.display = 'none';
+                    return;
+                }
+
+                // Show panel and update counts
+                alertsPanel.style.display = 'block';
+                alertsCount.textContent = data.stats.totalAlerts;
+                affectedCount.textContent = data.stats.totalAffectedProducts;
+
+                // Render alerts
+                alertsList.innerHTML = '';
+                data.alerts.forEach(alert => {
+                    const severityColors = {
+                        critical: { bg: '#fff5f5', border: '#fc8181', text: '#c53030', badge: '#e53e3e' },
+                        high: { bg: '#fffaf0', border: '#fbd38d', text: '#c05621', badge: '#dd6b20' },
+                        medium: { bg: '#fefcbf', border: '#f6e05e', text: '#975a16', badge: '#d69e2e' }
+                    };
+                    const colors = severityColors[alert.severity];
+
+                    const alertCard = document.createElement('div');
+                    alertCard.style.cssText = `
+                        background: ${colors.bg};
+                        border: 1px solid ${colors.border};
+                        border-radius: 8px;
+                        padding: 1rem;
+                        transition: all 0.2s;
+                    `;
+                    alertCard.onmouseover = () => alertCard.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                    alertCard.onmouseout = () => alertCard.style.boxShadow = 'none';
+
+                    const affectedProductsHtml = alert.affectedProducts.length > 0
+                        ? `<div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed ${colors.border};">
+                            <div style="font-size: 0.8rem; font-weight: 600; color: ${colors.text}; margin-bottom: 0.5rem;">
+                                Productos afectados (${alert.affectedProducts.length}):
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                ${alert.affectedProducts.map(p => `
+                                    <span style="background: white; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; color: ${colors.text}; border: 1px solid ${colors.border}; display: flex; align-items: center; gap: 4px;">
+                                        ${p.name}
+                                        ${p.active === 0 ? '<span style="color: #999;">●</span>' : ''}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>`
+                        : '';
+
+                    alertCard.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <span style="background: ${colors.badge}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+                                        ${alert.severity === 'critical' ? '🚨 Crítico' : alert.severity === 'high' ? '⚠️ Urgente' : '⚡ Atención'}
+                                    </span>
+                                    <span style="font-weight: 700; color: ${colors.text}; font-size: 1rem;">
+                                        ${alert.ingredient.name}
+                                    </span>
+                                </div>
+                                <div style="display: flex; gap: 1.5rem; font-size: 0.85rem; color: ${colors.text}; margin-bottom: 0.5rem;">
+                                    <span>
+                                        <strong>Stock actual:</strong> ${alert.ingredient.currentStock} ${alert.ingredient.unit}
+                                    </span>
+                                    <span>
+                                        <strong>Mínimo:</strong> ${alert.ingredient.minQuantity} ${alert.ingredient.unit}
+                                    </span>
+                                </div>
+                                <div style="background: white; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; color: ${colors.text}; border-left: 3px solid ${colors.badge};">
+                                    💡 <strong>Sugerencia:</strong> ${alert.suggestion}
+                                </div>
+                                ${affectedProductsHtml}
+                            </div>
+                            ${alert.severity === 'critical' && alert.affectedProducts.length > 0 ? `
+                                <button onclick="deactivateAffectedProducts(${JSON.stringify(alert.affectedProducts.map(p => p.number))})" 
+                                        class="btn btn-sm" 
+                                        style="background: #e53e3e; color: white; margin-left: 1rem; white-space: nowrap;">
+                                    Desactivar Productos
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+
+                    alertsList.appendChild(alertCard);
+                });
+
+                if (window.lucide) lucide.createIcons();
+
+            } catch (e) {
+                console.error('Error loading inventory alerts:', e);
+            }
+        }
+
+        async function deactivateAffectedProducts(productNumbers) {
+            if (!confirm(`¿Desactivar ${productNumbers.length} producto(s) del catálogo web?`)) return;
+
+            try {
+                for (const number of productNumbers) {
+                    await fetch(`${API_URL}/api/products/${number}/toggle`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ active: false })
+                    });
+                }
+                alert('✅ Productos desactivados correctamente');
+                loadInventoryAlerts(); // Reload alerts
+            } catch (e) {
+                console.error('Error deactivating products:', e);
+                alert('Error al desactivar productos');
+            }
+        }
+
+        // Ingredients Functions
+
+
+        async function loadIngredients() {
+            try {
+                const res = await fetch(`${API_URL}/api/ingredients`);
+                allIngredients = await res.json();
+
+                // Cargar lista para select de recetas (mantenemos esto independiente del filtro visual)
+                const select = document.getElementById('ingredient-select');
+                if (select) {
+                    select.innerHTML = '<option value="">Seleccionar...</option>';
+                    // Ordenar alfabéticamente para el select
+                    [...allIngredients].sort((a, b) => a.name.localeCompare(b.name)).forEach(i => {
+                        const opt = document.createElement('option');
+                        opt.value = i.id;
+                        opt.dataset.unit = i.unit;
+                        opt.textContent = `${i.name} ($${i.cost_per_unit}/${i.unit})`;
+                        select.appendChild(opt);
+                    });
+                }
+
+                // Render principal con filtros
+                filterInventory();
+
+            } catch (e) {
+                console.error('Error loading ingredients:', e);
+            }
+        }
+
+        function filterInventory() {
+            const term = document.getElementById('inventory-search') ? document.getElementById('inventory-search').value.toLowerCase() : '';
+            const catFilter = document.getElementById('inventory-category-filter') ? document.getElementById('inventory-category-filter').value : '';
+            const tbody = document.getElementById('ingredients-table-body');
+
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            // Filtrar
+            const filtered = allIngredients.filter(i => {
+                const matchesName = i.name.toLowerCase().includes(term);
+                const matchesCat = catFilter ? (i.category === catFilter) : true;
+                return matchesName && matchesCat;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="padding: 3rem; text-align: center; color: #999;">
+                            No se encontraron insumos.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            // Ordenar por Categoría y luego Nombre
+            filtered.sort((a, b) => {
+                const catA = a.category || 'General';
+                const catB = b.category || 'General';
+                if (catA !== catB) return catA.localeCompare(catB);
+                return a.name.localeCompare(b.name);
+            });
+
+            // Renderizado Agrupado
+            let lastCat = null;
+            filtered.forEach(i => {
+                const currentCat = i.category || 'General';
+
+                // Header de Grupo (solo si no estamos filtrando por una categoría específica, o siempre?)
+                // Mejor siempre para claridad visual
+                if (currentCat !== lastCat) {
+                    lastCat = currentCat;
+                    const headerRow = document.createElement('tr');
+                    headerRow.style.background = '#edf2f7'; // Gray 100
+                    headerRow.innerHTML = `
+                        <td colspan="5" style="padding: 0.5rem 1rem; color: #4a5568; font-weight: 700; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0;">
+                            ${currentCat}
+                        </td>
+                    `;
+                    tbody.appendChild(headerRow);
+                }
+
+                const tr = document.createElement('tr');
+                tr.style.borderBottom = '1px solid #e2e8f0';
+                tr.style.transition = 'background 0.2s';
+                tr.onmouseover = () => tr.style.background = '#fffaf0'; // Slight yellow tint on hover
+                tr.onmouseout = () => tr.style.background = 'white';
+
+                tr.innerHTML = `
+                    <td style="padding: 1rem; color: #2d3748; font-weight: 500;">
+                        ${i.name}
+                    </td>
+                    <td style="padding: 1rem; color: #4a5568;">${i.unit}</td>
+                    <td style="padding: 1rem; color: #4a5568; font-weight: 600;">$${i.cost_per_unit.toLocaleString('es-CL')}</td>
+                    <td style="padding: 1rem; color: #4a5568;">
+                        <span style="background:${i.current_stock < 10 ? '#fed7d7' : '#f0fff4'}; color:${i.current_stock < 10 ? '#c53030' : '#276749'}; padding:2px 6px; border-radius:4px; font-weight:600;">
+                            ${i.current_stock.toLocaleString('es-CL')}
+                        </span>
+                    </td>
+                    <td style="padding: 1rem; text-align: center;">
+                        <button class="btn btn-sm" onclick="editIngredient('${i.id}')" style="background: #edf2f7; color: #4a5568; border: 1px solid #cbd5e0;">
+                            <i data-lucide="edit-2" width="14"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function editIngredient(id) {
+            alert('Función de edición en desarrollo');
+        }
+
+        // Modal Functions
+        function showAddIngredientModal() {
+            document.getElementById('ingredient-modal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipe-modal').classList.remove('active');
+            loadKPIs();
+        }
+
+        // Ingredient Form Submit
+        document.getElementById('ingredient-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                name: formData.get('name'),
+                unit: formData.get('unit'),
+                cost: parseFloat(formData.get('cost')),
+                stock: parseFloat(formData.get('stock'))
+            };
+
+            try {
+                await fetch(`${API_URL}/api/ingredients`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                closeModal('ingredient-modal');
+                e.target.reset();
+                loadIngredients();
+            } catch (error) {
+                console.error('Error adding ingredient:', error);
+                alert('Error al agregar insumo');
+            }
+        });
+
+        // ===============================
+        // ADVANCED PRODUCT MANAGEMENT
+        // ===============================
+
+        // Wrapper for compatibility with button calls
+        function openRecipeModal(number, name) {
+            openProductModal(number, name);
+        }
+
+        function openProductModal(number, name) {
+            currentProductNumber = number;
+
+            // Update UI
+            document.getElementById('product-modal-title').innerHTML = `<i data-lucide="settings" width="20"></i> Configurar: ${name}`;
+            document.getElementById('product-modal').classList.add('active');
+
+            // Load Data
+            loadProductOptions(number);
+            loadRecipe(); // Load recipe for costs
+
+            // Set Default Tab
+            switchTab('options');
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.remove('active');
+            loadKPIs(); // Refresh data on close
+        }
+
+        function switchTab(tab) {
+            // Hide contents
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            // Reset buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+                el.style.borderBottomColor = 'transparent';
+                el.style.color = '#718096';
+            });
+
+            // Show active
+            document.getElementById(`tab-${tab}`).style.display = 'block';
+            const btn = document.getElementById(`tab-btn-${tab}`);
+            btn.classList.add('active');
+
+            // Colors per tab
+            if (tab === 'options') {
+                btn.style.color = '#2d3748'; // Gray dark
+                btn.style.borderBottomColor = '#c05621'; // Orange
+            } else {
+                btn.style.color = '#2d3748';
+                btn.style.borderBottomColor = '#319795'; // Teal
+            }
+        }
+
+        // --- MENU OPTIONS LOGIC ---
+        async function loadProductOptions(number) {
+            const container = document.getElementById('options-list-container');
+            container.innerHTML = '<p style="color:#718096; font-style:italic;">Cargando opciones...</p>';
+
+            try {
+                const res = await fetch(`${API_URL}/api/products/${number}/options`);
+                const options = await res.json();
+
+                if (!options || options.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align:center; padding: 2rem; background: #f7fafc; border-radius: 8px; border: 1px dashed #cbd5e0;">
+                            <p style="color: #718096; margin:0;">No hay opciones configuradas para este producto.</p>
+                            <p style="font-size: 0.85rem; color: #a0aec0; margin-top:5px;">Agrega opciones arriba (ej: Proteínas, Bebidas).</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render List
+                const groups = {};
+                options.forEach(o => {
+                    if (!groups[o.option_type]) groups[o.option_type] = [];
+                    groups[o.option_type].push(o);
+                });
+
+                let html = '';
+                const labels = {
+                    'protein': '🐟 Proteínas (Principal)',
+                    'addon': '🍟 Agregados (Extras)',
+                    'drink': '🥤 Bebidas',
+                    'side': '🥗 Acompañamientos',
+                    'promo_item': '🎁 Ítem de Promoción'
+                };
+
+                for (const [type, list] of Object.entries(groups)) {
+                    html += `
+                        <div style="margin-bottom: 1.5rem;">
+                            <h5 style="margin: 0 0 0.5rem 0; font-size: 0.9rem; color: #4a5568; font-weight: 700; border-bottom: 2px solid #edf2f7; padding-bottom: 4px;">
+                                ${labels[type] || type.toUpperCase()}
+                            </h5>
+                            <div style="display: grid; gap: 0.5rem;">
+                    `;
+
+                    list.forEach(opt => {
+                        const priceClass = opt.price_modifier > 0 ? 'color: #38a169;' : (opt.price_modifier < 0 ? 'color: #e53e3e;' : 'color: #718096;');
+                        const priceText = opt.price_modifier > 0 ? `+ $${opt.price_modifier.toLocaleString('es-CL')}` :
+                            (opt.price_modifier < 0 ? `- $${Math.abs(opt.price_modifier).toLocaleString('es-CL')}` : 'Sin costo extra');
+
+                        html += `
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: white; border: 1px solid #e2e8f0; padding: 0.75rem; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="font-weight: 600; color: #2d3748;">${opt.option_name}</span>
+                                    <span style="font-size: 0.85rem; ${priceClass} font-weight: 500; background: #f7fafc; padding: 2px 6px; border-radius: 4px;">
+                                        ${priceText}
+                                    </span>
+                                    ${opt.is_required ? '<span style="font-size: 0.7rem; background: #fee2e2; color: #c53030; padding: 2px 6px; border-radius: 4px; font-weight: 700;">REQUERIDO</span>' : ''}
+                                </div>
+                                <button onclick="deleteOption('${opt.id}')" 
+                                    style="background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;"
+                                    onmouseover="this.style.background='#fed7d7'" onmouseout="this.style.background='#fff5f5'">
+                                    <i data-lucide="trash-2" width="16"></i>
+                                </button>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div></div>`;
+                }
+
+                container.innerHTML = html;
+                if (window.lucide) lucide.createIcons();
+
+            } catch (error) {
+                console.error(error);
+                container.innerHTML = '<p style="color:red">Error cargando opciones.</p>';
+            }
+        }
+
+        async function addOptionToProduct() {
+            const type = document.getElementById('opt-type').value;
+            const name = document.getElementById('opt-name').value;
+            const price = parseFloat(document.getElementById('opt-price').value) || 0;
+            const req = document.getElementById('opt-req').checked;
+
+            if (!name) {
+                alert('Por favor, ingresa un nombre para la opción.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/api/options`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_number: currentProductNumber,
+                        option_type: type,
+                        option_name: name,
+                        price_modifier: price,
+                        is_required: req
+                    })
+                });
+
+                if (res.ok) {
+                    // Reset Form
+                    document.getElementById('opt-name').value = '';
+                    document.getElementById('opt-price').value = '0';
+                    document.getElementById('opt-req').checked = false;
+                    document.getElementById('opt-name').focus();
+
+                    // Reload List
+                    loadProductOptions(currentProductNumber);
+                } else {
+                    alert('Error al guardar la opción.');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error de conexión.');
+            }
+        }
+
+        async function deleteOption(id) {
+            if (!confirm('¿Estás seguro de eliminar esta opción?')) return;
+            try {
+                await fetch(`${API_URL}/api/options/${id}`, { method: 'DELETE' });
+                loadProductOptions(currentProductNumber);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+
+        // --- COST RECIPE LOGIC ---
+        async function loadRecipe() {
+            try {
+                const res = await fetch(`${API_URL}/api/products/${currentProductNumber}/recipe`);
+                const ingredients = await res.json();
+
+                const tbody = document.getElementById('recipe-table-body');
+                tbody.innerHTML = '';
+
+                if (ingredients.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="padding: 2rem; text-align: center; color: #999;">
+                                No hay ingredientes en esta receta
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                ingredients.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.style.borderBottom = '1px solid #e2e8f0';
+                    const totalCost = item.quantity_required * item.cost_per_unit;
+
+                    tr.innerHTML = `
+                        <td style="padding: 0.75rem; color: #2d3748;">${item.ingredient_name}</td>
+                        <td style="padding: 0.75rem; color: #4a5568;">${item.quantity_required} ${item.unit}</td>
+                        <td style="padding: 0.75rem; color: #4a5568; font-weight: 600;">$${totalCost.toLocaleString('es-CL')}</td>
+                        <td style="padding: 0.75rem; text-align: center;">
+                            <button class="btn btn-sm" onclick="deleteRecipeItem('${item.id}')" style="background: #fed7d7; color: #742a2a;">
+                                <i data-lucide="trash-2" width="14"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                if (window.lucide) lucide.createIcons();
+            } catch (error) {
+                console.error('Error loading recipe:', error);
+            }
+        }
+
+        async function addIngredientToRecipe() {
+            const ingredientId = document.getElementById('ingredient-select').value;
+            const quantity = parseFloat(document.getElementById('ingredient-qty').value);
+
+            if (!ingredientId || !quantity) {
+                alert('Selecciona un ingrediente y especifica la cantidad');
+                return;
+            }
+
+            try {
+                await fetch(`${API_URL}/api/recipes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_number: currentProductNumber,
+                        ingredient_id: ingredientId,
+                        quantity: quantity
+                    })
+                });
+
+                document.getElementById('ingredient-qty').value = '';
+                loadRecipe();
+            } catch (error) {
+                console.error('Error adding ingredient to recipe:', error);
+                alert('Error al agregar ingrediente');
+            }
+        }
+
+        async function deleteRecipeItem(id) {
+            if (!confirm('¿Quitar este ingrediente de la receta?')) return;
+
+            try {
+                await fetch(`${API_URL}/api/recipes/${id}`, { method: 'DELETE' });
+                loadRecipe();
+            } catch (error) {
+                console.error('Error deleting recipe item:', error);
+                alert('Error al eliminar ingrediente');
+            }
+        }
+    </script>
+
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Animation for spinner */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</body>
+
+</html>

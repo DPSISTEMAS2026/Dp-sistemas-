@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - LoMas Rico</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .checkout-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        @media (max-width: 968px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checkout-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .payment-methods {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .payment-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .payment-info p {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .order-summary {
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            font-size: 18px;
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-pay:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-pay:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .social-login {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            color: #2d3748;
+        }
+
+        .social-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-btn img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            position: relative;
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .cart-item-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-qty {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .cart-item-price {
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: gap 0.3s;
+        }
+
+        .back-link:hover {
+            gap: 12px;
+        }
+
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #718096;
+        }
+
+        .security-badge svg {
+            width: 20px;
+            height: 20px;
+            fill: #48bb78;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="checkout-container">
+        <!-- Left Column: Checkout Form -->
+        <div>
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Volver al menú
+            </a>
+
+            <div class="checkout-section">
+                <h2 class="section-title">Información de Contacto</h2>
+
+                <!-- Social Login -->
+                <div class="social-login">
+                    <a href="/auth/google" class="social-btn">
+                        <img src="https://www.google.com/favicon.ico" alt="Google">
+                        Google
+                    </a>
+                    <a href="/auth/facebook" class="social-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2">
+                            <path
+                                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                        </svg>
+                        Facebook
+                    </a>
+                </div>
+
+                <div class="divider">
+                    <span>o completa tus datos</span>
+                </div>
+
+                <!-- Contact Form -->
+                <form id="checkout-form">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo *</label>
+                        <input type="text" class="form-input" id="client-name" required placeholder="Juan Pérez">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Teléfono *</label>
+                        <input type="tel" class="form-input" id="client-phone" required placeholder="+56 9 1234 5678">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="client-email" placeholder="correo@ejemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dirección de Entrega *</label>
+                        <input type="text" class="form-input" id="client-address" required
+                            placeholder="Calle Principal 123, Depto 4B, Concepción">
+
+                        <!-- Botón Calcular Delivery -->
+                        <button type="button" id="btn-calculate-delivery"
+                            style="margin-top: 10px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%;">
+                            🚚 Calcular Costo de Envío
+                        </button>
+
+                        <!-- Resultado del Delivery -->
+                        <div id="delivery-result"
+                            style="display: none; margin-top: 15px; padding: 15px; border-radius: 8px;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notas del Pedido (opcional)</label>
+                        <textarea class="form-input" id="order-notes" rows="3"
+                            placeholder="Ej: Sin cebolla, extra picante, etc."></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="checkout-section" style="margin-top: 30px;">
+                <h2 class="section-title">Método de Pago</h2>
+
+                <div class="payment-methods">
+                    <div class="payment-method selected" data-method="webpay">
+                        <div class="payment-icon"
+                            style="background: linear-gradient(135deg, #0033A0 0%, #005EB8 100%);">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                                <path
+                                    d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
+                            </svg>
+                        </div>
+                        <div class="payment-info">
+                            <h3>Webpay Plus</h3>
+                            <p>Tarjetas de crédito y débito chilenas</p>
+                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Visa</span>
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Mastercard</span>
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Redcompra</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-method" data-method="mercadopago">
+                        <div class="payment-icon"
+                            style="background: linear-gradient(135deg, #009EE3 0%, #00B1EA 100%);">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
+                            </svg>
+                        </div>
+                        <div class="payment-info">
+                            <h3>Mercado Pago</h3>
+                            <p>Tarjetas, efectivo, transferencia y cuotas</p>
+                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Hasta
+                                    12 cuotas</span>
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Efectivo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payment-method" data-method="efectivo">
+                        <div class="payment-icon"
+                            style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">
+                            💵
+                        </div>
+                        <div class="payment-info">
+                            <h3>Efectivo</h3>
+                            <p>Pago contra entrega</p>
+                            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                                <span
+                                    style="background: #f7fafc; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #4a5568;">Sin
+                                    recargo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Términos y Condiciones -->
+                <div style="margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 12px;">
+                    <label style="display: flex; align-items: start; gap: 12px; cursor: pointer;">
+                        <input type="checkbox" id="accept-terms"
+                            style="margin-top: 4px; width: 18px; height: 18px; cursor: pointer;" required>
+                        <span style="font-size: 14px; color: #4a5568; line-height: 1.6;">
+                            Acepto los <a href="/terminos.html" target="_blank"
+                                style="color: #667eea; text-decoration: none; font-weight: 600;">Términos y
+                                Condiciones</a> y la <a href="/privacidad.html" target="_blank"
+                                style="color: #667eea; text-decoration: none; font-weight: 600;">Política de
+                                Privacidad</a> de LoMas Rico.
+                        </span>
+                    </label>
+                </div>
+
+                <div class="security-badge">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z" />
+                    </svg>
+                    Pago 100% seguro y encriptado
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="order-summary">
+            <div class="checkout-section">
+                <h2 class="section-title">Resumen del Pedido</h2>
+
+                <div class="cart-items" id="cart-items">
+                    <!-- Items will be loaded here -->
+                </div>
+
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Envío</span>
+                    <span id="delivery-fee">Gratis</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total</span>
+                    <span id="total">$0</span>
+                </div>
+
+                <button class="btn-pay" id="btn-pay">
+                    💳 Pagar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get cart from localStorage
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let selectedPaymentMethod = 'webpay';
+        let currentUser = null;
+
+        // Check if user is authenticated
+        fetch('/api/auth/user')
+            .then(res => res.json())
+            .then(data => {
+                if (data.authenticated) {
+                    currentUser = data.user;
+                    // Pre-fill form with user data
+                    document.getElementById('client-name').value = currentUser.name || '';
+                    document.getElementById('client-email').value = currentUser.email || '';
+                }
+            });
+
+        // Load cart items
+        function loadCart() {
+            const cartItemsEl = document.getElementById('cart-items');
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<p style="text-align:center; color:#718096; padding:40px 0;">Tu carrito está vacío</p>';
+                document.getElementById('btn-pay').disabled = true;
+                return;
+            }
+
+            let html = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                html += `
+          <div class="cart-item">
+            <img src="${item.img || 'Fotos_Restaurante/Logo Restaurante.png'}" class="cart-item-img" alt="${item.name}">
+            <div class="cart-item-info">
+              <div class="cart-item-name">${item.name}</div>
+              <div class="cart-item-qty">Cantidad: ${item.quantity}</div>
+            </div>
+            <div class="cart-item-price">$${itemTotal.toLocaleString('es-CL')}</div>
+          </div>
+        `;
+            });
+
+            cartItemsEl.innerHTML = html;
+            subtotalEl.textContent = `$${subtotal.toLocaleString('es-CL')}`;
+            totalEl.textContent = `$${subtotal.toLocaleString('es-CL')}`;
+        }
+
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function () {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPaymentMethod = this.dataset.method;
+            });
+        });
+
+        // Process payment
+        document.getElementById('btn-pay').addEventListener('click', async function () {
+            const form = document.getElementById('checkout-form');
+            const termsCheckbox = document.getElementById('accept-terms');
+
+            // Validate terms and conditions
+            if (!termsCheckbox.checked) {
+                alert('Debes aceptar los Términos y Condiciones para continuar');
+                termsCheckbox.focus();
+                return;
+            }
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const clientName = document.getElementById('client-name').value;
+            const clientPhone = document.getElementById('client-phone').value;
+            const clientEmail = document.getElementById('client-email').value;
+            const clientAddress = document.getElementById('client-address').value;
+            const notes = document.getElementById('order-notes').value;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            const orderData = {
+                client_name: clientName,
+                client_phone: clientPhone,
+                client_email: clientEmail,
+                client_address: clientAddress,
+                items: cart,
+                subtotal: subtotal,
+                total: subtotal,
+                payment_method: selectedPaymentMethod,
+                payment_status: selectedPaymentMethod === 'efectivo' ? 'pendiente' : 'pendiente',
+                notes: notes,
+                source: 'web'
+            };
+
+            try {
+                this.disabled = true;
+                this.textContent = 'Procesando...';
+
+                // Create order
+                const orderRes = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const order = await orderRes.json();
+
+                if (!order.id) {
+                    throw new Error('Error al crear la orden');
+                }
+
+                // Process payment based on method
+                if (selectedPaymentMethod === 'webpay') {
+                    // Initiate Webpay payment
+                    const paymentRes = await fetch('/api/payment/webpay/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: order.id,
+                            amount: subtotal
+                        })
+                    });
+
+                    const paymentData = await paymentRes.json();
+
+                    if (paymentData.success) {
+                        // Redirect to Webpay
+                        window.location.href = `${paymentData.url}?token_ws=${paymentData.token}`;
+                    } else {
+                        throw new Error('Error al iniciar pago con Webpay');
+                    }
+
+                } else if (selectedPaymentMethod === 'mercadopago') {
+                    // Initiate Mercado Pago payment
+                    const paymentRes = await fetch('/api/payment/mercadopago/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: order.id
+                        })
+                    });
+
+                    const paymentData = await paymentRes.json();
+
+                    if (paymentData.success) {
+                        // Redirect to Mercado Pago
+                        window.location.href = paymentData.initPoint;
+                    } else {
+                        throw new Error('Error al iniciar pago con Mercado Pago');
+                    }
+
+                } else if (selectedPaymentMethod === 'efectivo') {
+                    // Cash payment - just redirect to success
+                    localStorage.removeItem('cart');
+                    window.location.href = `/payment/success?orderId=${order.id}&provider=efectivo&amount=${subtotal}`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
+                this.disabled = false;
+                this.textContent = 'Proceder al Pago';
+            }
+        });
+
+        // Load cart on page load
+        loadCart();
+    </script>
+
+    <!-- Validaciones y Delivery -->
+    <script src="checkout-validation.js"></script>
+    <script>
+        // ===============================================
+        // DELIVERY CALCULATION
+        // ===============================================
+        let deliveryData = null;
+
+        document.getElementById('btn-calculate-delivery').addEventListener('click', async function () {
+            const address = document.getElementById('client-address').value;
+
+            // Validar dirección primero
+            const addressValidation = validateAddress(address);
+            if (!addressValidation.valid) {
+                showFieldError('client-address', addressValidation.message);
+                return;
+            }
+
+            // Mostrar loading
+            this.disabled = true;
+            this.textContent = '⏳ Calculando...';
+
+            const resultDiv = document.getElementById('delivery-result');
+            resultDiv.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/delivery/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ address })
+                });
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    // Error
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = '#fff5f5';
+                    resultDiv.style.border = '2px solid #fc8181';
+                    resultDiv.innerHTML = `
+                        <div style="color: #c53030; font-weight: 600; margin-bottom: 8px;">
+                            ❌ ${result.message}
+                        </div>
+                        ${result.error === 'OUTSIDE_COVERAGE' ? `
+                            <div style="color: #718096; font-size: 13px;">
+                                Radio máximo: ${result.maxRadius} km<br>
+                                Tu distancia: ${result.distance?.toFixed(1)} km
+                            </div>
+                        ` : ''}
+                    `;
+                    deliveryData = null;
+                } else {
+                    // Éxito
+                    deliveryData = result;
+
+                    resultDiv.style.display = 'block';
+                    resultDiv.style.background = '#f0fff4';
+                    resultDiv.style.border = '2px solid #48bb78';
+                    resultDiv.innerHTML = `
+                        <div style="color: #2f855a; font-weight: 600; margin-bottom: 8px;">
+                            ✅ Delivery Disponible
+                        </div>
+                        <div style="color: #2d3748; font-size: 14px; line-height: 1.6;">
+                            <strong>Costo:</strong> $${result.cost.toLocaleString('es-CL')}<br>
+                            <strong>Distancia:</strong> ${result.distance.toFixed(1)} km<br>
+                            <strong>Tiempo estimado:</strong> ${result.estimatedTime} min<br>
+                            <strong>Proveedor:</strong> ${result.provider === 'own' ? 'Repartidor Propio' : 'PedidosYa'}
+                        </div>
+                    `;
+
+                    // Actualizar resumen
+                    document.getElementById('delivery-fee').textContent = `$${result.cost.toLocaleString('es-CL')}`;
+                    updateTotal();
+                }
+
+            } catch (error) {
+                console.error('Error calculando delivery:', error);
+                resultDiv.style.display = 'block';
+                resultDiv.style.background = '#fff5f5';
+                resultDiv.style.border = '2px solid #fc8181';
+                resultDiv.innerHTML = `
+                    <div style="color: #c53030; font-weight: 600;">
+                        ❌ Error al calcular delivery
+                    </div>
+                    <div style="color: #718096; font-size: 13px; margin-top: 4px;">
+                        Por favor, intenta nuevamente
+                    </div>
+                `;
+                deliveryData = null;
+            } finally {
+                this.disabled = false;
+                this.textContent = '🚚 Calcular Costo de Envío';
+            }
+        });
+
+        // Actualizar total con delivery
+        function updateTotal() {
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+            const deliveryFeeEl = document.getElementById('delivery-fee');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryCost = deliveryData ? deliveryData.cost : 0;
+            const total = subtotal + deliveryCost;
+
+            subtotalEl.textContent = `$${subtotal.toLocaleString('es-CL')}`;
+            totalEl.textContent = `$${total.toLocaleString('es-CL')}`;
+        }
+
+        // Modificar el botón de pago para usar validaciones
+        const originalPayButton = document.getElementById('btn-pay');
+        originalPayButton.addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            // Validar formulario
+            if (!validateCheckoutForm()) {
+                return;
+            }
+
+            // Advertir si no calculó delivery
+            if (!deliveryData) {
+                const confirmProceed = confirm('No has calculado el costo de envío. ¿Deseas continuar sin delivery?');
+                if (!confirmProceed) {
+                    return;
+                }
+            }
+
+            // Continuar con el proceso de pago original...
+            proceedToPayment();
+        });
+
+        async function proceedToPayment() {
+            const form = document.getElementById('checkout-form');
+            const clientName = document.getElementById('client-name').value;
+            const clientPhone = formatChileanPhone(document.getElementById('client-phone').value);
+            const clientEmail = document.getElementById('client-email').value;
+            const clientAddress = document.getElementById('client-address').value;
+            const notes = document.getElementById('order-notes').value;
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryCost = deliveryData ? deliveryData.cost : 0;
+            const total = subtotal + deliveryCost;
+
+            const orderData = {
+                client_name: clientName,
+                client_phone: clientPhone,
+                client_email: clientEmail,
+                client_address: clientAddress,
+                items: cart,
+                subtotal: subtotal,
+                delivery_cost: deliveryCost,
+                total: total,
+                payment_method: selectedPaymentMethod,
+                payment_status: selectedPaymentMethod === 'efectivo' ? 'pendiente' : 'pendiente',
+                notes: notes,
+                source: 'web'
+            };
+
+            try {
+                const btn = document.getElementById('btn-pay');
+                btn.disabled = true;
+                btn.textContent = 'Procesando...';
+
+                // Create order
+                const orderRes = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const order = await orderRes.json();
+
+                if (!order.id) {
+                    throw new Error('Error al crear la orden');
+                }
+
+                // Si hay delivery, confirmar envío
+                if (deliveryData && deliveryData.estimateId) {
+                    await fetch('/api/delivery/confirm', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: order.id,
+                            estimateId: deliveryData.estimateId
+                        })
+                    });
+                }
+
+                // Process payment based on method
+                if (selectedPaymentMethod === 'webpay') {
+                    const paymentRes = await fetch('/api/payment/webpay/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: order.id,
+                            amount: total
+                        })
+                    });
+
+                    const paymentData = await paymentRes.json();
+
+                    if (paymentData.success) {
+                        window.location.href = `${paymentData.url}?token_ws=${paymentData.token}`;
+                    } else {
+                        throw new Error('Error al iniciar pago con Webpay');
+                    }
+
+                } else if (selectedPaymentMethod === 'mercadopago') {
+                    const paymentRes = await fetch('/api/payment/mercadopago/create', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderId: order.id
+                        })
+                    });
+
+                    const paymentData = await paymentRes.json();
+
+                    if (paymentData.success) {
+                        window.location.href = paymentData.initPoint;
+                    } else {
+                        throw new Error('Error al iniciar pago con Mercado Pago');
+                    }
+
+                } else if (selectedPaymentMethod === 'efectivo') {
+                    localStorage.removeItem('cart');
+                    window.location.href = `/payment/success?orderId=${order.id}&provider=efectivo&amount=${total}`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
+                document.getElementById('btn-pay').disabled = false;
+                document.getElementById('btn-pay').textContent = '💳 Pagar';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Mesón - LoMas Rico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
+
+    <style>
+        :root {
+            --orange: #E8943D;
+            --orange-dark: #D4802E;
+            --brown: #4A3728;
+            --cream: #FDF8F3;
+            --white: #FFFFFF;
+            --gray: #f5f5f5;
+            --text-dark: #333;
+            --text-light: #666;
+            --green: #4CAF50;
+            --red: #F44336;
+            --blue: #2196F3;
+            --yellow: #FFC107;
+            --font-display: 'Bebas Neue', Impact, sans-serif;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: #f0f2f5;
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--brown);
+            margin-bottom: 20px;
+        }
+
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .order-header {
+            background: #fff3e0;
+            /* Different color for distinction */
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-number {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--brown);
+        }
+
+        .order-time {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .order-body {
+            padding: 15px;
+            flex: 1;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .qty {
+            background: var(--green);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .client-info {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .order-actions {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .btn-deliver {
+            background: var(--brown);
+            color: white;
+        }
+
+        .btn-deliver:hover {
+            opacity: 0.9;
+        }
+
+        .new-order-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--green);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            transition: 0.4s;
+            z-index: 1000;
+        }
+
+        .new-order-alert.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #empty-state {
+            text-align: center;
+            margin-top: 50px;
+            color: #999;
+            display: none;
+        }
+
+        #empty-state div {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .connection-status {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #ccc;
+            border-radius: 50%;
+        }
+
+        .dot.connected {
+            background: var(--green);
+        }
+
+        .dot.disconnected {
+            background: var(--red);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="connection-status">
+        <div class="dot" id="status-dot"></div>
+        <span id="status-text">Desconectado</span>
+    </div>
+
+    <h1>📦 Monitor de Mesón</h1>
+
+    <div id="new-order-alert" class="new-order-alert">✨ ¡Pedido Listo!</div>
+
+    <div id="orders-grid" class="orders-grid">
+        <!-- Orders injected here -->
+    </div>
+
+    <div id="empty-state">
+        <div>📦</div>
+        <h3>Todo entregado</h3>
+        <p>No hay pedidos esperando entrega</p>
+    </div>
+
+    <audio id="notification-sound"
+        src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2Onp2LbldXanqJlZeMd2JZYm+AjZaWjH9uY2FqeIaSk4x+bWNiaXeEkJGMgHFnZGl1goyPi4J0aWZpcH2IjYuEeG5qbHJ9h4uJhHpwbW5ze4WIh4R7c29wc3qDhoaCfHVycnR6gYSEgn14c3N0eX+Cg4F9eHV0dXh9gIGAfXl2dXZ4fH+AgH15d3Z2eHt+f398eXd2dnh7fn9/fHl3dnd4e35/f3x5d3Z3eHt+f398eXd2d3h7fn9/fHl3dnd4e31+fnx5d3d3eHt9fn57eXd3d3h7fX5+e3l3d3d4e31+fnx5d3d3eHt9fn58eXd3d3h7fX5+fHl3d3d4e31+fnx5d3d3eHt9fn58"></audio>
+
+    <script>
+        // ===============================================
+        // CONSTANTE CENTRALIZADA DE ESTADOS
+        // ===============================================
+        const ORDER_STATES = {
+            NUEVO: 'nuevo',
+            PREPARANDO: 'preparando',
+            LISTO: 'listo',
+            ENTREGADO: 'entregado',
+            CANCELADO: 'cancelado'
+        };
+
+        const API_URL = window.location.origin;
+        const WS_URL = API_URL.replace('http', 'ws');
+        let ws;
+
+        function init() {
+            loadOrders();
+            connectWS();
+            setInterval(loadOrders, 5000); // Polling every 5s
+        }
+
+        async function loadOrders() {
+            try {
+                const res = await fetch(`${API_URL}/api/orders`);
+                const allOrders = await res.json();
+
+                // Filter for Meson: LISTO
+                const mesonOrders = allOrders.filter(o => o.order_status === ORDER_STATES.LISTO);
+
+                mesonOrders.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                renderOrders(mesonOrders);
+            } catch (e) { console.error('Error loading orders:', e); }
+        }
+
+        function renderOrders(orders) {
+            const grid = document.getElementById('orders-grid');
+            const empty = document.getElementById('empty-state');
+
+            if (orders.length === 0) {
+                grid.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+
+            empty.style.display = 'none';
+            grid.innerHTML = orders.map(o => createOrderCard(o)).join('');
+        }
+
+        function createOrderCard(order) {
+            const date = new Date(order.timestamp);
+            const time = date.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+            const items = typeof order.items === 'string' ? JSON.parse(order.items) : order.items;
+
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-number">#${order.order_number}</div>
+                            <div class="order-time">${time}</div>
+                        </div>
+                        <span style="font-weight:bold; color:var(--green)">✅ LISTO</span>
+                    </div>
+                    <div class="order-body">
+                         <div class="client-info">
+                            <strong>👤 ${order.client_name}</strong><br>
+                            📞 ${order.client_phone || 'Sin teléfono'}<br>
+                            📍 ${order.client_address || 'En Local'}
+                        </div>
+
+                        ${items.map(i => `
+                            <div class="order-item">
+                                <span><span class="qty">${i.quantity}</span> ${i.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="order-actions">
+                         <button class="btn btn-deliver" onclick="updateStatus('${order.id}', ORDER_STATES.ENTREGADO)">🚀 Entregar al Cliente</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function updateStatus(id, status) {
+            await fetch(`${API_URL}/api/orders/${id}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            loadOrders();
+        }
+
+        function connectWS() {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+
+            ws = new WebSocket(WS_URL);
+
+            ws.onopen = () => {
+                dot.classList.add('connected');
+                dot.classList.remove('disconnected');
+                text.textContent = 'Conectado';
+            };
+
+            ws.onmessage = (e) => {
+                const data = JSON.parse(e.data);
+                // If an order becomes READY, notify meson
+                // We just reload on everything for simplicity and consistency
+                if (data.type === 'ORDER_UPDATED' && data.order.order_status === ORDER_STATES.LISTO) {
+                    showNotification();
+                }
+                loadOrders();
+            };
+
+            ws.onclose = () => {
+                dot.classList.remove('connected');
+                dot.classList.add('disconnected');
+                text.textContent = 'Desconectado - Reintentando...';
+                setTimeout(connectWS, 3000);
+            };
+        }
+
+        function showNotification() {
+            const alert = document.getElementById('new-order-alert');
+            const sound = document.getElementById('notification-sound');
+            alert.classList.add('show');
+            sound.play().catch(e => console.log('Audio blocked'));
+            setTimeout(() => alert.classList.remove('show'), 5000);
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

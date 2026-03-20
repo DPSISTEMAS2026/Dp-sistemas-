@@ -1,0 +1,15 @@
+node_modules
+.DS_Store
+*.log
+.env
+.idea
+.vscode
+tmp
+
+# Temporary search and modification scripts
+find_logos.*
+mod_logos.*
+output.*
+output2.txt
+get_dimensions.*
+find_images.*
