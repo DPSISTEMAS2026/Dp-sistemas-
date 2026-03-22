@@ -1,928 +1,495 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+
+<html class="scroll-smooth" lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DP Sistemas y Automatizaciones | Tecnología a Medida</title>
-    <meta name="description"
-        content="Desarrollo de software a medida, automatización de procesos (n8n), chatbots IA y soluciones para restaurantes, veterinarias y empresas.">
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & Poppins -->
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DP Sistemas y Automatizaciones | Eficiencia Tecnológica</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap"
-        rel="stylesheet">
-    <!-- Estilos Adicionales (Modales y Tour) -->
-    <link rel="stylesheet" href="styles/tour-popups.css">
-    <link rel="stylesheet" href="styles/panel-modal.css">
-
-    <script>
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
+            darkMode: "class",
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Poppins', 'sans-serif'],
-                    },
                     colors: {
-                        dp: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            500: '#0ea5e9', // Sky blue para tecnología limpia
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            900: '#0c4a6e', // Azul corporativo serio
-                        },
-                        restaurante: '#f97316', // Naranja
-                        vet: '#10b981', // Verde
-                        salud: '#06b6d4', // Cyan
-                        finanzas: '#6366f1', // Indigo
-                    }
-                }
-            }
+                        "surface": "#f9f9fc",
+                        "on-primary-fixed-variant": "#004882",
+                        "outline-variant": "#c2c6d1",
+                        "inverse-surface": "#2f3133",
+                        "surface-bright": "#f9f9fc",
+                        "inverse-on-surface": "#f0f0f3",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006970",
+                        "surface-container-highest": "#e2e2e5",
+                        "tertiary-fixed": "#98f994",
+                        "secondary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#002204",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#f9f9fc",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-surface": "#1a1c1e",
+                        "primary-fixed": "#d3e4ff",
+                        "on-secondary-container": "#006e75",
+                        "inverse-primary": "#a3c9ff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dadadc",
+                        "primary-container": "#004b87",
+                        "surface-tint": "#27609d",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#005614",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "on-background": "#1a1c1e",
+                        "outline": "#727781",
+                        "tertiary": "#003c0b",
+                        "on-primary-fixed": "#001c38",
+                        "secondary-fixed-dim": "#5dd8e2",
+                        "surface-container-low": "#f3f3f6",
+                        "tertiary-fixed-dim": "#7ddc7a",
+                        "on-tertiary-fixed-variant": "#005313",
+                        "surface-container-high": "#e8e8ea",
+                        "on-surface-variant": "#424750",
+                        "primary": "#003461",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#eeeef0",
+                        "on-secondary-fixed": "#002022",
+                        "surface-variant": "#e2e2e5",
+                        "on-primary-container": "#8abcff",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-tertiary-container": "#6fcd6e",
+                        "secondary-container": "#7af1fc"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
         }
     </script>
     <style>
-        .gradient-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            background-image: linear-gradient(to right, #0ea5e9, #6366f1);
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
-        .hero-bg {
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 32px 32px;
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #003461 0%, #004b87 100%);
         }
     </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 antialiased font-sans">
-
-    <!-- Navegación -->
-    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <!-- Logo -->
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-12 h-12 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-slate-200 shadow-sm p-0.5">
-                        <img src="logo-dp.svg" alt="DP Sistemas" class="w-full h-full object-cover scale-125">
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="font-display font-bold text-lg text-slate-900 leading-tight">DP Sistemas</span>
-                        <span class="text-xs text-slate-500 font-medium">y Automatizaciones</span>
-                    </div>
-                </div>
-
-                <!-- Menú Desktop -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#soluciones"
-                        class="text-sm font-medium text-slate-600 hover:text-dp-600 transition">Soluciones</a>
-                    <a href="#automatizacion"
-                        class="text-sm font-medium text-slate-600 hover:text-dp-600 transition">Automatización & n8n</a>
-                    <a href="#chatbot" class="text-sm font-medium text-slate-600 hover:text-dp-600 transition">Chatbot
-                        IA</a>
-                    <a href="#contacto"
-                        class="px-5 py-2.5 rounded-full bg-dp-900 text-white text-sm font-medium hover:bg-dp-800 transition shadow-lg shadow-dp-900/20">
-                        Cotizar Proyecto
-                    </a>
-                </div>
+<body class="bg-surface font-body text-on-surface antialiased">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/60 backdrop-blur-md shadow-sm">
+        <div class="flex justify-between items-center px-8 py-3 max-w-7xl mx-auto">
+            <div class="flex items-center gap-2">
+                <img alt="DP Sistemas Logo" class="h-12 w-auto object-contain" src="LOGO%20DP%20(5).png" />
             </div>
+            <div class="hidden md:flex items-center space-gap-8 gap-x-8 font-headline font-bold tracking-tight text-sm">
+                <a class="text-[#003461] border-b-2 border-[#003461] pb-1" href="index.html">Inicio</a>
+                <a class="text-slate-600 hover:text-[#003461] transition-all"
+                    href="automatizacion.html">Automatización</a>
+                <a class="text-slate-600 hover:text-[#003461] transition-all" href="chatbots.html">Chatbots</a>
+                <a class="text-slate-600 hover:text-[#003461] transition-all"
+                    href="sistemas-verticales.html">Sistemas</a>
+            </div>
+            <a href="mailto:contacto@dpsistemas.cl" 
+                class="bg-[#003461] text-white px-6 py-2.5 rounded-xl font-headline font-bold text-sm hover:opacity-80 transition-all scale-95 duration-200">
+                Solicitar Diagnóstico
+            </a>
         </div>
     </nav>
-
-    <!-- Hero Section: Identidad Corporativa -->
-    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden hero-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-
-            <div
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-600 text-sm font-medium mb-8 shadow-sm">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                Desarrollo de Software & Automatización Inteligente
-            </div>
-
-            <h1 class="text-5xl md:text-7xl font-display font-bold text-slate-900 tracking-tight mb-8 leading-tight">
-                Transformamos tu Negocio con <br>
-                <span class="gradient-text">Tecnología a Medida</span>
-            </h1>
-
-            <p class="text-xl text-slate-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-                Creamos ecosistemas digitales completos. Desde <strong>chatbots inteligentes</strong> y <strong>sistemas
-                    de gestión (ERP)</strong> hasta automatizaciones financieras complejas. Tecnología de alto nivel,
-                accesible y sin costos millonarios.
-            </p>
-
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#restaurantes"
-                    class="px-8 py-4 rounded-xl bg-dp-900 text-white font-semibold text-lg shadow-xl shadow-dp-900/20 hover:scale-105 transition-transform duration-200 flex items-center gap-2">
-                    <span>🍽️</span> Ver Demo Restaurantes
-                </a>
-                <a href="#automatizacion"
-                    class="px-8 py-4 rounded-xl bg-white text-slate-700 font-semibold text-lg border border-slate-200 hover:bg-slate-50 transition-colors flex items-center gap-2">
-                    <span>⚡</span> Servicios de Automatización
-                </a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Sección de Industrias (Tabs Visuales) -->
-    <section id="soluciones" class="py-24 bg-white relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-dp-600 font-semibold tracking-wide uppercase text-sm mb-3">Industrias</h2>
-                <h3 class="text-4xl font-display font-bold text-slate-900">Soluciones Especializadas</h3>
-                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Desarrollamos sistemas adaptados a los flujos reales de
-                    cada rubro, no adaptamos tu negocio al software.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Card Restaurantes (Activa/Destacada) -->
-                <a href="#restaurantes"
-                    class="group relative p-8 bg-white rounded-2xl border-2 border-restaurante transition-all duration-300 hover:shadow-2xl hover:shadow-restaurante/10">
-                    <div
-                        class="absolute top-0 right-0 bg-restaurante text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
-                        LIVE DEMO</div>
-                    <div
-                        class="w-14 h-14 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                        🍽️</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-2">Restaurantes</h4>
-                    <p class="text-slate-500 text-sm mb-4">E-commerce, POS, KDS y Chatbot de pedidos.</p>
-                    <span class="text-restaurante font-semibold text-sm flex items-center gap-2">Explorar Solución
-                        →</span>
-                </a>
-
-                <!-- Card Veterinarias -->
-                <div
-                    class="group p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-vet transition-all duration-300 hover:shadow-xl hover:shadow-vet/10 cursor-pointer">
-                    <div
-                        class="w-14 h-14 rounded-xl bg-green-100 text-green-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                        🐾</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-2">Veterinarias</h4>
-                    <p class="text-slate-500 text-sm mb-4">Fichas clínicas, agenda médica y recordatorios de vacunas.
+    <main>
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
+                <div class="z-10">
+                    <span
+                        class="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest uppercase bg-secondary-container text-on-secondary-container rounded-full">
+                        Automatización Inteligente
+                    </span>
+                    <h1
+                        class="font-headline font-extrabold text-5xl md:text-7xl text-primary leading-[1.1] tracking-tight mb-8">
+                        Transformamos tu negocio con tecnología que <span class="text-secondary">fluye</span>.
+                    </h1>
+                    <p class="text-on-surface-variant text-lg md:text-xl leading-relaxed mb-10 max-w-lg">
+                        Sincroniza tus procesos, reduce el trabajo manual y escala tus operaciones con soluciones
+                        diseñadas para la precisión técnica.
                     </p>
-                    <span
-                        class="text-vet font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">Ver
-                        Detalles →</span>
-                </div>
-
-                <!-- Card Salud/Agenda -->
-                <div
-                    class="group p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-salud transition-all duration-300 hover:shadow-xl hover:shadow-salud/10 cursor-pointer">
-                    <div
-                        class="w-14 h-14 rounded-xl bg-cyan-100 text-cyan-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                        📅</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-2">Agendas & Salud</h4>
-                    <p class="text-slate-500 text-sm mb-4">Consultas médicas, dentales y servicios con reserva online.
-                    </p>
-                    <span
-                        class="text-salud font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">Ver
-                        Detalles →</span>
-                </div>
-
-                <!-- Card Finanzas -->
-                <div
-                    class="group p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-finanzas transition-all duration-300 hover:shadow-xl hover:shadow-finanzas/10 cursor-pointer">
-                    <div
-                        class="w-14 h-14 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
-                        📊</div>
-                    <h4 class="text-xl font-bold text-slate-900 mb-2">Contabilidad</h4>
-                    <p class="text-slate-500 text-sm mb-4">Conciliaciones bancarias automatizadas y reportes
-                        financieros.</p>
-                    <span
-                        class="text-finanzas font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">Ver
-                        Detalles →</span>
-                </div>
-
-                <!-- Card Alojamientos (NUEVO) -->
-                <div onclick="window.location.hash='alojamiento'"
-                    class="group p-8 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-white hover:border-pink-500 transition-all duration-300 hover:shadow-xl hover:shadow-pink-500/10 cursor-pointer lg:col-span-4 lg:w-1/2 lg:mx-auto">
-                    <div class="flex items-center gap-6">
-                        <div
-                            class="w-14 h-14 rounded-xl bg-pink-100 text-pink-600 flex items-center justify-center text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                            🏨</div>
-                        <div class="text-left">
-                            <h4 class="text-xl font-bold text-slate-900 mb-1">Alojamientos & Arriendos</h4>
-                            <p class="text-slate-500 text-sm">Webs de reserva directa sin comisiones (No más
-                                Booking/Airbnb).</p>
-                        </div>
-                        <span
-                            class="ml-auto text-pink-600 font-semibold text-xl group-hover:translate-x-2 transition-transform">→</span>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="mailto:contacto@dpsistemas.cl" 
+                            class="bg-primary hover:bg-primary-container text-on-primary px-8 py-4 rounded-xl font-headline font-bold shadow-lg transition-all">
+                            Solicitar Diagnóstico Gratuito
+                        </a>
                     </div>
                 </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- DETALLE: Solución Restaurantes (Lo que ya construimos) -->
-    <section id="restaurantes" class="py-24 bg-slate-900 text-white overflow-hidden relative">
-        <!-- Fondo decorativo -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20">
-            <div class="absolute -top-40 -right-40 w-96 h-96 bg-orange-500 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-0 left-0 w-80 h-80 bg-blue-500 rounded-full blur-3xl"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                <div>
+                <div class="relative group">
                     <div
-                        class="inline-block px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-bold tracking-wider mb-4 border border-orange-500/30">
-                        CASO DE ÉXITO</div>
-                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-4">Sistema Gastronómico</h2>
-                    <p class="text-slate-300 text-lg max-w-2xl">
-                        Un sistema integral que conecta cocina, salón, delivery y administración en tiempo real.
-                        <strong>Disponible para demo interactivo.</strong>
-                    </p>
-                </div>
-            </div>
-
-            <!-- Grid de Módulos (Showcase) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <!-- Chatbot Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openChatbotDemo()">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="text-4xl">🤖</div>
-                        <span class="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded font-bold">IA</span>
+                        class="absolute -inset-4 bg-tertiary-fixed/20 blur-3xl rounded-full group-hover:bg-tertiary-fixed/30 transition-all duration-500">
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Atención Automatizada</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Chatbot que toma pedidos, reserva mesas y
-                        responde dudas frecuentes 24/7 vía WhatsApp.</p>
+                    <div class="relative bg-transparent rounded-3xl overflow-hidden aspect-square flex items-center justify-center p-6">
+                        <img src="LOGO%20DP%20(6).png" alt="Logo DP Sistemas Principal" class="w-full h-full object-contain drop-shadow-md">
+                        <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                    </div>
                 </div>
-
-                <!-- E-commerce Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openFeatureDemo('ecommerce')">
-                    <div class="text-4xl mb-4">🛒</div>
-                    <h3 class="text-xl font-bold mb-2">E-commerce Propio</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Sitio web de ventas sin comisiones, diseño
-                        personalizado y control total de marca.</p>
-                    <div class="text-orange-400 text-sm font-semibold mt-auto">Ver Landing Page →</div>
-                </div>
-
-                <!-- POS Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openFeatureDemo('pos')">
-                    <div class="text-4xl mb-4">🖥️</div>
-                    <h3 class="text-xl font-bold mb-2">Punto de Venta (POS)</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Gestión de mesas, cuentas separadas y
-                        propinas. Interfaz rápida para garzones.</p>
-                    <div class="text-orange-400 text-sm font-semibold mt-auto">Ver Panel POS →</div>
-                </div>
-
-                <!-- Kitchen Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openFeatureDemo('kitchen')">
-                    <div class="text-4xl mb-4">👨‍🍳</div>
-                    <h3 class="text-xl font-bold mb-2">Pantalla de Cocina (KDS)</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Digitalización de comandas. Tiempos de
-                        preparación y organización por partidas.</p>
-                    <div class="text-orange-400 text-sm font-semibold mt-auto">Ver Panel Cocina →</div>
-                </div>
-
-                <!-- Admin Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openFeatureDemo('admin')">
-                    <div class="text-4xl mb-4">⚙️</div>
-                    <h3 class="text-xl font-bold mb-2">Panel Administrativo</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Control centralizado. Productos, inventarios,
-                        usuarios y configuraciones.</p>
-                    <div class="text-orange-400 text-sm font-semibold mt-auto">Ver Panel Admin →</div>
-                </div>
-
-                <!-- Owner Module -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition cursor-pointer"
-                    onclick="openFeatureDemo('owner')">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h3 class="text-xl font-bold mb-2">Dueño & Finanzas</h3>
-                    <p class="text-slate-400 text-sm leading-relaxed mb-4">Dashboard ejecutivo. Reportes de venta,
-                        costos y rentabilidad en tiempo real.</p>
-                    <div class="text-orange-400 text-sm font-semibold mt-auto">Ver Dashboard →</div>
-                </div>
-
             </div>
-        </div>
-    </section>
-
-    <!-- DETALLE: Solución VETERINARIA (Nueva Sección Expandida) -->
-    <section id="veterinaria"
-        class="py-24 bg-slate-50 text-slate-900 border-b border-slate-200 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-
-            <div class="flex flex-col md:flex-row items-center justify-between mb-16 gap-12">
-                <div class="md:w-1/2">
+        </section>
+        <!-- Section 1: Tres Pilares -->
+        <section class="py-24 bg-surface-container-low" id="services">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-headline font-bold text-4xl text-primary tracking-tight mb-4">Tres Pilares de la
+                        Eficiencia</h2>
+                    <div class="h-1 w-24 bg-tertiary-fixed-dim mx-auto rounded-full"></div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
                     <div
-                        class="inline-block px-3 py-1 bg-teal-100 text-teal-700 rounded-full text-xs font-bold tracking-wider mb-4 border border-teal-200 uppercase">
-                        Salva Vidas con IA</div>
-                    <h2 class="text-3xl md:text-5xl font-display font-bold mb-6 text-slate-900">Triage Veterinario
-                        Inteligente</h2>
-                    <p class="text-slate-600 text-lg leading-relaxed mb-6">
-                        Nuestro chatbot no solo agenda horas. <strong>Analiza los síntomas</strong> descritos por el
-                        dueño en tiempo real para detectar emergencias vitales antes de que lleguen a la clínica.
-                    </p>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Detección de Gravedad:</strong> La IA evalúa síntomas
-                                críticos (ej: convulsiones, asfixia) y activa protocolos de emergencia.</span>
+                        class="bg-surface-container-lowest p-8 rounded-xl shadow-sm hover:translate-y-[-4px] transition-transform duration-300">
+                        <span class="material-symbols-outlined text-4xl text-secondary mb-6"
+                            data-icon="settings_input_component">settings_input_component</span>
+                        <h3 class="font-headline font-bold text-xl mb-4">Automatización</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Conectamos tus herramientas favoritas
+                            para eliminar las tareas repetitivas de tu agenda diaria.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div
+                        class="bg-surface-container-lowest p-8 rounded-xl shadow-sm hover:translate-y-[-4px] transition-transform duration-300">
+                        <span class="material-symbols-outlined text-4xl text-secondary mb-6"
+                            data-icon="smart_toy">smart_toy</span>
+                        <h3 class="font-headline font-bold text-xl mb-4">Chatbots IA</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Atención 24/7 con agentes
+                            inteligentes que entienden y resuelven las dudas de tus clientes.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div
+                        class="bg-surface-container-lowest p-8 rounded-xl shadow-sm hover:translate-y-[-4px] transition-transform duration-300">
+                        <span class="material-symbols-outlined text-4xl text-secondary mb-6" data-icon="hub">hub</span>
+                        <h3 class="font-headline font-bold text-xl mb-4">Sistemas Verticales</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Software especializado para cada
+                            sector, optimizado para máxima rentabilidad operativa.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Section 2: Automatización de Procesos -->
+        <section class="py-24">
+            <div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2 grid grid-cols-2 gap-4">
+                    <div class="bg-surface-container-high p-6 rounded-xl flex items-center gap-4">
+                        <span class="material-symbols-outlined text-primary"
+                            data-icon="account_balance">account_balance</span>
+                        <span class="font-bold text-sm">Bancos</span>
+                    </div>
+                    <div class="bg-surface-container-high p-6 rounded-xl flex items-center gap-4">
+                        <span class="material-symbols-outlined text-primary"
+                            data-icon="contact_page">contact_page</span>
+                        <span class="font-bold text-sm">CRM</span>
+                    </div>
+                    <div class="bg-surface-container-high p-6 rounded-xl flex items-center gap-4 col-span-2">
+                        <span class="material-symbols-outlined text-primary" data-icon="mail">mail</span>
+                        <span class="font-bold text-sm">Emails Automatizados</span>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <h2 class="font-headline font-extrabold text-4xl text-primary mb-6 leading-tight">Automatización que
+                        ahorra tiempo vital</h2>
+                    <p class="text-on-surface-variant text-lg mb-8">Especialistas en conciliación bancaria y flujo de
+                        datos entre sistemas. Olvídate de los errores humanos y las horas perdidas frente a una hoja de
+                        cálculo.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="check_circle"
+                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="text-sm font-medium">Conciliación bancaria en tiempo real</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Alerta Temprana al Equipo:</strong> Tu clínica recibe
-                                una notificación "Código Rojo" con los síntomas <i>antes</i> de que el paciente
-                                llegue.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-teal-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Autogestión de Fichas:</strong> Crea automáticamente la
-                                ficha del paciente con el relato del dueño, ahorrando tiempo en la anamnesis.</span>
+                        <li class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="check_circle"
+                                style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            <span class="text-sm font-medium">Sincronización bidireccional de CRM</span>
                         </li>
                     </ul>
-                    <button onclick="openChatbotDemo()"
-                        class="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-teal-600/20">
-                        Ver Demo Triage
-                    </button>
-                </div>
-
-                <!-- Visualización del Flujo de Triage (Simulación de Chat) -->
-                <div class="md:w-1/2 w-full">
-                    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden relative">
-                        <!-- Header Celular -->
-                        <div class="bg-slate-100 px-6 py-4 border-b border-slate-200 flex items-center gap-4">
-                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
-                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
-                            <span class="text-xs font-medium text-slate-500 ml-auto">WhatsApp Business API</span>
-                        </div>
-
-                        <!-- Cuerpo del Chat -->
-                        <div class="p-6 space-y-6 bg-slate-50/50">
-                            <!-- Mensaje Cliente -->
-                            <div class="flex items-end justify-end">
-                                <div
-                                    class="bg-green-100 text-slate-800 p-4 rounded-2xl rounded-tr-none max-w-xs shadow-sm">
-                                    <p class="text-sm">Hola, mi gato está respirando muy rápido y tiene las encías
-                                        azules. ¿Tienen hora?</p>
-                                    <span class="text-[10px] text-slate-400 mt-1 block text-right">10:42 AM</span>
-                                </div>
-                            </div>
-
-                            <!-- Procesamiento Interno (Inivisible al cliente, visible en demo) -->
-                            <div class="flex justify-center">
-                                <span
-                                    class="bg-red-50 text-red-600 text-xs px-3 py-1 rounded-full border border-red-100 font-mono animate-pulse">
-                                    ⚠️ ALERTA: Cianosis / Disnea (Gravedad ALTA)
-                                </span>
-                            </div>
-
-                            <!-- Respuesta IA -->
-                            <div class="flex items-end">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-teal-600 flex-shrink-0 mr-3 flex items-center justify-center text-white text-xs">
-                                    🤖</div>
-                                <div
-                                    class="bg-white text-slate-800 p-4 rounded-2xl rounded-tl-none max-w-xs shadow-sm border border-slate-100">
-                                    <p class="text-sm font-bold text-red-600 mb-2">🚨 ¡ATENCIÓN EMERGENCIA POSIBLE!</p>
-                                    <p class="text-sm mb-2">Por los síntomas (encías azules), esto podría ser una
-                                        urgencia vital.</p>
-                                    <p class="text-sm"><strong>Dirígete INMEDIATAMENTE a la clínica.</strong> Ya
-                                        alertamos al equipo médico y están preparando la sala de urgencias para tu
-                                        llegada.</p>
-                                    <span class="text-[10px] text-slate-400 mt-1 block">10:42 AM</span>
-                                </div>
-                            </div>
-
-                            <!-- Notificación Interna al Vet (Simulación) -->
-                            <div class="mt-4 p-3 bg-slate-800 rounded-lg border-l-4 border-red-500">
-                                <div class="flex justify-between text-xs text-slate-400 mb-1">
-                                    <span>Sistema Interno Clínica</span>
-                                    <span>Hace 1 min</span>
-                                </div>
-                                <p class="text-white text-sm font-mono"><strong>>>> ALERTA DE URGENCIA <<<< /strong>
-                                            <br>Paciente: Felino<br>Síntoma: Disnea + Cianosis<br>ETA: 15 min</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- DETALLE: Solución ALOJAMIENTO (NUEVO) -->
-    <section id="alojamiento" class="py-24 bg-white text-slate-900 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Izquierda: Visual (Comparativa de Costos) -->
-                <div
-                    class="bg-white rounded-3xl p-8 shadow-xl border border-pink-100 transform rotate-1 hover:rotate-0 transition duration-500">
-                    <h3 class="text-center font-bold text-slate-500 text-sm uppercase tracking-wider mb-8">Ingresos por
-                        Reserva ($100.000)</h3>
-
-                    <!-- Barra Booking -->
-                    <div class="mb-6 relative">
-                        <div class="flex justify-between text-sm font-bold mb-1">
-                            <span class="text-slate-400">Plataformas (Booking/Airbnb)</span>
-                            <span class="text-red-500">-18% Comisión</span>
-                        </div>
-                        <div class="h-10 w-full bg-slate-100 rounded-lg overflow-hidden flex">
-                            <div class="h-full bg-slate-400 w-[82%] relative group">
-                                <span
-                                    class="absolute inset-0 flex items-center justify-center text-white text-xs font-bold">$82.000</span>
-                            </div>
-                            <div
-                                class="h-full bg-red-400 w-[18%] flex items-center justify-center text-white text-xs font-bold stripes">
-                                $18k</div>
-                        </div>
-                    </div>
-
-                    <!-- Barra Nuestra -->
-                    <div class="relative">
-                        <div class="flex justify-between text-sm font-bold mb-1">
-                            <span class="text-pink-600">Reserva Directa Web Propia</span>
-                            <span class="text-green-500">100% Tuyo</span>
-                        </div>
-                        <div
-                            class="h-12 w-full bg-pink-50 rounded-lg overflow-hidden flex shadow-inner border border-pink-200">
-                            <div
-                                class="h-full bg-gradient-to-r from-pink-500 to-purple-500 w-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                $100.000
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 pt-6 border-t border-slate-100 flex gap-4 justify-center">
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-slate-900">+20%</div>
-                            <div class="text-xs text-slate-500 uppercase">Rentabilidad Extra</div>
-                        </div>
-                        <div class="w-px bg-slate-200"></div>
-                        <div class="text-center">
-                            <div class="text-3xl font-bold text-slate-900">0%</div>
-                            <div class="text-xs text-slate-500 uppercase">Comisiones por Venta</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Derecha: Texto -->
+        </section>
+        <!-- Section 3: Chatbots IA 24/7 -->
+        <section class="py-24 bg-primary text-on-primary overflow-hidden">
+            <div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
                 <div>
+                    <h2 class="font-headline font-bold text-4xl mb-6">Chatbots IA 24/7: Tu equipo nunca duerme</h2>
+                    <p class="text-on-primary-container text-lg mb-10 leading-relaxed">Implementamos asistentes
+                        inteligentes en WhatsApp para Salud, Gastronomía y Veterinarias. Automatiza turnos, pedidos y
+                        consultas frecuentes sin perder el toque humano.</p>
+                    <div class="grid grid-cols-3 gap-4 mb-8">
+                        <!-- Salud -->
+                        <a href="mailto:contacto@dpsistemas.cl"  onclick="cambiarChat('salud')" id="tab-salud" class="chat-tab text-center p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-secondary-fixed-dim block mb-1" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+                            <p class="text-xs font-bold uppercase tracking-widest text-white">Salud</p>
+                        </button>
+                        <!-- Gastro -->
+                        <button onclick="cambiarChat('gastro')" id="tab-gastro" class="chat-tab text-center p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-secondary-fixed-dim block mb-1" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+                            <p class="text-xs font-bold uppercase tracking-widest text-white">Gastro</p>
+                        </button>
+                        <!-- Vets -->
+                        <button onclick="cambiarChat('vets')" id="tab-vets" class="chat-tab text-center p-4 bg-white/20 rounded-lg border border-white/30 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-secondary-fixed-dim block mb-1" style="font-variation-settings: 'FILL' 1;">pets</span>
+                            <p class="text-xs font-bold uppercase tracking-widest text-white">Vets</p>
+                        </button>
+                    </div>
+                </div>
+                <!-- Chat Demo UI -->
+                <div class="relative max-w-sm mx-auto w-full">
+                    <div class="bg-white rounded-3xl shadow-2xl p-4 text-on-surface">
+                        <div class="flex items-center gap-3 border-b border-surface-container-high pb-3 mb-4">
+                            <div class="w-10 h-10 bg-[#006970] rounded-full flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-xl">support_agent</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-slate-800">Asistente Virtual DP</p>
+                                <p class="text-[10px] text-emerald-600 font-bold flex items-center gap-1">● En línea</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Chat Views Container -->
+                        <div id="chat-views" class="min-h-[160px] flex flex-col justify-end">
+                            <!-- Vets (Default) -->
+                            <div id="view-vets" class="chat-view flex flex-col gap-3 transition-all duration-300">
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    ¡Hola! 👋 ¿En qué puedo ayudarte hoy?
+                                </div>
+                                <div class="bg-[#003461] text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[80%] ml-auto font-medium shadow-sm">
+                                    Quisiera agendar un turno para mi mascota.
+                                </div>
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    Perfecto 🐶 Tengo disponible mañana a las 10:00 o 15:30. ¿Te sirve alguna?
+                                </div>
+                            </div>
+
+                            <!-- Gastro (Hidden initially) -->
+                            <div id="view-gastro" class="chat-view hidden flex flex-col gap-3 transition-all duration-300">
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    ¡Hola! 👋 Bienvenido a la carta digital. ¿Qué te gustaría ordenar hoy?
+                                </div>
+                                <div class="bg-[#003461] text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[80%] ml-auto font-medium shadow-sm">
+                                    Quisiera dos Burger Clásicas para llevar 🍔
+                                </div>
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    ¡Gran elección! Selecciona tus aderezos y dinos tu dirección para el despacho automático 🚀
+                                </div>
+                            </div>
+
+                            <!-- Salud (Hidden initially) -->
+                            <div id="view-salud" class="chat-view hidden flex flex-col gap-3 transition-all duration-300">
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    ¡Hola! 🏥 ¿Para qué especialidad médica necesitas atención?
+                                </div>
+                                <div class="bg-[#003461] text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[80%] ml-auto font-medium shadow-sm">
+                                    Necesito un turno para Cardiología 🩺
+                                </div>
+                                <div class="bg-surface-container-low p-3 rounded-2xl rounded-tl-none text-xs max-w-[80%] text-slate-700 font-medium">
+                                    Genial. Evaluando disponibilidad para Dr. Gomez. ¿Prefieres Telemedicina o Presencial?
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-surface-container-high flex gap-2">
+                            <div class="flex-1 bg-surface-container-low rounded-full px-4 py-2 text-xs text-slate-400 font-medium bg-slate-50">
+                                Escribe aquí...
+                            </div>
+                            <div class="w-8 h-8 bg-[#006970] rounded-full flex items-center justify-center text-white">
+                                <span class="material-symbols-outlined text-sm">send</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function cambiarChat(categoria) {
+                        // Ocultar todos los chats
+                        document.querySelectorAll('.chat-view').forEach(view => {
+                            view.classList.add('hidden');
+                        });
+                        // Mostrar chat seleccionado
+                        const selectedView = document.getElementById('view-' + categoria);
+                        if(selectedView) selectedView.classList.remove('hidden');
+                        
+                        // Actualizar estilo de los botones (pestanas)
+                        document.querySelectorAll('.chat-tab').forEach(tab => {
+                            tab.classList.remove('bg-white/20', 'border-white/30');
+                            tab.classList.add('bg-white/5', 'border-white/10');
+                        });
+                        const activeTab = document.getElementById('tab-' + categoria);
+                        if(activeTab) {
+                            activeTab.classList.remove('bg-white/5', 'border-white/10');
+                            activeTab.classList.add('bg-white/20', 'border-white/30');
+                        }
+                    }
+                </script>
+            </div>
+        </section>
+        <!-- Section 4: Sistemas por Sector -->
+        <section class="py-24 bg-surface" id="solutions">
+            <div class="max-w-7xl mx-auto px-8">
+                <div class="flex justify-between items-end mb-16">
+                    <div class="max-w-xl">
+                        <h2 class="font-headline font-bold text-4xl text-primary mb-4 tracking-tight">Sistemas por
+                            Sector</h2>
+                        <p class="text-on-surface-variant">Soluciones de gestión vertical que potencian la operatividad
+                            real de tu negocio.</p>
+                    </div>
                     <div
-                        class="inline-block px-3 py-1 bg-pink-100 text-pink-700 rounded-full text-xs font-bold tracking-wider mb-4 border border-pink-200 uppercase">
-                        Recupera el Control</div>
-                    <h2 class="text-4xl md:text-5xl font-display font-bold mb-6 text-slate-900">Alojamientos sin
-                        Comisiones Abusivas</h2>
-                    <p class="text-slate-600 text-lg leading-relaxed mb-6">
-                        Desarrollamos páginas web de alto impacto para <strong>Hoteles, Cabañas y Hostales</strong>
-                        enfocadas en la conversión directa. Conecta con tus huéspedes por WhatsApp y agenda automática,
-                        evitando a los intermediarios.
-                    </p>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Sitio Web Propio & Profesional:</strong> Muestra tus
-                                espacios con galerías de alta calidad y un diseño que vende experiencias.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Conexión Directa WhatsApp:</strong> El cliente consulta
-                                disponibilidad y la IA o tú responden al instante. Trato humano y cierre rápido.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span
-                                class="mt-1 w-5 h-5 rounded-full bg-pink-500 text-white flex items-center justify-center text-xs">✓</span>
-                            <span class="text-slate-700"><strong>Motor de Reservas (Opcional):</strong> Calendario de
-                                ocupación en tiempo real si lo necesitas, sin pagar comisiones por reserva.</span>
-                        </li>
-                    </ul>
-                    <a href="#contacto"
-                        class="inline-flex items-center justify-center bg-pink-600 hover:bg-pink-700 text-white px-8 py-3 rounded-lg font-medium transition shadow-lg shadow-pink-600/20">
-                        Cotizar Web de Alojamiento
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de Automatización & Finanzas (n8n, Scrapping) -->
-    <section id="automatizacion" class="py-24 bg-slate-50 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-dp-600 font-semibold tracking-wide uppercase text-sm mb-3">Automatización de
-                        Procesos</h2>
-                    <h3 class="text-4xl font-display font-bold text-slate-900 mb-6">Tu Empresa en Piloto Automático</h3>
-                    <p class="text-lg text-slate-600 mb-6 font-medium">
-                        No solo hacemos software, hacemos que el software trabaje por ti.
-                    </p>
-
-                    <div class="space-y-6">
-                        <div class="flex gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                                ⚡</div>
-                            <div>
-                                <h4 class="text-lg font-bold text-slate-900">Automatización con n8n</h4>
-                                <p class="text-slate-600 text-sm">Conectamos tus aplicaciones (CRM, Email, Sheets,
-                                    Bancos) para crear flujos de trabajo autónomos que ahorran cientos de horas.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                                🏦</div>
-                            <div>
-                                <h4 class="text-lg font-bold text-slate-900">Conciliaciones Bancarias</h4>
-                                <p class="text-slate-600 text-sm">Sistemas que leen tus cartolas y movimientos
-                                    bancarios, cruzando información automáticamente con tus ventas y facturas.</p>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-4">
-                            <div
-                                class="w-12 h-12 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center flex-shrink-0 text-xl font-bold">
-                                📨</div>
-                            <div>
-                                <h4 class="text-lg font-bold text-slate-900">Scrapping & Seguimiento</h4>
-                                <p class="text-slate-600 text-sm">Extracción de datos web, seguimiento de competencia o
-                                    notificaciones automáticas vía correo electrónico.</p>
-                            </div>
-                        </div>
+                        class="hidden md:block bg-tertiary-fixed text-on-tertiary-fixed px-6 py-3 rounded-full font-bold text-sm">
+                        0% comisiones en reservas
                     </div>
                 </div>
-
-                <!-- Visualización Abstracta de Automatización -->
-                <div class="relative">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Gastro -->
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-dp-500 to-indigo-500 rounded-3xl opacity-10 blur-2xl transform rotate-3">
+                        class="bg-surface-container-lowest border border-outline-variant/10 p-6 rounded-xl hover:shadow-lg transition-shadow">
+                        <span class="material-symbols-outlined text-secondary text-3xl mb-4"
+                            data-icon="restaurant">restaurant</span>
+                        <h4 class="font-bold text-lg mb-2">Gastronomía</h4>
+                        <p class="text-xs text-on-surface-variant mb-4">Gestión de mesas, comandas digitales y stock.
+                        </p>
+                        <a class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            href="sistemas-verticales.html">Saber más <span class="material-symbols-outlined text-sm"
+                                data-icon="arrow_forward">arrow_forward</span></a>
                     </div>
+                    <!-- Health -->
                     <div
-                        class="bg-slate-900 rounded-3xl p-8 shadow-2xl relative text-white space-y-4 border border-slate-700">
-                        <!-- Nodo Simulando n8n -->
-                        <div class="flex items-center justify-between border-b border-slate-700 pb-4 mb-4">
-                            <span class="text-xs font-mono text-green-400">● Workflow Active</span>
-                            <span class="text-xs text-slate-500">n8n-worker-01</span>
-                        </div>
-
-                        <div class="flex items-center gap-3 p-3 bg-slate-800 rounded-lg">
-                            <div class="w-8 h-8 bg-orange-500 rounded flex items-center justify-center text-xs">📩</div>
-                            <div class="text-xs">
-                                <div class="font-bold">Trigger: Nuevo Email</div>
-                                <div class="text-slate-400">Banco: Cartola recibida</div>
-                            </div>
-                            <div class="ml-auto text-green-400">➔</div>
-                        </div>
-
-                        <div class="flex justify-center h-4 border-l-2 border-slate-700 border-dashed mx-6"></div>
-
-                        <div class="flex items-center gap-3 p-3 bg-slate-800 rounded-lg">
-                            <div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center text-xs">🤖</div>
-                            <div class="text-xs">
-                                <div class="font-bold">Process: Scrapping PDF</div>
-                                <div class="text-slate-400">Extraer montos y fechas</div>
-                            </div>
-                            <div class="ml-auto text-green-400">➔</div>
-                        </div>
-
-                        <div class="flex justify-center h-4 border-l-2 border-slate-700 border-dashed mx-6"></div>
-
-                        <div class="flex items-center gap-3 p-3 bg-slate-800 rounded-lg">
-                            <div class="w-8 h-8 bg-green-600 rounded flex items-center justify-center text-xs">📊</div>
-                            <div class="text-xs">
-                                <div class="font-bold">Action: Actualizar Sistema</div>
-                                <div class="text-slate-400">Conciliar pagos en Contabilidad</div>
-                            </div>
-                            <div class="ml-auto text-green-400">✓</div>
-                        </div>
+                        class="bg-surface-container-lowest border border-outline-variant/10 p-6 rounded-xl hover:shadow-lg transition-shadow">
+                        <span class="material-symbols-outlined text-secondary text-3xl mb-4"
+                            data-icon="clinical_notes">clinical_notes</span>
+                        <h4 class="font-bold text-lg mb-2">Salud</h4>
+                        <p class="text-xs text-on-surface-variant mb-4">Historias clínicas, turnos y facturación médica.
+                        </p>
+                        <a class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            href="sistemas-verticales.html">Saber más <span class="material-symbols-outlined text-sm"
+                                data-icon="arrow_forward">arrow_forward</span></a>
+                    </div>
+                    <!-- Vets -->
+                    <div
+                        class="bg-surface-container-lowest border border-outline-variant/10 p-6 rounded-xl hover:shadow-lg transition-shadow">
+                        <span class="material-symbols-outlined text-secondary text-3xl mb-4"
+                            data-icon="pets">pets</span>
+                        <h4 class="font-bold text-lg mb-2">Vets</h4>
+                        <p class="text-xs text-on-surface-variant mb-4">Seguimiento de vacunas y fichas de pacientes.
+                        </p>
+                        <a class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            href="sistemas-verticales.html">Saber más <span class="material-symbols-outlined text-sm"
+                                data-icon="arrow_forward">arrow_forward</span></a>
+                    </div>
+                    <!-- Lodging -->
+                    <div
+                        class="bg-surface-container-lowest border border-outline-variant/10 p-6 rounded-xl hover:shadow-lg transition-shadow">
+                        <span class="material-symbols-outlined text-secondary text-3xl mb-4"
+                            data-icon="hotel">hotel</span>
+                        <h4 class="font-bold text-lg mb-2">Alojamiento</h4>
+                        <p class="text-xs text-on-surface-variant mb-4">Check-in automático y motor de reservas propio.
+                        </p>
+                        <a class="text-primary font-bold text-xs uppercase tracking-wider flex items-center gap-2"
+                            href="sistemas-verticales.html">Saber más <span class="material-symbols-outlined text-sm"
+                                data-icon="arrow_forward">arrow_forward</span></a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Chatbot Universal -->
-    <section id="chatbot" class="py-24 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-display font-bold text-slate-900 mb-6">El Poder de la IA en Acción</h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">Mira cómo nuestra inteligencia artificial maneja
-                    conversaciones complejas y ejecuta acciones en tus sistemas reales.</p>
+        </section>
+        <!-- Testimonial Section -->
+        <section class="py-24 bg-surface-container-low hidden">
+            <div class="max-w-4xl mx-auto px-8 text-center">
+                <span class="material-symbols-outlined text-5xl text-tertiary-fixed-dim mb-8" data-icon="format_quote"
+                    style="font-variation-settings: 'FILL' 1;">format_quote</span>
+                <p class="text-2xl md:text-3xl font-headline font-bold text-primary italic leading-tight mb-10">
+                    "Gracias a DP Sistemas, redujimos el tiempo de conciliación bancaria de 4 horas diarias a solo 10
+                    minutos. Es como tener un equipo extra trabajando en la sombra."
+                </p>
+                <div class="flex items-center justify-center gap-4">
+                    <img alt="Dueño de negocio" class="w-12 h-12 rounded-full object-cover"
+                        data-alt="Professional business owner smiling"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0adsbZOX69UOmPyQmFpVAu3NV_q5dOWVWLS2SjLGdJhiRWWRmmKdmM8_OnvXobawdflZLXlTppgCii8sLl91OycL-z3TCl3HNMoVZZJgO9adf4LV9CzL84FtXTayfO0eYt28l11hoBh_T8AmfsTAqNqq0RS80AexU0ZXqk6qCjZ-5Ot7te-yOdMs9DI8BgGVO6lInmACukLNMTDPIqqgZ6yfqlYLL92UDMpdWLAYNg7BW487HmCC0MO0hFqjr-6UdMX-uxM8eqCg" />
+                    <div class="text-left">
+                        <p class="font-bold text-primary">Carlos Méndez</p>
+                        <p class="text-sm text-on-surface-variant">Director General, GastroLogic Group</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="grid md:grid-cols-2 gap-8">
-
-                <!-- CASO 1: RESTAURANTE -->
-                <div
-                    class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col transform hover:-translate-y-2 transition duration-300">
-                    <!-- Header -->
-                    <div class="bg-slate-100 px-5 py-3 border-b border-slate-200 flex items-center gap-3">
-                        <div class="flex gap-1.5">
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                        </div>
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-auto">Pedidos</span>
+        </section>
+        <!-- Final CTA -->
+        <section class="py-24">
+            <div class="max-w-5xl mx-auto px-8">
+                <div class="bg-primary-container rounded-3xl p-12 md:p-20 text-center relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-secondary-container/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2">
                     </div>
-
-                    <!-- Chat Body -->
-                    <div class="p-5 flex-1 bg-slate-50/50 space-y-4 flex flex-col">
-                        <!-- User -->
-                        <div class="self-end max-w-[85%]">
-                            <div class="bg-orange-100 text-slate-800 p-3 rounded-2xl rounded-tr-none text-sm shadow-sm">
-                                Quiero una pizza pepperoni familiar y una bebida
-                            </div>
-                            <span class="text-[10px] text-slate-400 mt-1 block text-right">20:15</span>
-                        </div>
-
-                        <!-- System Logic -->
-                        <div class="flex justify-center">
-                            <span
-                                class="bg-indigo-50 text-indigo-600 text-[10px] px-2 py-1 rounded border border-indigo-100 font-mono">
-                                🛒 Add: Pizza (ID:45) + Cola (ID:12)
-                            </span>
-                        </div>
-
-                        <!-- Bot -->
-                        <div class="flex items-end self-start max-w-[90%]">
-                            <div
-                                class="w-6 h-6 rounded-full bg-orange-500 flex-shrink-0 mr-2 flex items-center justify-center text-white text-[10px]">
-                                🤖</div>
-                            <div>
-                                <div
-                                    class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100">
-                                    ¡Listo! 🍕 Una Pepperoni Familiar y bebida.<br>Son <strong>$14.990</strong>.
-                                    <br><br>
-                                    <a href="#" class="text-blue-600 underline decoration-blue-300">Pagar Aquí
-                                        (Webpay)</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Internal Action -->
-                    <div class="bg-slate-900 p-4 border-t border-slate-800">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                            <span class="text-xs text-slate-400 font-mono uppercase">Panel de Cocina</span>
-                        </div>
-                        <div class="bg-slate-800 rounded p-2 text-xs font-mono text-green-400">
-                            > NEW ORDER #8821<br>
-                            > PREP: 15 MIN<br>
-                            > STATUS: COCINANDO 🔥
-                        </div>
+                    <div class="relative z-10">
+                        <h2 class="font-headline font-extrabold text-4xl md:text-5xl text-white mb-8">Empieza la
+                            transformación hoy</h2>
+                        <p class="text-on-primary-container text-lg mb-10 max-w-2xl mx-auto">Únete a las empresas que ya
+                            están operando al siguiente nivel con automatización e inteligencia artificial.</p>
+                        <button
+                            class="bg-white text-primary px-10 py-5 rounded-xl font-headline font-extrabold text-lg hover:bg-secondary-container transition-all shadow-xl">
+                            Solicitar Diagnóstico Gratuito
+                        </a>
                     </div>
                 </div>
-
-                <!-- CASO 2: AGENDAS / SALUD -->
-                <div
-                    class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col transform hover:-translate-y-2 transition duration-300">
-                    <!-- Header -->
-                    <div class="bg-slate-100 px-5 py-3 border-b border-slate-200 flex items-center gap-3">
-                        <div class="flex gap-1.5">
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                        </div>
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-auto">Reservas</span>
-                    </div>
-
-                    <!-- Chat Body -->
-                    <div class="p-5 flex-1 bg-slate-50/50 space-y-4 flex flex-col">
-                        <!-- User -->
-                        <div class="self-end max-w-[85%]">
-                            <div class="bg-cyan-100 text-slate-800 p-3 rounded-2xl rounded-tr-none text-sm shadow-sm">
-                                Hola, necesito hora con el psicólogo para el martes
-                            </div>
-                            <span class="text-[10px] text-slate-400 mt-1 block text-right">09:30</span>
-                        </div>
-
-                        <!-- System Logic -->
-                        <div class="flex justify-center">
-                            <span
-                                class="bg-indigo-50 text-indigo-600 text-[10px] px-2 py-1 rounded border border-indigo-100 font-mono">
-                                📅 Checking Calendar API...
-                            </span>
-                        </div>
-
-                        <!-- Bot -->
-                        <div class="flex items-end self-start max-w-[90%]">
-                            <div
-                                class="w-6 h-6 rounded-full bg-cyan-600 flex-shrink-0 mr-2 flex items-center justify-center text-white text-[10px]">
-                                🤖</div>
-                            <div>
-                                <div
-                                    class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100">
-                                    Revisando la agenda del Dr. Pérez... 🩺<br>
-                                    Tengo disponible: <strong>10:00 AM</strong> o <strong>15:30 PM</strong>.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Internal Action -->
-                    <div class="bg-slate-900 p-4 border-t border-slate-800">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
-                            <span class="text-xs text-slate-400 font-mono uppercase">Sync Calendario</span>
-                        </div>
-                        <div class="bg-slate-800 rounded p-2 text-xs font-mono text-blue-300">
-                            > API CHECK: OK<br>
-                            > SLOT LOCKED: 10:00<br>
-                            > WAITING CONFIRMATION...
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CASO 3: SOPORTE / FINANZAS -->
-                <div
-                    class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden flex flex-col transform hover:-translate-y-2 transition duration-300">
-                    <!-- Header -->
-                    <div class="bg-slate-100 px-5 py-3 border-b border-slate-200 flex items-center gap-3">
-                        <div class="flex gap-1.5">
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                        </div>
-                        <span
-                            class="text-xs font-bold text-slate-500 uppercase tracking-wide ml-auto">Automatización</span>
-                    </div>
-
-                    <!-- Chat Body -->
-                    <div class="p-5 flex-1 bg-slate-50/50 space-y-4 flex flex-col">
-                        <!-- User -->
-                        <div class="self-end max-w-[85%]">
-                            <div class="bg-indigo-100 text-slate-800 p-3 rounded-2xl rounded-tr-none text-sm shadow-sm">
-                                ¿Me envías la factura de la compra de ayer?
-                            </div>
-                            <span class="text-[10px] text-slate-400 mt-1 block text-right">11:45</span>
-                        </div>
-
-                        <!-- System Logic -->
-                        <div class="flex justify-center">
-                            <span
-                                class="bg-indigo-50 text-indigo-600 text-[10px] px-2 py-1 rounded border border-indigo-100 font-mono">
-                                🔍 Lookup: Invoice DB
-                            </span>
-                        </div>
-
-                        <!-- Bot -->
-                        <div class="flex items-end self-start max-w-[90%]">
-                            <div
-                                class="w-6 h-6 rounded-full bg-indigo-600 flex-shrink-0 mr-2 flex items-center justify-center text-white text-[10px]">
-                                🤖</div>
-                            <div>
-                                <div
-                                    class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm border border-slate-100">
-                                    ¡Claro! Aquí tienes tu Documento Tributario Electrónico. 👇
-                                    <div
-                                        class="mt-2 flex items-center gap-2 p-2 bg-slate-50 rounded border border-slate-200">
-                                        <span class="text-red-500">📄</span>
-                                        <span class="text-xs font-mono">factura_1024.pdf</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Internal Action -->
-                    <div class="bg-slate-900 p-4 border-t border-slate-800">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></div>
-                            <span class="text-xs text-slate-400 font-mono uppercase">Sistema Contable</span>
-                        </div>
-                        <div class="bg-slate-800 rounded p-2 text-xs font-mono text-purple-300">
-                            > QUERY SUCCESS<br>
-                            > PDF GENERATED<br>
-                            > SENT VIA WHATSAPP API
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CASO 4: ALOJAMIENTO / HOTELES (NUEVO) -->
-                <div
-                    class="bg-white rounded-3xl shadow-xl border border-pink-200 overflow-hidden flex flex-col transform hover:-translate-y-2 transition duration-300">
-                    <!-- Header -->
-                    <div class="bg-pink-50 px-5 py-3 border-b border-pink-100 flex items-center gap-3">
-                        <div class="flex gap-1.5">
-                            <div class="w-2.5 h-2.5 rounded-full bg-pink-300"></div>
-                            <div class="w-2.5 h-2.5 rounded-full bg-pink-300"></div>
-                        </div>
-                        <span class="text-xs font-bold text-pink-500 uppercase tracking-wide ml-auto">Reservas
-                            Hotel</span>
-                    </div>
-
-                    <!-- Chat Body -->
-                    <div class="p-5 flex-1 bg-slate-50/50 space-y-4 flex flex-col">
-                        <!-- User -->
-                        <div class="self-end max-w-[85%]">
-                            <div
-                                class="bg-white border border-slate-200 text-slate-800 p-3 rounded-2xl rounded-tr-none text-sm shadow-sm">
-                                ¿Tienen cabaña disponible para 2 personas este viernes?
-                            </div>
-                            <span class="text-[10px] text-slate-400 mt-1 block text-right">14:20</span>
-                        </div>
-
-                        <!-- System Logic -->
-                        <div class="flex justify-center">
-                            <span
-                                class="bg-pink-50 text-pink-600 text-[10px] px-2 py-1 rounded border border-pink-100 font-mono">
-                                🏨 Check: Vie-Dom (2 Pax)
-                            </span>
-                        </div>
-
-                        <!-- Bot -->
-                        <div class="flex items-end self-start max-w-[90%]">
-                            <div
-                                class="w-6 h-6 rounded-full bg-pink-500 flex-shrink-0 mr-2 flex items-center justify-center text-white text-[10px]">
-                                🤖</div>
-                            <div>
-                                <div
-                                    class="bg-white text-slate-800 p-3 rounded-2xl rounded-tl-none text-sm shadow-sm border border-pink-100">
-                                    ¡Sí! Tenemos la "Cabaña Bosque" disponible. 🌲<br>
-                                    <span class="text-xs text-slate-500 line-through">En Booking: $180.000</span><br>
-                                    <strong>Reserva Directa: $150.000</strong> (Ahorras 17%)
-                                    <br><br>
-                                    <a href="#" class="text-pink-600 font-bold underline decoration-pink-300">Reservar
-                                        Ahora sin Comisión</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Internal Action -->
-                    <div class="bg-slate-900 p-4 border-t border-slate-800">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
-                            <span class="text-xs text-slate-400 font-mono uppercase">Motor de Reservas</span>
-                        </div>
-                        <div class="bg-slate-800 rounded p-2 text-xs font-mono text-pink-300">
-                            > CALENDAR: AVAILABLE<br>
-                            > PRICE: DIRECT_RATE applied<br>
-                            > LINK GENERATED
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        </div>
-    </section>
-
+        </section>
+    </main>
     <!-- Footer -->
-    <footer class="bg-dp-900 text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-2">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div
-                            class="w-12 h-12 bg-white rounded-lg flex items-center justify-center overflow-hidden p-0.5 shadow-lg">
-                            <img src="logo-dp.svg" alt="DP Sistemas" class="w-full h-full object-cover scale-150">
-                        </div>
-                        <span class="font-bold text-xl">DP Sistemas</span>
-                    </div>
-                    <p class="text-slate-400 max-w-sm">
-                        Agencia de desarrollo de software y automatización. Creamos tecnología accesible y potente para
-                        potenciar negocios reales.
-                    </p>
+    <footer class="bg-[#f3f3f6] border-t border-outline-variant/20">
+        <div
+            class="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 max-w-7xl mx-auto font-body text-sm leading-relaxed">
+            <div class="col-span-1 md:col-span-1">
+                <div class="mb-5">
+                    <img src="LOGO%20DP%20(5).png" alt="DP Sistemas Logo" class="h-14 w-auto object-contain">
                 </div>
-                <div>
-                    <h4 class="font-bold mb-4">Soluciones</h4>
-                    <ul class="space-y-2 text-slate-400 text-sm">
-                        <li><a href="#" class="hover:text-white">Restaurantes</a></li>
-                        <li><a href="#" class="hover:text-white">Clínicas & Vet</a></li>
-                        <li><a href="#" class="hover:text-white">Automatización</a></li>
-                        <li><a href="#" class="hover:text-white">Consultoría TI</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-4">Contacto</h4>
-                    <ul class="space-y-2 text-slate-400 text-sm">
-                        <li>contacto@dpsistemas.cl</li>
-                        <li>+56965524190</li>
-                        <li>Viña del mar, Chile</li>
-                    </ul>
-                </div>
+                <p class="text-slate-500 text-xs leading-relaxed text-pretty">Somos una empresa que busca llevar la tecnología a los negocios donde el trabajo real trae problemas reales que no solucionan los CRM y ERP genéricos o estandarizados.</p>
             </div>
-            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
-                &copy; 2026 DP Sistemas y Automatizaciones. Todos los derechos reservados.
+            <div>
+                <h4 class="font-semibold text-[#003461] mb-4">Servicios</h4>
+                <ul class="space-y-3">
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors" href="automatizacion.html">Automatización</a></li>
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors" href="chatbots.html">IA Chatbots</a></li>
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors" href="sistemas-verticales.html">Sistemas</a></li>
+                </ul>
             </div>
+            <div>
+                <h4 class="font-semibold text-[#003461] mb-4">Contacto</h4>
+                <ul class="space-y-3">
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors flex items-center gap-1" href="mailto:contacto@dpsistemas.cl"><span class="material-symbols-outlined text-sm">mail</span> contacto@dpsistemas.cl</a></li>
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors flex items-center gap-1" href="#"><span class="material-symbols-outlined text-sm">link</span> LinkedIn</a></li>
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors flex items-center gap-1" href="#"><span class="material-symbols-outlined text-sm">sms</span> WhatsApp</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold text-[#003461] mb-4">Legal</h4>
+                <ul class="space-y-3">
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors" href="#">Política de Privacidad</a></li>
+                    <li><a class="text-slate-500 hover:text-[#004b87] transition-colors" href="#">Términos de Servicio</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-8 pb-8">
+            <div class="bg-[#e8e8ea] h-px w-full mb-8"></div>
+            <p class="text-slate-500 text-xs text-center">© 2026 DP Sistemas y Automatizaciones. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <!-- Scripts -->
-    <script src="demo-data.js"></script>
-    <script src="demo-tour.js"></script>
-    <script>
-        function openChatbotDemo() {
-            alert('🤖 Demo Chatbot\n\nAbriendo interfaz de prueba de Inteligencia Artificial...');
-        }
-    </script>
 </body>
 
 </html>
