@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Publicaciones Instagram - DP Sistemas</title>
+    <!-- Google Fonts: Outfit for titles, Inter for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- html2canvas library for browser screenshot export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        headline: ['Outfit', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'dp-dark': '#050811',
+                        'dp-light': '#f8fafc',
+                        'dp-teal': '#06b6d4',
+                        'dp-blue': '#2563eb',
+                        'dp-slate': '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .post-canvas {
+            width: 1080px;
+            height: 1080px;
+            min-width: 1080px;
+            min-height: 1080px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px;
+            box-sizing: border-box;
+        }
+        /* Grid background for dark slides */
+        .bg-grid-dark {
+            background-color: #050811;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        /* Grid background for light slides */
+        .bg-grid-light {
+            background-color: #f8fafc;
+            background-image: 
+                linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        /* Glow accents */
+        .glow-accent {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+            top: 240px;
+            left: 240px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-body min-h-screen p-8">
+
+    <!-- Header Control Dashboard -->
+    <header class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-800/80 p-6 rounded-2xl border border-slate-700 shadow-xl backdrop-blur-sm">
+        <div>
+            <div class="flex items-center gap-3 mb-1">
+                <img src="Diseño sin título (3).png" alt="DP Logo" class="h-10 w-auto object-contain">
+                <h1 class="text-2xl font-headline font-black text-white">DP SISTEMAS</h1>
+            </div>
+            <p class="text-slate-400 text-sm">Generador de Publicaciones de Instagram - Estilo de Feed Cuadrícula Alternada (Ajedrez)</p>
+        </div>
+        <div class="flex gap-3">
+            <button onclick="downloadAll()" class="bg-dp-blue hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-full transition-all shadow-lg shadow-blue-500/20 flex items-center gap-2">
+                <span>Descargar Todas (9)</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Post Grid Wrapper -->
+    <main class="max-w-7xl mx-auto grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+        <!-- SLIDE 1: INTRO BRANDING (DARK) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-1" class="post-canvas bg-grid-dark text-white font-body">
+                    <div class="glow-accent"></div>
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-white">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-dp-teal font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 pr-12">
+                        <h2 class="font-headline font-black text-[54px] leading-[1.15] text-slate-100">
+                            Transformamos procesos en <span class="text-dp-teal font-extrabold">soluciones que impulsan</span> tu negocio.
+                        </h2>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-white/10 pt-8 z-10">
+                        <div class="flex gap-8 text-[11px] font-bold tracking-widest text-slate-400 uppercase">
+                            <div class="flex flex-col gap-1"><span>Sistemas Web</span></div>
+                            <div class="flex flex-col gap-1"><span>Automatizaciones</span></div>
+                            <div class="flex flex-col gap-1"><span>Apps Móviles</span></div>
+                            <div class="flex flex-col gap-1"><span>Gestión y Análisis</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-1', '01_intro_branding')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 1</button>
+        </div>
+
+        <!-- SLIDE 2: BRAVIUM CONTABILIDAD (LIGHT) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-2" class="post-canvas bg-grid-light text-slate-900 font-body">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-slate-950">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 grid grid-cols-12 gap-8 items-center">
+                        <div class="col-span-7">
+                            <h2 class="font-headline font-black text-[38px] leading-[1.2] text-slate-950 mb-6 uppercase">
+                                Menos tiempo en tareas manuales, <span class="text-dp-blue font-extrabold">más tiempo para hacer crecer</span> tu negocio.
+                            </h2>
+                            <ul class="space-y-3.5 text-sm text-slate-600 font-semibold pr-4">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Ingesta automática de cartolas por IA.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Conciliación bancaria en tiempo real.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Sincronización automática con el SII.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-span-5 flex justify-end">
+                            <!-- Laptop Mockup -->
+                            <div class="w-full relative select-none">
+                                <div class="bg-slate-900 rounded-t-xl p-2 border-4 border-slate-800 shadow-2xl aspect-[1.5] w-full overflow-hidden flex items-center justify-center">
+                                    <img src="Bravium Mockup.png" alt="Mockup" class="w-full h-full object-contain">
+                                </div>
+                                <div class="bg-slate-800 rounded-b-xl h-2 w-[110%] -ml-[5%] shadow-md"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-slate-200 pt-8 z-10 text-[11px] font-bold text-slate-500">
+                        <span>SOLUCIONES FINANCIERAS</span>
+                        <span>dpsistemas.cl</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-2', '02_finanzas_bravium')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 2</button>
+        </div>
+
+        <!-- SLIDE 3: TECNOLOGIA A TU MEDIDA (DARK) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-3" class="post-canvas bg-grid-dark text-white font-body">
+                    <div class="glow-accent"></div>
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-white">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-dp-teal font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 pr-12">
+                        <h2 class="font-headline font-black text-[50px] leading-[1.2] text-slate-100 mb-8 uppercase">
+                            Tecnología a tu medida, <span class="text-dp-teal font-extrabold">sin complicaciones</span>.
+                        </h2>
+                        <div class="space-y-4 text-base font-semibold text-slate-300">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-dp-teal text-sm">💡</span>
+                                <span>Entendemos la lógica real de tu negocio</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-dp-teal text-sm">🎨</span>
+                                <span>Diseñamos la mejor solución técnica</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-dp-teal text-sm">⚙️</span>
+                                <span>La implementamos contigo paso a paso</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-dp-teal text-sm">🤝</span>
+                                <span>Te acompañamos y damos soporte permanente</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-white/10 pt-8 z-10 text-[11px] font-bold text-slate-400">
+                        <span>PROCESOS DE DESARROLLO</span>
+                        <span>+56 9 7434 2276</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-3', '03_tecnologia_a_medida')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 3</button>
+        </div>
+
+        <!-- SLIDE 4: ADAPTADO A TU NEGOCIO (LIGHT) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-4" class="post-canvas bg-grid-light text-slate-900 font-body">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-slate-950">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 grid grid-cols-12 gap-8 items-center">
+                        <div class="col-span-7">
+                            <h2 class="font-headline font-black text-[38px] leading-[1.2] text-slate-950 mb-6 uppercase">
+                                Sistemas que se adaptan a tu negocio, <span class="text-dp-blue font-extrabold">no al revés</span>.
+                            </h2>
+                            <ul class="space-y-3.5 text-sm text-slate-600 font-semibold pr-4">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Gestión de ventas & POS centralizado.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Control de recetas y stock inteligente.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-blue rounded-full"></span> Integraciones multicanal (PedidosYa, Uber Eats).
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-span-5 flex justify-end">
+                            <!-- Laptop Mockup -->
+                            <div class="w-full relative select-none">
+                                <div class="bg-slate-900 rounded-t-xl p-2 border-4 border-slate-800 shadow-2xl aspect-[1.5] w-full overflow-hidden flex items-center justify-center">
+                                    <img src="Lo mas Rico Mockup.png" alt="Mockup" class="w-full h-full object-contain">
+                                </div>
+                                <div class="bg-slate-800 rounded-b-xl h-2 w-[110%] -ml-[5%] shadow-md"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-slate-200 pt-8 z-10 text-[11px] font-bold text-slate-500">
+                        <span>MÓDULO GASTRONÓMICO</span>
+                        <span>dpsistemas.cl</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-4', '04_gastronomia_lomasrico')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 4</button>
+        </div>
+
+        <!-- SLIDE 5: DIAGRAMA CIRCULAR (DARK) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-5" class="post-canvas bg-grid-dark text-white font-body items-center">
+                    <div class="glow-accent"></div>
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10 w-full">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-white">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-dp-teal font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content (Central Diagram) -->
+                    <div class="my-auto z-10 flex flex-col items-center justify-center relative w-[600px] h-[600px]">
+                        <!-- Title inside Content -->
+                        <h4 class="absolute top-2 font-headline font-bold text-center text-xl tracking-wide uppercase text-slate-400">TODO LO QUE TU NEGOCIO NECESITA</h4>
+                        
+                        <!-- Core Logo -->
+                        <div class="w-36 h-36 bg-slate-950 rounded-full border border-slate-800 flex items-center justify-center p-3 shadow-2xl z-20">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+
+                        <!-- Dotted Connectors & Satellite Nodes (Absolute positioning in 600x600 container) -->
+                        <div class="absolute w-[450px] h-[450px] border border-white/5 rounded-full z-10 border-dashed"></div>
+
+                        <!-- Satellites -->
+                        <!-- Top: Automatizaciones -->
+                        <div class="absolute top-[30px] flex flex-col items-center z-20">
+                            <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-xl text-dp-teal shadow-xl">🤖</div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider mt-1 text-slate-300">Automatizaciones</span>
+                        </div>
+                        <!-- Right: Apps Moviles -->
+                        <div class="absolute right-[10px] flex flex-col items-center z-20">
+                            <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-xl text-dp-teal shadow-xl">📱</div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider mt-1 text-slate-300">Apps Móviles</span>
+                        </div>
+                        <!-- Bottom Right: Analisis -->
+                        <div class="absolute bottom-[40px] right-[70px] flex flex-col items-center z-20">
+                            <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-xl text-dp-teal shadow-xl">📊</div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider mt-1 text-slate-300">Análisis y Reportes</span>
+                        </div>
+                        <!-- Bottom Left: Integraciones -->
+                        <div class="absolute bottom-[40px] left-[70px] flex flex-col items-center z-20">
+                            <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-xl text-dp-teal shadow-xl">🔌</div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider mt-1 text-slate-300">Integraciones</span>
+                        </div>
+                        <!-- Left: Sistemas Web -->
+                        <div class="absolute left-[10px] flex flex-col items-center z-20">
+                            <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-xl text-dp-teal shadow-xl">💻</div>
+                            <span class="text-[10px] font-bold uppercase tracking-wider mt-1 text-slate-300">Sistemas Web</span>
+                        </div>
+                        
+                        <h4 class="absolute bottom-2 font-headline font-black text-center text-2xl tracking-wide uppercase text-dp-teal">EN UN SOLO LUGAR.</h4>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-white/10 pt-8 z-10 w-full text-[11px] font-bold text-slate-400">
+                        <span>ECOSISTEMA DIGITAL</span>
+                        <span>dpsistemas.cl</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-5', '05_diagrama_circular')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 5</button>
+        </div>
+
+        <!-- SLIDE 6: TECNOLOGIA RESULTADOS (LIGHT) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-6" class="post-canvas bg-grid-light text-slate-900 font-body">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-slate-950">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10">
+                        <span class="text-xs font-bold tracking-widest text-slate-500 uppercase block mb-3">Idea &nbsp;>&nbsp; Desarrollo &nbsp;>&nbsp; Resultados</span>
+                        <h2 class="font-headline font-black text-[52px] leading-[1.2] text-slate-950 mb-8">
+                            Conectamos tecnología con <span class="text-dp-blue font-extrabold">resultados reales</span>.
+                        </h2>
+                        
+                        <!-- 4 Pillars Grid -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                                <span class="text-2xl block mb-2">⚡</span>
+                                <h4 class="font-headline font-bold text-base text-slate-950 mb-1">Más eficiencia</h4>
+                                <p class="text-xs text-slate-500">Procesos automáticos que liberan tus horas.</p>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                                <span class="text-2xl block mb-2">🎯</span>
+                                <h4 class="font-headline font-bold text-base text-slate-950 mb-1">Menos errores</h4>
+                                <p class="text-xs text-slate-500">Elimina el margen de falla de la digitación manual.</p>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                                <span class="text-2xl block mb-2">🛡️</span>
+                                <h4 class="font-headline font-bold text-base text-slate-950 mb-1">Mejor control</h4>
+                                <p class="text-xs text-slate-500">Toda la información cruzada en un solo lugar.</p>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                                <span class="text-2xl block mb-2">💡</span>
+                                <h4 class="font-headline font-bold text-base text-slate-950 mb-1">Decisiones inteligentes</h4>
+                                <p class="text-xs text-slate-500">Reportabilidad precisa en tiempo real.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-slate-200 pt-8 z-10 text-[11px] font-bold text-slate-500">
+                        <span>METODOLOGÍA DE TRABAJO</span>
+                        <span>hola@dpsistemas.cl</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-6', '06_metodologia_resultados')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 6</button>
+        </div>
+
+        <!-- SLIDE 7: INFORMACION CLARA (DARK) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-7" class="post-canvas bg-grid-dark text-white font-body">
+                    <div class="glow-accent"></div>
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-white">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-dp-teal font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 grid grid-cols-12 gap-8 items-center">
+                        <div class="col-span-7">
+                            <h2 class="font-headline font-black text-[38px] leading-[1.2] text-slate-100 mb-6 uppercase">
+                                Información clara.<br><span class="text-dp-teal font-extrabold">Decisiones inteligentes.</span>
+                            </h2>
+                            <ul class="space-y-3.5 text-sm text-slate-400 font-semibold pr-4">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-teal rounded-full"></span> Control autónomo de asistencia y cobros.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-teal rounded-full"></span> Pagos integrados con Mercado Pago.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2.5 h-2.5 bg-dp-teal rounded-full"></span> Portal del alumno y control de avance.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-span-5 flex justify-end">
+                            <!-- Laptop Mockup -->
+                            <div class="w-full relative select-none">
+                                <div class="bg-slate-900 rounded-t-xl p-2 border-4 border-slate-800 shadow-2xl aspect-[1.5] w-full overflow-hidden flex items-center justify-center">
+                                    <img src="DOJO LAS RANAS MOCKUP.png" alt="Mockup" class="w-full h-full object-contain">
+                                </div>
+                                <div class="bg-slate-800 rounded-b-xl h-2 w-[110%] -ml-[5%] shadow-md"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-white/10 pt-8 z-10 text-[11px] font-bold text-slate-400">
+                        <span>MÓDULO DE ACADEMIAS</span>
+                        <span>+56 9 7434 2276</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-7', '07_academias_dojo')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 7</button>
+        </div>
+
+        <!-- SLIDE 8: DIFERENTES INDUSTRIAS (LIGHT) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-8" class="post-canvas bg-grid-light text-slate-900 font-body">
+                    <!-- Header -->
+                    <div class="flex justify-between items-start z-10">
+                        <div class="flex items-center gap-4">
+                            <img src="Diseño sin título (3).png" alt="Logo" class="h-16 w-auto object-contain">
+                            <div>
+                                <h3 class="font-headline font-black text-3xl tracking-tight leading-none text-slate-950">DP SISTEMAS</h3>
+                                <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase mt-0.5">Soluciones Tecnológicas</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 flex flex-col items-center w-full">
+                        <span class="text-xs font-bold tracking-widest text-slate-500 uppercase block mb-3">DESARROLLAMOS SOLUCIONES PARA</span>
+                        <h2 class="font-headline font-black text-[42px] leading-[1.1] text-slate-950 mb-10 text-center uppercase">
+                            Diferentes Industrias
+                        </h2>
+                        
+                        <!-- 8 Industries Grid -->
+                        <div class="grid grid-cols-4 gap-4 w-full mb-10">
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🍽️</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">RESTAURANTES</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🐶</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">VETERINARIAS</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🛒</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">COMERCIOS</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🎓</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">EDUCACIÓN</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">💼</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">SERVICIOS</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🏥</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">SALUD</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">🏗️</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">CONSTRUCCIÓN</span>
+                            </div>
+                            <div class="bg-white border border-slate-200 rounded-xl p-3 flex flex-col items-center shadow-sm">
+                                <span class="text-xl mb-1">⛺</span>
+                                <span class="text-[9px] font-bold text-slate-700 text-center">TURISMO</span>
+                            </div>
+                        </div>
+
+                        <!-- CTA Pill Button -->
+                        <a href="https://wa.me/56974342276?text=Hola,%20quisiera%20agendar%20un%20diagn%C3%B3stico" target="_blank"
+                           class="bg-slate-950 text-white font-headline font-bold text-sm tracking-wider uppercase px-8 py-3 rounded-full shadow-lg hover:bg-slate-800 transition-all flex items-center gap-2">
+                            <span>💬 Hablemos</span>
+                        </a>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="flex justify-between items-center border-t border-slate-200 pt-8 z-10 w-full text-[11px] font-bold text-slate-500">
+                        <span>DISEÑO MULTISECTORIAL</span>
+                        <span>dpsistemas.cl</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-8', '08_industrias_sectores')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 8</button>
+        </div>
+
+        <!-- SLIDE 9: BRANDING OUTRO (DARK) -->
+        <div class="flex flex-col items-center">
+            <div class="bg-slate-800 p-2 rounded-3xl shadow-2xl mb-4 border border-slate-700">
+                <div id="slide-9" class="post-canvas bg-grid-dark text-white font-body items-center">
+                    <div class="glow-accent"></div>
+                    <!-- Header (Faux Space to match margins) -->
+                    <div class="h-16"></div>
+                    
+                    <!-- Content -->
+                    <div class="my-auto z-10 flex flex-col items-center justify-center text-center">
+                        <img src="Diseño sin título (3).png" alt="Logo" class="h-44 w-auto object-contain mb-8">
+                        <h3 class="font-headline font-black text-4xl tracking-tight leading-none mb-2 text-white">DP SISTEMAS</h3>
+                        <p class="text-xs text-dp-teal font-bold tracking-widest uppercase mb-6">Soluciones Tecnológicas</p>
+                        
+                        <p class="font-headline font-black text-[22px] leading-relaxed uppercase tracking-wider text-slate-100">
+                            Tecnología que simplifica,<br><span class="text-dp-teal font-extrabold">Soluciones que transforman.</span>
+                        </p>
+                    </div>
+
+                    <!-- Footer Contact block -->
+                    <div class="flex justify-between items-center border-t border-white/10 pt-8 z-10 w-full text-xs font-bold text-slate-400">
+                        <span class="flex items-center gap-1">🌐 dpsistemas.cl</span>
+                        <span class="flex items-center gap-1">✉️ hola@dpsistemas.cl</span>
+                        <span class="flex items-center gap-1">📞 +56 9 7434 2276</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="downloadSlide('slide-9', '09_branding_outro')" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-full border border-slate-700 transition-all">Descargar Slide 9</button>
+        </div>
+
+    </main>
+
+    <!-- Script to export templates as PNG -->
+    <script>
+        function downloadSlide(id, name) {
+            const slide = document.getElementById(id);
+            if (!slide) return;
+
+            // Use html2canvas with scale 2 for high-resolution output (2160x2160)
+            html2canvas(slide, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `${name}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        async function downloadAll() {
+            const slides = [
+                { id: 'slide-1', name: '01_intro_branding' },
+                { id: 'slide-2', name: '02_finanzas_bravium' },
+                { id: 'slide-3', name: '03_tecnologia_a_medida' },
+                { id: 'slide-4', name: '04_gastronomia_lomasrico' },
+                { id: 'slide-5', name: '05_diagrama_circular' },
+                { id: 'slide-6', name: '06_metodologia_resultados' },
+                { id: 'slide-7', name: '07_academias_dojo' },
+                { id: 'slide-8', name: '08_industrias_sectores' },
+                { id: 'slide-9', name: '09_branding_outro' }
+            ];
+
+            for (let i = 0; i < slides.length; i++) {
+                downloadSlide(slides[i].id, slides[i].name);
+                // Simple delay to avoid browser blocking multiple downloads
+                await new Promise(resolve => setTimeout(resolve, 800));
+            }
+        }
+    </script>
+</body>
+</html>
