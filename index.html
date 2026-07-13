@@ -70,9 +70,11 @@
             transition: stroke 0.3s ease, stroke-width 0.3s ease;
         }
 
-        /* Custom Handwritten style font helper classes */
-        .handwritten {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', cursive;
+        /* Active Tab indicator style for case switcher */
+        .active-tab {
+            background-color: #f8fafc !important;
+            border-color: #2563eb !important;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.08), 0 4px 6px -4px rgba(37, 99, 235, 0.08) !important;
         }
     </style>
 </head>
@@ -84,7 +86,8 @@
             <div class="flex items-center gap-3">
                 <a href="index.html" class="flex items-center gap-3">
                     <img alt="DP Sistemas Logo" class="h-10 w-auto object-contain" src="Diseño sin título (3).png" />
-                    <span class="text-white font-headline font-black text-sm md:text-base tracking-tight" id="nav-brand-text">DP Sistemas y Automatizaciones</span>
+                    <span class="text-white font-headline font-black text-sm lg:text-base tracking-tight whitespace-nowrap hidden sm:inline" id="nav-brand-text">DP Sistemas y Automatizaciones</span>
+                    <span class="text-white font-headline font-black text-sm tracking-tight whitespace-nowrap inline sm:hidden" id="nav-brand-text-mobile">DP Sistemas</span>
                 </a>
             </div>
             
@@ -253,8 +256,177 @@
                         </div>
                     </div>
 
+                    <!-- Mobile Accordion List (Visible only on mobile/tablet, hidden on large screens) -->
+                    <div class="lg:hidden mt-10 space-y-3.5 select-none">
+                        <div class="flex items-center gap-2 text-slate-400 mb-4">
+                            <span class="material-symbols-outlined text-base">touch_app</span>
+                            <span class="text-xs font-bold uppercase tracking-wider font-headline">Toca un servicio para ver la solución:</span>
+                        </div>
+
+                        <!-- Card 1: WhatsApp -->
+                        <div onclick="toggleMobileSolution('whatsapp')" id="card-mobile-whatsapp" class="mobile-sol-card bg-white border border-blue-500 ring-2 ring-blue-100 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">WhatsApp Automatizado</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 rotate-180 transition-transform duration-300" id="arrow-mobile-whatsapp">expand_more</span>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-whatsapp">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Clientes esperando respuesta por horas fuera de horario laboral, perdiendo oportunidades de venta frente a la competencia.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Agentes de IA que responden de forma instantánea 24/7 y agendan citas de manera integrada a tu calendario.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: Clientes -->
+                        <div onclick="toggleMobileSolution('clientes')" id="card-mobile-clientes" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">group</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Clientes Centralizados</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-clientes">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-clientes">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Información de contactos dispersa en cuadernos, chats y planillas, imposibilitando el seguimiento y la fidelización.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Base de datos unificada donde cada interacción, compra e historial se registra automáticamente en su perfil.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Inventario -->
+                        <div onclick="toggleMobileSolution('inventario')" id="card-mobile-inventario" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">inventory_2</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Inventario Actualizado</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-inventario">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-inventario">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Vender productos sin stock real o cometer errores manuales de inventario que causan quejas y cancelaciones.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Sincronización bidireccional en tiempo real entre tus locales físicos, bodegas y tiendas virtuales (E-commerce).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4: Facturación -->
+                        <div onclick="toggleMobileSolution('factura')" id="card-mobile-factura" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">receipt_long</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Facturación Electrónica</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-factura">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-factura">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Generar facturas o emitir boletas manualmente consume tiempo administrativo valioso y produce errores tributarios.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Emisión e integración automática de boletas o facturas con el SII en el momento exacto en que se concreta la venta.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 5: Recordatorios -->
+                        <div onclick="toggleMobileSolution('recordatorio')" id="card-mobile-recordatorio" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">notifications_active</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Recordatorios Automáticos</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-recordatorio">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-recordatorio">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Clientes que olvidan sus turnos o citas agendadas, lo que genera horas vacías y pérdidas directas de ingresos.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Notificaciones automatizadas vía WhatsApp para confirmar o reagendar de forma autónoma con un solo clic.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 6: Reportes -->
+                        <div onclick="toggleMobileSolution('reportes')" id="card-mobile-reportes" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">analytics</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Reportes Inteligentes</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-reportes">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-reportes">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Tomar decisiones de negocio a ciegas sin conocer tu rentabilidad real, flujo de caja o productos más vendidos.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Paneles visuales y resúmenes automáticos de rendimiento financiero enviados directamente a tu correo o WhatsApp.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 7: Pagos -->
+                        <div onclick="toggleMobileSolution('pagos')" id="card-mobile-pagos" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-lg">payments</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Pagos y Cobros Registrados</span>
+                                </div>
+                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-pagos">expand_more</span>
+                            </div>
+                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-pagos">
+                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
+                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Conciliación manual de transferencias bancarias versus pedidos recibidos, consumiendo horas de trabajo administrativo diario.</p>
+                                </div>
+                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
+                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
+                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Conciliación automática que detecta el abono en tu cuenta bancaria y marca la venta como pagada al instante.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Transformador de Procesos Interactivos -->
-                    <div id="transformation-box" class="mt-8 bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm transition-all duration-300">
+                    <div id="transformation-box" class="hidden lg:block mt-8 bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm transition-all duration-300">
                         <div class="flex items-center gap-2 text-slate-400 mb-3 select-none">
                             <span class="material-symbols-outlined text-base">swap_horiz</span>
                             <span class="text-xs font-bold uppercase tracking-wider font-headline">Transformador de Procesos</span>
@@ -264,7 +436,7 @@
                         </div>
                         <div id="trans-content" class="hidden flex flex-col gap-3 transition-all duration-300 ease-in-out transform opacity-0 translate-y-1">
                             <h4 id="trans-title" class="text-sm font-black text-slate-900 flex items-center gap-2 font-headline">
-                                <span class="w-2.5 h-2.5 rounded-full bg-accent-blue"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-accent-blue font-body mr-1"></span>
                                 WhatsApp Automatizado
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -281,8 +453,8 @@
                     </div>
                 </div>
 
-                <!-- Right Diagram Column (Circular network graph) -->
-                <div class="relative w-full h-[480px] max-w-[500px] mx-auto flex items-center justify-center select-none">
+                <!-- Right Diagram Column (Circular network graph - hidden on mobile) -->
+                <div class="hidden lg:flex relative w-full h-[480px] max-w-[500px] mx-auto items-center justify-center select-none">
                     <!-- SVG Overlay for Connecting Lines -->
                     <svg id="connections-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
                     
@@ -366,6 +538,127 @@
                         <div>
                             <p class="text-xs font-bold text-slate-900 leading-tight">Pagos y Cobros Registrados</p>
                             <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Sincronizado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Ejemplos de Procesos Resueltos -->
+        <section class="relative py-24 bg-slate-50 border-t border-b border-slate-100" id="casos-exito">
+            <div class="max-w-7xl mx-auto px-6 md:px-8">
+                <!-- Section Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-accent-blue uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block mb-3 font-headline">Casos Reales</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-headline mb-4 tracking-tight leading-tight">Procesos Resueltos por DP Sistemas</h2>
+                    <p class="text-slate-600 font-medium text-base">
+                        Conoce el impacto real de nuestras soluciones de software y automatización aplicadas a negocios que necesitaban optimizar su operación.
+                    </p>
+                </div>
+
+                <!-- Interactive Case Switcher Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left column: Navigation Tabs (logos) -->
+                    <div class="col-span-1 lg:col-span-4 flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-3 pb-4 lg:pb-0 select-none">
+                        <!-- Project Tab 1: Bravium -->
+                        <button onclick="switchCase('bravium')" id="tab-bravium" class="case-tab-btn active-tab w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-accent-blue/30 shadow-md text-left transition-all duration-300">
+                            <div class="w-12 h-12 bg-slate-950 rounded-xl flex items-center justify-center p-1 overflow-hidden shrink-0 border border-slate-800">
+                                <img src="logo-bravium.png" alt="Bravium" class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Bravium</h4>
+                                <p class="text-[10px] text-accent-blue font-bold mt-0.5">Sistemas Contables</p>
+                            </div>
+                        </button>
+
+                        <!-- Project Tab 2: Psicocupacional -->
+                        <button onclick="switchCase('psicocupacional')" id="tab-psicocupacional" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1.5 overflow-hidden shrink-0 border border-slate-100">
+                                <img src="logo-psicocupacional.png" alt="Psicocupacional" class="w-full h-full object-contain">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Psicocupacional</h4>
+                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Portal Autogestionable</p>
+                            </div>
+                        </button>
+
+                        <!-- Project Tab 3: Lomasrico -->
+                        <button onclick="switchCase('lomasrico')" id="tab-lomasrico" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-100">
+                                <img src="logo-lomasrico.png" alt="Lomasrico" class="w-full h-full object-contain rounded-lg">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Lo Mas Rico</h4>
+                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">E-commerce & Restaurante</p>
+                            </div>
+                        </button>
+
+                        <!-- Project Tab 4: Camping Escorial -->
+                        <button onclick="switchCase('escorial')" id="tab-escorial" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
+                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-100">
+                                <img src="Diseño sin título (4).png" alt="Camping Escorial" class="w-full h-full object-contain rounded-lg">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Camping Escorial</h4>
+                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Portal Web & Reservas</p>
+                            </div>
+                        </button>
+
+                        <!-- Project Tab 5: Dojo Las Ranas -->
+                        <button onclick="switchCase('ranas')" id="tab-ranas" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
+                            <div class="w-12 h-12 bg-slate-950 rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-800">
+                                <img src="logo-ranapp.jpg" alt="Dojo las ranas" class="w-full h-full object-contain rounded-lg">
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Dojo Las Ranas</h4>
+                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Gestión de Alumnos & Cobros</p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Right Column: Case Details and Interactive Visual Preview -->
+                    <div class="col-span-1 lg:col-span-8 bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-md">
+                        <div id="case-content" class="transition-all duration-300 transform opacity-100 translate-y-0">
+                            <!-- Dynamically loaded content -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                <!-- Details Text -->
+                                <div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div id="case-logo-container" class="w-14 h-14 bg-slate-950 rounded-2xl flex items-center justify-center p-1.5 border border-slate-800">
+                                            <img id="case-logo" src="logo-bravium.png" alt="Logo" class="w-full h-full object-contain">
+                                        </div>
+                                        <div>
+                                            <h3 id="case-name" class="text-xl font-black text-slate-900 font-headline">Bravium</h3>
+                                            <span id="case-badge" class="text-[10px] font-bold text-accent-blue bg-blue-50 px-2 py-1 rounded-md uppercase tracking-wider font-headline font-body">Sistemas Contables</span>
+                                        </div>
+                                    </div>
+                                    <p id="case-desc" class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+                                        Plataforma contable integral para centralizar, auditar y automatizar los flujos financieros de tu negocio.
+                                    </p>
+                                    
+                                    <h4 class="text-xs font-bold text-slate-900 font-headline uppercase tracking-wider mb-3">Soluciones Clave Implementadas:</h4>
+                                    <ul id="case-features" class="space-y-2.5">
+                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
+                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
+                                            <strong>Ingesta y lectura automática de cartolas:</strong> Procesamiento con Inteligencia Artificial que digitaliza cartolas bancarias sin digitación manual.
+                                        </li>
+                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
+                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
+                                            <strong>Dashboard de conciliación en tiempo real:</strong> Panel interactivo con alertas de pagos pendientes, diferencias de montos y transacciones sin documento.
+                                        </li>
+                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
+                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
+                                            <strong>Reportabilidad y exportación avanzada:</strong> Filtros de búsqueda avanzados y descarga de reportes detallados en Excel formateado para auditorías.
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Custom Mini-Mockup container -->
+                                <div class="bg-slate-50 border border-slate-200/50 rounded-2xl p-1.5 shadow-inner aspect-[1.3] flex flex-col justify-center select-none" id="case-visual">
+                                    <img src="Bravium Mockup.png" alt="Bravium Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -736,11 +1029,14 @@
             if (!svg) return;
             svg.innerHTML = '';
             
+            // Check if SVG is currently hidden (on mobile)
+            const svgRect = svg.getBoundingClientRect();
+            if (svgRect.width === 0) return;
+            
             const centerNode = document.getElementById('center-node');
             if (!centerNode) return;
             
             const centerRect = centerNode.getBoundingClientRect();
-            const svgRect = svg.getBoundingClientRect();
             
             const cx = centerRect.left + centerRect.width / 2 - svgRect.left;
             const cy = centerRect.top + centerRect.height / 2 - svgRect.top;
@@ -884,6 +1180,181 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
             }, 300);
+        }
+
+        // Case switcher data
+        const casesData = {
+            bravium: {
+                name: "Bravium",
+                badge: "SISTEMAS CONTABLES",
+                logo: "logo-bravium.png",
+                logoBg: "bg-slate-950",
+                logoBorder: "border-slate-800",
+                desc: "Plataforma contable integral para centralizar, auditar y automatizar los flujos financieros de tu negocio.",
+                features: [
+                    "<strong>Ingesta y lectura automática de cartolas:</strong> Procesamiento con Inteligencia Artificial que digitaliza cartolas bancarias sin digitación manual.",
+                    "<strong>Dashboard de conciliación en tiempo real:</strong> Panel interactivo con alertas de pagos pendientes, diferencias de montos y transacciones sin documento.",
+                    "<strong>Reportabilidad y exportación avanzada:</strong> Filtros de búsqueda avanzados y descarga de reportes detallados en Excel formateado para auditorías."
+                ],
+                visual: `<img src="Bravium Mockup.png" alt="Bravium Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
+            },
+            psicocupacional: {
+                name: "Psicocupacional",
+                badge: "PORTAL DE INFORMACIÓN AUTOGESTIONABLE",
+                logo: "logo-psicocupacional.png",
+                logoBg: "bg-white",
+                logoBorder: "border-slate-200",
+                desc: "Página web y plataforma autogestionable para un centro de terapia ocupacional, diseñada para administrar de forma autónoma recursos, información y material multimedia.",
+                features: [
+                    "<strong>Gestor de contenidos autónomo:</strong> Panel administrativo sencillo que permite al cliente subir, actualizar o retirar fotos, videos de actividades reales y material técnico sin depender de un programador.",
+                    "<strong>Galería multimedia dinámica:</strong> Visualización fluida de carruseles de fotos y reproductores de video que se actualizan automáticamente al cargar nuevo contenido.",
+                    "<strong>Estructura 100% responsiva y contacto rápido:</strong> Diseño adaptado a móviles que facilita a las familias explorar el contenido y agendar evaluaciones directamente por WhatsApp."
+                ],
+                visual: `<img src="PSICOCUPACIONAL MOCKUP.png" alt="Psicocupacional Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
+            },
+            lomasrico: {
+                name: "Lo Mas Rico",
+                badge: "E-commerce & Restaurante",
+                logo: "logo-lomasrico.png",
+                logoBg: "bg-white",
+                logoBorder: "border-slate-200",
+                desc: "Plataforma modular a medida que unifica toda la operación de un restaurante, conectando tienda online, POS físico y KDS en cocina en tiempo real.",
+                features: [
+                    "<strong>E-commerce y POS Unificados:</strong> Sincronización automática de ventas físicas, online y visualización en tiempo real de comandas en pantallas de cocina.",
+                    "<strong>Integración Multicanal Automatizada:</strong> Conexión nativa con PedidosYa Envíos API y Uber Eats Bridge para despachos automáticos y centralización de pedidos.",
+                    "<strong>Control por Receta y Pagos Directos:</strong> Descuento inteligente de inventario por porción en cada venta y cobros automatizados con MercadoPago Checkout Pro."
+                ],
+                visual: `<img src="Lo mas Rico Mockup.png" alt="Lo Mas Rico Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
+            },
+            escorial: {
+                name: "Camping Escorial",
+                badge: "Portal Web & Reservas",
+                logo: "Diseño sin título (4).png",
+                logoBg: "bg-white",
+                logoBorder: "border-slate-200",
+                desc: "Sitio web del camping con módulo de información y reservas directas para evitar cobro de comisiones de intermediarios (NIC Chile: campingescorial.cl).",
+                features: [
+                    "Página web responsiva con tarifas, mapas, disponibilidad de parcelas y reglamentos.",
+                    "Módulo de contacto y reservas directas vía formulario y WhatsApp.",
+                    "Alojamiento optimizado en VPS de alta velocidad con dominio propio (.cl)."
+                ],
+                visual: `<img src="Camping escorial mockup.png" alt="Camping Escorial Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
+            },
+            ranas: {
+                name: "Dojo Las Ranas",
+                badge: "Gestión de Alumnos & Cobros",
+                logo: "logo-ranapp.jpg",
+                logoBg: "bg-slate-950",
+                logoBorder: "border-slate-800",
+                desc: "Un ecosistema a medida que libera a la administración del control manual de cobros and asistencia, mientras ofrece al alumno un portal flexible para pagar con comodidad, consultar horarios y seguir su progreso en tiempo real.",
+                features: [
+                    "<strong>Automatización de mensualidades:</strong> Sistema autónomo de cobranzas y alertas que evita la revisión de transferencias una a una y recordatorios manuales de cobro.",
+                    "<strong>Portal del Alumno y Progreso:</strong> Acceso dinámico a horarios actualizados y control de avance motivador (cinturón, ingreso y graduación).",
+                    "<strong>Pasarela de Pago Flexible:</strong> Pagos rápidos integrados con Mercado Pago aceptando tarjetas de crédito, débito y transferencias bancarias."
+                ],
+                visual: `<img src="DOJO LAS RANAS MOCKUP.png" alt="Dojo Las Ranas Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
+            }
+        };
+
+        // Switch active case in the case switcher section
+        function switchCase(caseId) {
+            const data = casesData[caseId];
+            if (!data) return;
+
+            // Remove active classes from all tab buttons
+            const tabButtons = document.querySelectorAll('.case-tab-btn');
+            tabButtons.forEach(btn => {
+                btn.classList.remove('active-tab', 'border-accent-blue/30');
+                btn.classList.add('border-transparent');
+            });
+
+            // Add active classes to selected tab button
+            const activeTab = document.getElementById('tab-' + caseId);
+            if (activeTab) {
+                activeTab.classList.remove('border-transparent');
+                activeTab.classList.add('active-tab', 'border-accent-blue/30');
+            }
+
+            // Animate details box fade-out, update and fade-in
+            const contentBox = document.getElementById('case-content');
+            if (contentBox) {
+                contentBox.classList.remove('opacity-100', 'translate-y-0');
+                contentBox.classList.add('opacity-0', 'translate-y-2');
+
+                setTimeout(() => {
+                    // Update content inside box
+                    const logoContainer = document.getElementById('case-logo-container');
+                    const logoImg = document.getElementById('case-logo');
+                    const nameEl = document.getElementById('case-name');
+                    const badgeEl = document.getElementById('case-badge');
+                    const descEl = document.getElementById('case-desc');
+                    const featuresEl = document.getElementById('case-features');
+                    const visualContainer = document.getElementById('case-visual');
+
+                    if (logoContainer) {
+                        logoContainer.className = `w-14 h-14 ${data.logoBg} rounded-2xl flex items-center justify-center p-1.5 border ${data.logoBorder}`;
+                    }
+                    if (logoImg) {
+                        logoImg.src = data.logo;
+                        logoImg.alt = data.name;
+                    }
+                    if (nameEl) nameEl.innerText = data.name;
+                    if (badgeEl) badgeEl.innerText = data.badge;
+                    if (descEl) descEl.innerText = data.desc;
+                    
+                    if (featuresEl) {
+                        featuresEl.innerHTML = data.features.map(f => `
+                            <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
+                                <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
+                                ${f}
+                            </li>
+                        `).join('');
+                    }
+
+                    if (visualContainer) {
+                        visualContainer.innerHTML = data.visual;
+                    }
+
+                    // Fade back in
+                    contentBox.classList.remove('opacity-0', 'translate-y-2');
+                    contentBox.classList.add('opacity-100', 'translate-y-0');
+                }, 150);
+            }
+        }
+
+        // Toggle mobile accordion solution in Con DP section
+        function toggleMobileSolution(solId) {
+            const content = document.getElementById('content-mobile-' + solId);
+            const arrow = document.getElementById('arrow-mobile-' + solId);
+            const card = document.getElementById('card-mobile-' + solId);
+            if (!content) return;
+
+            const isHidden = content.classList.contains('hidden');
+
+            // Close all other mobile accordions first
+            const allContents = document.querySelectorAll('[id^="content-mobile-"]');
+            allContents.forEach(c => c.classList.add('hidden'));
+
+            const allArrows = document.querySelectorAll('[id^="arrow-mobile-"]');
+            allArrows.forEach(a => {
+                a.classList.remove('rotate-180');
+            });
+            
+            const allCards = document.querySelectorAll('.mobile-sol-card');
+            allCards.forEach(c => {
+                c.classList.remove('border-blue-500', 'ring-2', 'ring-blue-100');
+                c.classList.add('border-slate-200/80');
+            });
+
+            // Open if it was hidden
+            if (isHidden) {
+                content.classList.remove('hidden');
+                if (arrow) arrow.classList.add('rotate-180');
+                if (card) {
+                    card.classList.remove('border-slate-200/80');
+                    card.classList.add('border-blue-500', 'ring-2', 'ring-blue-100');
+                }
+            }
         }
     </script>
 </body>
