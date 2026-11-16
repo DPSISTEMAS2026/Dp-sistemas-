@@ -1,1362 +1,901 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="es">
-
+<html lang="es">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>DP Sistemas y Automatizaciones | Eficiencia Tecnológica</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "surface": "#f8fafc",
-                        "primary-dark": "#050811",
-                        "accent-blue": "#2563eb",
-                        "accent-green": "#10b981",
-                        "dark-navy": "#0c111d"
-                    },
-                    fontFamily: {
-                        "headline": ["Manrope", "sans-serif"],
-                        "body": ["Inter", "sans-serif"]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        
-        /* Pulse Animation for Red Error Dots */
-        @keyframes pulse-red {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.3);
-                opacity: 0.6;
-            }
-        }
-        .pulse-dot-red {
-            animation: pulse-red 2s infinite ease-in-out;
-        }
-
-        /* Pulse Animation for Green Online Dot */
-        @keyframes pulse-green {
-            0%, 100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.4);
-                opacity: 0.5;
-            }
-        }
-        .pulse-dot-green {
-            animation: pulse-green 1.8s infinite ease-in-out;
-        }
-
-        /* Line transitions for network graph */
-        line {
-            transition: stroke 0.3s ease, stroke-width 0.3s ease;
-        }
-
-        /* Active Tab indicator style for case switcher */
-        .active-tab {
-            background-color: #f8fafc !important;
-            border-color: #2563eb !important;
-            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.08), 0 4px 6px -4px rgba(37, 99, 235, 0.08) !important;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DP Sistemas</title>
+  <link rel="icon" href="assets/marca/dp.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sitio.css?v=81">
 </head>
-
-<body class="bg-surface font-body text-slate-800 antialiased overflow-x-hidden">
-    <!-- TopNavBar -->
-    <nav id="main-nav" class="fixed top-0 w-full z-50 bg-transparent transition-all duration-300">
-        <div class="flex justify-between items-center px-6 md:px-8 py-4 max-w-7xl mx-auto">
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="flex items-center gap-3">
-                    <img alt="DP Sistemas Logo" class="h-10 w-auto object-contain" src="Diseño sin título (3).png" />
-                    <span class="text-white font-headline font-black text-sm lg:text-base tracking-tight whitespace-nowrap hidden sm:inline" id="nav-brand-text">DP Sistemas y Automatizaciones</span>
-                    <span class="text-white font-headline font-black text-sm tracking-tight whitespace-nowrap inline sm:hidden" id="nav-brand-text-mobile">DP Sistemas</span>
-                </a>
-            </div>
-            
-            <!-- Desktop Nav Menu -->
-            <div class="hidden md:flex items-center gap-x-8 font-headline font-bold text-sm tracking-wide text-white">
-                <a class="text-white border-b-2 border-accent-blue pb-1" href="index.html">Inicio</a>
-            </div>
-            
-            <!-- Action Button & Online Indicator -->
-            <div class="flex items-center gap-4">
-                <a href="https://wa.me/56974342276?text=Hola,%20quisiera%20agendar%20un%20diagn%C3%B3stico" target="_blank"
-                    class="border border-white/20 hover:border-white/50 bg-white/5 hover:bg-white/10 text-white px-5 py-2 rounded-full font-headline font-bold text-sm transition-all flex items-center gap-2 shadow-sm">
-                    Hablemos
-                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </a>
-                <div class="flex items-center gap-1.5" title="Asistente En Línea">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="pulse-dot-green absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                    </span>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button onclick="toggleMobileMenu()" class="md:hidden text-white focus:outline-none ml-2">
-                    <span id="menu-icon" class="material-symbols-outlined text-3xl">menu</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Nav Menu Overlay -->
-        <div id="mobile-menu" class="hidden fixed inset-0 bg-[#050811]/95 backdrop-blur-lg z-40 flex flex-col justify-center items-center gap-8 text-white">
-            <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-white focus:outline-none">
-                <span class="material-symbols-outlined text-3xl">close</span>
-            </button>
-            <a onclick="toggleMobileMenu()" class="text-2xl font-headline font-bold text-white border-b-2 border-accent-blue pb-1" href="index.html">Inicio</a>
-            <a onclick="toggleMobileMenu()" href="https://wa.me/56974342276?text=Hola,%20quisiera%20agendar%20un%20diagn%C3%B3stico" target="_blank"
-                class="mt-4 bg-accent-blue text-white px-8 py-3 rounded-full font-headline font-bold text-lg shadow-lg flex items-center gap-2">
-                Agendar Diagnóstico <span class="material-symbols-outlined">arrow_forward</span>
-            </a>
-        </div>
+<body id="inicio">
+  <header class="cabecera">
+    <a class="logo p-blanca texto-blanco" href="#inicio" aria-label="DP Sistemas">
+      <svg class="marca" viewBox="34 16 114 134" aria-hidden="true">
+        <path fill="#157d82" fill-rule="evenodd" d="M 76.472656 22.566406 L 39.0625 22.566406 C 37.765625 22.566406 36.71875 23.617188 36.71875 24.910156 L 36.71875 123.339844 C 36.71875 124.632812 37.765625 125.683594 39.0625 125.683594 L 76.472656 125.683594 C 107.804688 125.683594 125.773438 106.726562 125.773438 73.683594 C 125.773438 41.671875 107.34375 22.566406 76.472656 22.566406 Z M 74.503906 109.277344 L 57.808594 109.277344 L 57.808594 38.972656 L 74.503906 38.972656 C 93.484375 38.972656 104.679688 51.734375 104.679688 73.949219 C 104.679688 96.65625 93.75 109.277344 74.503906 109.277344 Z"/>
+        <path class="pleca" fill="currentColor" d="M 75.773438 145.6875 L 75.773438 91.742188 L 97.648438 91.742188 L 97.648438 99.933594 L 116.90625 99.941406 C 118.667969 99.941406 120.316406 99.257812 121.554688 98.015625 C 122.796875 96.769531 123.476562 95.113281 123.472656 93.355469 L 123.464844 88.625 C 123.457031 85.015625 120.523438 82.070312 116.917969 82.0625 L 98.757812 82.070312 L 83.785156 60.152344 L 116.941406 60.140625 C 132.570312 60.171875 145.300781 72.933594 145.328125 88.585938 L 145.335938 93.316406 C 145.347656 100.941406 142.398438 108.109375 137.027344 113.503906 C 131.65625 118.894531 124.515625 121.867188 116.914062 121.867188 L 97.648438 121.882812 L 97.648438 145.6875 Z"/>
+      </svg>
+      <span class="nombre">
+        <strong>Sistemas</strong>
+        <span>y Automatizaciones</span>
+      </span>
+    </a>
+    <button class="menu-abrir vidrio" type="button" aria-expanded="false" aria-controls="menu-lateral" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="menu-fondo" id="menu-fondo"></div>
+    <nav class="menu" id="menu-lateral" aria-label="Principal">
+      <div class="menu-cabeza">
+        <strong>Menú</strong>
+        <button class="menu-cerrar" type="button" aria-label="Cerrar menú">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <a class="vidrio" href="#contacto">Contacto</a>
+      <a class="vidrio" href="#proyectos">Proyectos</a>
+      <a class="vidrio" href="#quienes-somos">Quiénes somos</a>
     </nav>
+  </header>
 
-    <main>
-        <!-- Hero Section: Split Screen -->
-        <section class="relative min-h-screen lg:h-screen flex flex-col lg:flex-row bg-[#050811] text-white pt-24 overflow-hidden">
-            <!-- Left Side: Cluttered Office (Before state representation) -->
-            <div class="relative w-full lg:w-1/2 min-h-[450px] lg:min-h-0 flex items-center justify-center p-8 bg-cover bg-center select-none"
-                 style="background-image: linear-gradient(to right, rgba(5,8,17,0.98) 0%, rgba(5,8,17,0.3) 50%, rgba(5,8,17,0.98) 100%), url('https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&q=80&w=1200')">
-                
-                <!-- Overlay Handwritten Sticky Notes -->
-                <!-- Sticky 1 (Yellowish) -->
-                <div class="absolute top-[18%] left-[8%] bg-amber-100/90 text-slate-800 rotate-6 p-3.5 text-xs font-headline font-black shadow-lg rounded w-28 md:w-32 border-l-4 border-amber-400">
-                    LLAMAR CLIENTE
-                </div>
-                <!-- Sticky 2 (White) -->
-                <div class="absolute top-[50%] left-[5%] bg-white/95 text-slate-800 -rotate-3 p-3 text-xs font-headline font-black shadow-lg rounded w-28 md:w-32 border-l-4 border-slate-300">
-                    PAGO PENDIENTE
-                </div>
-                <!-- Sticky 3 (Pink) -->
-                <div class="absolute top-[28%] right-[10%] bg-pink-100/90 text-slate-800 -rotate-12 p-3 text-xs font-headline font-black shadow-lg rounded w-28 md:w-32 border-l-4 border-pink-400">
-                    FACTURA ????
-                </div>
-                <!-- Sticky 4 (Yellowish) -->
-                <div class="absolute bottom-[20%] left-[12%] bg-amber-100/95 text-slate-800 rotate-2 p-3.5 text-xs font-headline font-black shadow-lg rounded w-32 md:w-36 border-l-4 border-amber-400">
-                    RECORDAR MANTENCIÓN
-                </div>
+  <section class="slider" id="proyectos" aria-label="Proyectos">
+    <div class="pista" id="pista">
+      <article class="banner" data-proyecto="lomasrico">
+        <img class="banner-fondo" src="assets/proyectos/lomasrico/banner.png" alt="Lo Más Rico">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Lo Más Rico"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="psicocupacional">
+        <img class="banner-fondo" src="assets/proyectos/psicocupacional/banner.png" alt="Psicocupacional">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Psicocupacional"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="camping">
+        <img class="banner-fondo" src="assets/proyectos/camping-escorial/banner.png" alt="Camping Escorial">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Camping Escorial"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="dojo">
+        <img class="banner-fondo" src="assets/proyectos/dojo-las-ranas/banner.png" alt="Dojo Las Ranas">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Dojo Las Ranas"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="calipso">
+        <img class="banner-fondo" src="assets/proyectos/ferreteria-calipso/banner.png" alt="Ferretería Calipso">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Ferretería Calipso"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="bravium">
+        <img class="banner-fondo" src="assets/proyectos/bravium/banner.png" alt="Bravium">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Bravium"><div class="rueda"></div></div>
+      </article>
+      <article class="banner" data-proyecto="academias">
+        <img class="banner-fondo" src="assets/proyectos/academias/banner.png" alt="DP Academias">
+        <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de DP Academias"><div class="rueda"></div></div>
+      </article>
+    </div>
+    <button class="flecha vidrio" type="button" id="anterior" aria-label="Proyecto anterior">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="flecha vidrio" type="button" id="siguiente" aria-label="Proyecto siguiente">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </section>
 
-                <!-- Floating Error Pills -->
-                <!-- Pill 1 -->
-                <div class="absolute top-[32%] left-[18%] md:left-[22%] bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-xl hover:scale-105 hover:bg-white/15 transition-all duration-300">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="pulse-dot-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
-                    </span>
-                    <span class="text-xs md:text-sm font-semibold text-white tracking-wide">Clientes sin responder</span>
-                </div>
-                <!-- Pill 2 -->
-                <div class="absolute top-[45%] right-[10%] md:right-[15%] bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-xl hover:scale-105 hover:bg-white/15 transition-all duration-300">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="pulse-dot-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
-                    </span>
-                    <span class="text-xs md:text-sm font-semibold text-white tracking-wide">Pagos sin registrar</span>
-                </div>
-                <!-- Pill 3 -->
-                <div class="absolute bottom-[35%] left-[25%] bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-xl hover:scale-105 hover:bg-white/15 transition-all duration-300">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="pulse-dot-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
-                    </span>
-                    <span class="text-xs md:text-sm font-semibold text-white tracking-wide">Inventario desactualizado</span>
-                </div>
-                <!-- Pill 4 -->
-                <div class="absolute bottom-[22%] right-[15%] md:right-[22%] bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-full flex items-center gap-2 shadow-xl hover:scale-105 hover:bg-white/15 transition-all duration-300">
-                    <span class="relative flex h-2.5 w-2.5">
-                        <span class="pulse-dot-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
-                    </span>
-                    <span class="text-xs md:text-sm font-semibold text-white tracking-wide">Información en todos lados</span>
-                </div>
+  <section class="mapa" id="como-trabajamos" aria-label="Cómo trabajamos">
+    <div class="mapa-viaje" id="mapa-viaje">
+      <div class="mapa-lente">
+        <h2>Cómo trabajamos</h2>
+        <div class="mapa-cuerpo">
+          <div class="charlas" aria-hidden="true">
+            <div class="charla" id="charla-contacto">
+              <div class="burbuja entra rota" id="mensaje-contacto">Tengo un Excel. Soy profesor y no me da el tiempo para mantenerlo al día. Los pagos los anoto cuando me acuerdo.</div>
             </div>
-
-            <!-- Right Side: Dark clean layout (TU EMPRESA FUNCIONA...) -->
-            <div class="relative w-full lg:w-1/2 flex flex-col justify-center px-6 md:px-16 py-12 lg:py-0 z-10">
-                <div class="max-w-xl">
-                    <span class="inline-block text-xs md:text-sm font-bold tracking-widest text-slate-400 mb-4 uppercase">
-                        Tu empresa funciona.
-                    </span>
-                    <h1 class="text-4xl md:text-6xl font-headline font-black leading-tight text-white mb-6">
-                        Pero depende<br>demasiado de ti.
-                    </h1>
-                    <p class="text-slate-400 text-base md:text-lg mb-12 leading-relaxed text-pretty">
-                        El desorden te hace perder tiempo, dinero y clientes. La automatización te da control, claridad y crecimiento.
-                    </p>
-                    
-                    <!-- Mouse Scroll Indicator -->
-                    <div class="flex items-center gap-3 select-none">
-                        <div class="w-6 h-10 border-2 border-slate-500 rounded-full flex justify-center p-1">
-                            <div class="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></div>
-                        </div>
-                        <span class="text-xs text-slate-400 font-bold tracking-widest uppercase">
-                            Desliza para ver la transformación
-                        </span>
-                    </div>
-                </div>
+            <div class="charla">
+              <div class="burbuja entra">Anoto las mensualidades cuando puedo.</div>
+              <div class="burbuja sale">Te creamos un botón de pago. Tus alumnos te pagan y queda el registro automático: fecha, hora y monto. Olvídate de anotarlo a mano.</div>
+              <div class="burbuja sale">Si te pagan presencial o en efectivo, lo anotas en otro botón.</div>
+              <div class="burbuja entra">¿En serio?</div>
+              <div class="burbuja sale">Sí.</div>
             </div>
-
-            <!-- Wave Separator Curve -->
-            <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none z-10">
-                <svg class="relative block w-full h-[40px] md:h-[60px]" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="#f8fafc">
-                    <path d="M0,0 C150,90 350,120 600,120 C850,120 1050,90 1200,0 L1200,120 L0,120 Z"></path>
-                </svg>
+            <div class="charla">
+              <div class="burbuja entra">Quedó perfecto, pero a veces el repartidor no da abasto. Necesito desactivar el despacho desde la web.</div>
             </div>
-        </section>
-
-        <!-- Section 2: Con DP - Todo conectado. Todo bajo control. -->
-        <section class="relative py-24 bg-[#f8fafc] overflow-hidden" id="solutions">
-            <div class="max-w-7xl mx-auto px-6 md:px-8 grid lg:grid-cols-2 gap-16 items-center">
-                <!-- Left Text Column -->
-                <div>
-                    <span class="inline-block px-3 py-1 bg-blue-50 border border-blue-200 text-accent-blue rounded-full text-xs font-bold uppercase tracking-wider mb-6">
-                        Con DP
-                    </span>
-                    <h2 class="text-3xl md:text-5xl font-headline font-black text-slate-900 leading-tight mb-6">
-                        Todo conectado.<br>Todo <span class="text-accent-blue">bajo control.</span>
-                    </h2>
-                    <p class="text-slate-600 text-base md:text-lg mb-8 leading-relaxed text-pretty">
-                        Diseñamos sistemas a medida que conectan lo que hoy está desordenado y hacen que tu negocio funcione solo.
-                    </p>
-                    
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                        <a href="https://wa.me/56974342276?text=Hola,%20quisiera%20agendar%20un%20diagn%C3%B3stico%20gratuito%20para%20mi%20negocio" target="_blank"
-                            class="bg-[#050811] hover:bg-[#0c1830] text-white px-8 py-4 rounded-xl font-headline font-bold text-base transition-all duration-300 flex items-center gap-2 w-fit shadow-lg shadow-slate-900/10 hover:shadow-xl hover:shadow-slate-900/20 transform hover:-translate-y-0.5">
-                            Agendar diagnóstico
-                            <span class="material-symbols-outlined text-xl">arrow_forward</span>
-                        </a>
-                        
-                        <!-- Social Proof (Avatars) -->
-                        <div class="flex items-center gap-3">
-                            <div class="flex -space-x-3 overflow-hidden">
-                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Cliente">
-                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Cliente">
-                                <img class="inline-block h-9 w-9 rounded-full ring-2 ring-white object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150" alt="Cliente">
-                            </div>
-                            <p class="text-xs md:text-sm font-bold text-slate-500">+25 negocios ya transformados</p>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Accordion List (Visible only on mobile/tablet, hidden on large screens) -->
-                    <div class="lg:hidden mt-10 space-y-3.5 select-none">
-                        <div class="flex items-center gap-2 text-slate-400 mb-4">
-                            <span class="material-symbols-outlined text-base">touch_app</span>
-                            <span class="text-xs font-bold uppercase tracking-wider font-headline">Toca un servicio para ver la solución:</span>
-                        </div>
-
-                        <!-- Card 1: WhatsApp -->
-                        <div onclick="toggleMobileSolution('whatsapp')" id="card-mobile-whatsapp" class="mobile-sol-card bg-white border border-blue-500 ring-2 ring-blue-100 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">chat_bubble</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">WhatsApp Automatizado</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 rotate-180 transition-transform duration-300" id="arrow-mobile-whatsapp">expand_more</span>
-                            </div>
-                            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-whatsapp">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Clientes esperando respuesta por horas fuera de horario laboral, perdiendo oportunidades de venta frente a la competencia.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Agentes de IA que responden de forma instantánea 24/7 y agendan citas de manera integrada a tu calendario.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2: Clientes -->
-                        <div onclick="toggleMobileSolution('clientes')" id="card-mobile-clientes" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">group</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Clientes Centralizados</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-clientes">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-clientes">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Información de contactos dispersa en cuadernos, chats y planillas, imposibilitando el seguimiento y la fidelización.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Base de datos unificada donde cada interacción, compra e historial se registra automáticamente en su perfil.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: Inventario -->
-                        <div onclick="toggleMobileSolution('inventario')" id="card-mobile-inventario" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">inventory_2</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Inventario Actualizado</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-inventario">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-inventario">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Vender productos sin stock real o cometer errores manuales de inventario que causan quejas y cancelaciones.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Sincronización bidireccional en tiempo real entre tus locales físicos, bodegas y tiendas virtuales (E-commerce).</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 4: Facturación -->
-                        <div onclick="toggleMobileSolution('factura')" id="card-mobile-factura" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">receipt_long</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Facturación Electrónica</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-factura">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-factura">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Generar facturas o emitir boletas manualmente consume tiempo administrativo valioso y produce errores tributarios.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Emisión e integración automática de boletas o facturas con el SII en el momento exacto en que se concreta la venta.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 5: Recordatorios -->
-                        <div onclick="toggleMobileSolution('recordatorio')" id="card-mobile-recordatorio" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">notifications_active</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Recordatorios Automáticos</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-recordatorio">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-recordatorio">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Clientes que olvidan sus turnos o citas agendadas, lo que genera horas vacías y pérdidas directas de ingresos.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Notificaciones automatizadas vía WhatsApp para confirmar o reagendar de forma autónoma con un solo clic.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 6: Reportes -->
-                        <div onclick="toggleMobileSolution('reportes')" id="card-mobile-reportes" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">analytics</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Reportes Inteligentes</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-reportes">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-reportes">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Tomar decisiones de negocio a ciegas sin conocer tu rentabilidad real, flujo de caja o productos más vendidos.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Paneles visuales y resúmenes automáticos de rendimiento financiero enviados directamente a tu correo o WhatsApp.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 7: Pagos -->
-                        <div onclick="toggleMobileSolution('pagos')" id="card-mobile-pagos" class="mobile-sol-card bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm transition-all duration-300 cursor-pointer">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-accent-blue flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-lg">payments</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-slate-900 font-headline leading-tight">Pagos y Cobros Registrados</span>
-                                </div>
-                                <span class="material-symbols-outlined text-slate-400 transition-transform duration-300" id="arrow-mobile-pagos">expand_more</span>
-                            </div>
-                            <div class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3" id="content-mobile-pagos">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p class="text-xs text-rose-700 font-semibold leading-relaxed">Conciliación manual de transferencias bancarias versus pedidos recibidos, consumiendo horas de trabajo administrativo diario.</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p class="text-xs text-emerald-700 font-semibold leading-relaxed">Conciliación automática que detecta el abono en tu cuenta bancaria y marca la venta como pagada al instante.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Transformador de Procesos Interactivos -->
-                    <div id="transformation-box" class="hidden lg:block mt-8 bg-white border border-slate-200/60 rounded-2xl p-5 shadow-sm transition-all duration-300">
-                        <div class="flex items-center gap-2 text-slate-400 mb-3 select-none">
-                            <span class="material-symbols-outlined text-base">swap_horiz</span>
-                            <span class="text-xs font-bold uppercase tracking-wider font-headline">Transformador de Procesos</span>
-                        </div>
-                        <div id="trans-placeholder" class="text-xs text-slate-500 font-medium italic">
-                            Pasa el mouse o haz clic sobre cualquier tarjeta del diagrama a la derecha para ver cómo DP soluciona cada problema de desorden.
-                        </div>
-                        <div id="trans-content" class="hidden flex flex-col gap-3 transition-all duration-300 ease-in-out transform opacity-0 translate-y-1">
-                            <h4 id="trans-title" class="text-sm font-black text-slate-900 flex items-center gap-2 font-headline">
-                                <span class="w-2.5 h-2.5 rounded-full bg-accent-blue font-body mr-1"></span>
-                                WhatsApp Automatizado
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <div class="bg-rose-50/60 border border-rose-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-rose-500 uppercase tracking-wider mb-1">El Caos / Problema 🔴</p>
-                                    <p id="trans-problem" class="text-xs text-rose-700 font-semibold leading-relaxed">Clientes esperando respuesta por horas...</p>
-                                </div>
-                                <div class="bg-emerald-50/60 border border-emerald-100/50 rounded-xl p-3">
-                                    <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-wider mb-1">Con DP (Solución) 🟢</p>
-                                    <p id="trans-solution" class="text-xs text-emerald-700 font-semibold leading-relaxed">Respuestas automáticas 24/7...</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Diagram Column (Circular network graph - hidden on mobile) -->
-                <div class="hidden lg:flex relative w-full h-[480px] max-w-[500px] mx-auto items-center justify-center select-none">
-                    <!-- SVG Overlay for Connecting Lines -->
-                    <svg id="connections-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
-                    
-                    <!-- Center DP Monogram Node -->
-                    <div id="center-node" class="w-20 h-20 bg-transparent flex items-center justify-center z-20 transition-all duration-300 hover:scale-110 overflow-hidden">
-                        <img src="Diseño sin título (3).png" alt="DP Logo" class="w-full h-full object-contain p-2">
-                    </div>
-
-                    <!-- Surrounding Nodes (Cards) -->
-                    <!-- Card 1: WhatsApp -->
-                    <div id="card-whatsapp" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group top-[2%] left-1/2 -translate-x-1/2">
-                        <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">WhatsApp Automatizado</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Conectado</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 2: Clientes -->
-                    <div id="card-clientes" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group top-[20%] left-[2%] sm:left-[5%]">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">group</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Clientes Centralizados</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Sincronizado</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Inventario -->
-                    <div id="card-inventario" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group top-[20%] right-[2%] sm:right-[5%]">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">inventory_2</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Inventario Actualizado</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● En tiempo real</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Facturación -->
-                    <div id="card-factura" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group top-[50%] right-[-8%] sm:right-[-4%] -translate-y-1/2">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">receipt_long</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Facturación Electrónica</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Automatizado</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: Recordatorios -->
-                    <div id="card-recordatorio" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group bottom-[18%] right-[2%] sm:right-[5%]">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">notifications_active</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Recordatorios Automáticos</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Activado</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 6: Reportes -->
-                    <div id="card-reportes" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group bottom-[18%] left-[2%] sm:left-[5%]">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">analytics</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Reportes Inteligentes</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Actualizado</span>
-                        </div>
-                    </div>
-
-                    <!-- Card 7: Pagos -->
-                    <div id="card-pagos" class="bg-white rounded-xl shadow-md border border-slate-100 p-2.5 flex items-center gap-2.5 absolute z-10 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 cursor-pointer group top-[50%] left-[-8%] sm:left-[-4%] -translate-y-1/2">
-                        <div class="w-9 h-9 rounded-lg bg-blue-50 text-accent-blue flex items-center justify-center group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
-                            <span class="material-symbols-outlined text-lg">payments</span>
-                        </div>
-                        <div>
-                            <p class="text-xs font-bold text-slate-900 leading-tight">Pagos y Cobros Registrados</p>
-                            <span class="text-[10px] text-emerald-500 font-bold flex items-center gap-0.5">● Sincronizado</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="charla">
+              <div class="burbuja entra">A veces el repartidor no da abasto. Necesito desactivar el despacho desde la web.</div>
+              <div class="burbuja sale">Para que no pares de vender, integremos PedidosYa. El cliente paga el envío y usas los repartidores de la aplicación.</div>
             </div>
-        </section>
-
-        <!-- Section: Ejemplos de Procesos Resueltos -->
-        <section class="relative py-24 bg-slate-50 border-t border-b border-slate-100" id="casos-exito">
-            <div class="max-w-7xl mx-auto px-6 md:px-8">
-                <!-- Section Header -->
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <span class="text-xs font-bold text-accent-blue uppercase tracking-widest bg-blue-50 px-3 py-1.5 rounded-full inline-block mb-3 font-headline">Casos Reales</span>
-                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 font-headline mb-4 tracking-tight leading-tight">Procesos Resueltos por DP Sistemas</h2>
-                    <p class="text-slate-600 font-medium text-base">
-                        Conoce el impacto real de nuestras soluciones de software y automatización aplicadas a negocios que necesitaban optimizar su operación.
-                    </p>
-                </div>
-
-                <!-- Interactive Case Switcher Grid -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    
-                    <!-- Left column: Navigation Tabs (logos) -->
-                    <div class="col-span-1 lg:col-span-4 flex lg:flex-col overflow-x-auto lg:overflow-x-visible gap-3 pb-4 lg:pb-0 select-none">
-                        <!-- Project Tab 1: Bravium -->
-                        <button onclick="switchCase('bravium')" id="tab-bravium" class="case-tab-btn active-tab w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-accent-blue/30 shadow-md text-left transition-all duration-300">
-                            <div class="w-12 h-12 bg-slate-950 rounded-xl flex items-center justify-center p-1 overflow-hidden shrink-0 border border-slate-800">
-                                <img src="logo-bravium.png" alt="Bravium" class="w-full h-full object-contain">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Bravium</h4>
-                                <p class="text-[10px] text-accent-blue font-bold mt-0.5">Sistemas Contables</p>
-                            </div>
-                        </button>
-
-                        <!-- Project Tab 2: Psicocupacional -->
-                        <button onclick="switchCase('psicocupacional')" id="tab-psicocupacional" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1.5 overflow-hidden shrink-0 border border-slate-100">
-                                <img src="logo-psicocupacional.png" alt="Psicocupacional" class="w-full h-full object-contain">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Psicocupacional</h4>
-                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Portal Autogestionable</p>
-                            </div>
-                        </button>
-
-                        <!-- Project Tab 3: Lomasrico -->
-                        <button onclick="switchCase('lomasrico')" id="tab-lomasrico" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-100">
-                                <img src="logo-lomasrico.png" alt="Lomasrico" class="w-full h-full object-contain rounded-lg">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Lo Mas Rico</h4>
-                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">E-commerce & Restaurante</p>
-                            </div>
-                        </button>
-
-                        <!-- Project Tab 4: Camping Escorial -->
-                        <button onclick="switchCase('escorial')" id="tab-escorial" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
-                            <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-100">
-                                <img src="Diseño sin título (4).png" alt="Camping Escorial" class="w-full h-full object-contain rounded-lg">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Camping Escorial</h4>
-                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Portal Web & Reservas</p>
-                            </div>
-                        </button>
-
-                        <!-- Project Tab 5: Dojo Las Ranas -->
-                        <button onclick="switchCase('ranas')" id="tab-ranas" class="case-tab-btn w-full min-w-[200px] flex items-center gap-4 bg-white p-4 rounded-2xl border-2 border-transparent hover:border-slate-200 shadow-sm hover:shadow text-left transition-all duration-300">
-                            <div class="w-12 h-12 bg-slate-950 rounded-xl flex items-center justify-center p-0.5 overflow-hidden shrink-0 border border-slate-800">
-                                <img src="logo-ranapp.jpg" alt="Dojo las ranas" class="w-full h-full object-contain rounded-lg">
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-bold text-slate-900 font-headline leading-tight">Dojo Las Ranas</h4>
-                                <p class="text-[10px] text-slate-500 font-semibold mt-0.5">Gestión de Alumnos & Cobros</p>
-                            </div>
-                        </button>
-                    </div>
-
-                    <!-- Right Column: Case Details and Interactive Visual Preview -->
-                    <div class="col-span-1 lg:col-span-8 bg-white border border-slate-200/60 rounded-3xl p-6 md:p-8 shadow-md">
-                        <div id="case-content" class="transition-all duration-300 transform opacity-100 translate-y-0">
-                            <!-- Dynamically loaded content -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                                <!-- Details Text -->
-                                <div>
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div id="case-logo-container" class="w-14 h-14 bg-slate-950 rounded-2xl flex items-center justify-center p-1.5 border border-slate-800">
-                                            <img id="case-logo" src="logo-bravium.png" alt="Logo" class="w-full h-full object-contain">
-                                        </div>
-                                        <div>
-                                            <h3 id="case-name" class="text-xl font-black text-slate-900 font-headline">Bravium</h3>
-                                            <span id="case-badge" class="text-[10px] font-bold text-accent-blue bg-blue-50 px-2 py-1 rounded-md uppercase tracking-wider font-headline font-body">Sistemas Contables</span>
-                                        </div>
-                                    </div>
-                                    <p id="case-desc" class="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-                                        Plataforma contable integral para centralizar, auditar y automatizar los flujos financieros de tu negocio.
-                                    </p>
-                                    
-                                    <h4 class="text-xs font-bold text-slate-900 font-headline uppercase tracking-wider mb-3">Soluciones Clave Implementadas:</h4>
-                                    <ul id="case-features" class="space-y-2.5">
-                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
-                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
-                                            <strong>Ingesta y lectura automática de cartolas:</strong> Procesamiento con Inteligencia Artificial que digitaliza cartolas bancarias sin digitación manual.
-                                        </li>
-                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
-                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
-                                            <strong>Dashboard de conciliación en tiempo real:</strong> Panel interactivo con alertas de pagos pendientes, diferencias de montos y transacciones sin documento.
-                                        </li>
-                                        <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
-                                            <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
-                                            <strong>Reportabilidad y exportación avanzada:</strong> Filtros de búsqueda avanzados y descarga de reportes detallados en Excel formateado para auditorías.
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <!-- Custom Mini-Mockup container -->
-                                <div class="bg-slate-50 border border-slate-200/50 rounded-2xl p-1.5 shadow-inner aspect-[1.3] flex flex-col justify-center select-none" id="case-visual">
-                                    <img src="Bravium Mockup.png" alt="Bravium Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="charla">
+              <div class="burbuja sale">El sistema está en línea. Estaremos atentos a cualquier cosa.</div>
+              <div class="burbuja entra">¡Quedó hermoso! Muchas gracias.</div>
+              <div class="burbuja entra">Me ahorra caleta de tiempo. Es brutal.</div>
             </div>
-        </section>
-
-        <!-- Section 3: Primer Paso - Interactive Finder -->
-        <section class="relative py-24 bg-white" id="diagnostic">
-            <div class="max-w-5xl mx-auto px-6">
-                <div class="bg-slate-50/80 rounded-3xl border border-slate-100/60 p-8 md:p-12 shadow-xl flex flex-col lg:flex-row gap-12 items-center">
-                    
-                    <!-- Left: Mockup Dashboard -->
-                    <div class="w-full lg:w-1/2 relative select-none">
-                        <!-- Laptop Bezel Mockup -->
-                        <div class="bg-slate-900 rounded-2xl p-3 border-4 border-slate-800 shadow-2xl overflow-hidden aspect-[1.6] w-full">
-                            <div class="bg-white h-full w-full rounded-lg flex flex-col p-2 text-[10px]">
-                                <!-- Browser Bar -->
-                                <div class="flex items-center gap-1.5 pb-2 border-b border-slate-100 mb-2">
-                                    <div class="w-1.5 h-1.5 bg-red-400 rounded-full"></div>
-                                    <div class="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-                                    <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
-                                    <div class="bg-slate-100 h-3 rounded px-2 text-[6px] text-slate-400 flex items-center flex-1 max-w-[200px]">dashboard.dpsistemas.cl</div>
-                                </div>
-                                <!-- Dashboard content -->
-                                <div class="flex flex-1 gap-2 overflow-hidden">
-                                    <!-- Sidebar -->
-                                    <div class="w-10 bg-slate-50 rounded flex flex-col gap-1.5 p-1 border border-slate-100">
-                                        <div class="h-2 w-full bg-slate-200 rounded"></div>
-                                        <div class="h-1.5 w-3/4 bg-blue-100 rounded"></div>
-                                        <div class="h-1.5 w-1/2 bg-slate-100 rounded"></div>
-                                        <div class="h-1.5 w-3/4 bg-slate-100 rounded"></div>
-                                    </div>
-                                    <!-- Grid Panels -->
-                                    <div class="flex-1 grid grid-cols-2 gap-2">
-                                        <div class="bg-slate-50 border border-slate-100 p-2 rounded flex flex-col justify-between">
-                                            <span class="text-slate-400 font-bold">Ventas Totales</span>
-                                            <div class="text-sm font-headline font-black text-slate-800 mt-1">$4,850,000</div>
-                                            <div class="h-1 bg-emerald-500 rounded mt-1.5 w-3/4"></div>
-                                        </div>
-                                        <div class="bg-slate-50 border border-slate-100 p-2 rounded flex flex-col justify-between">
-                                            <span class="text-slate-400 font-bold">Ordenes</span>
-                                            <div class="text-sm font-headline font-black text-slate-800 mt-1">128</div>
-                                            <div class="h-1 bg-blue-500 rounded mt-1.5 w-1/2"></div>
-                                        </div>
-                                        <div class="bg-slate-50 border border-slate-100 p-2 rounded col-span-2 flex flex-col justify-between">
-                                            <span class="text-slate-400 font-bold mb-1">Rendimiento Operativo</span>
-                                            <!-- Simple bar chart -->
-                                            <div class="flex items-end gap-1.5 h-8 pt-1">
-                                                <div class="bg-slate-200 h-[40%] flex-1 rounded-sm"></div>
-                                                <div class="bg-slate-200 h-[60%] flex-1 rounded-sm"></div>
-                                                <div class="bg-accent-blue h-[85%] flex-1 rounded-sm"></div>
-                                                <div class="bg-slate-200 h-[50%] flex-1 rounded-sm"></div>
-                                                <div class="bg-slate-200 h-[70%] flex-1 rounded-sm"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Phone Mockup overlapping (Hidden on extra small screens) -->
-                        <div class="absolute -bottom-6 -right-6 bg-slate-900 border-4 border-slate-800 rounded-3xl w-[120px] h-[200px] shadow-2xl p-2 hidden sm:flex flex-col text-[8px] overflow-hidden select-none">
-                            <!-- Screen -->
-                            <div class="bg-white h-full w-full rounded-2xl flex flex-col p-1.5">
-                                <div class="bg-[#006970] h-5 rounded-lg flex items-center px-1.5 gap-1 text-white mb-2 shadow-sm">
-                                    <span class="material-symbols-outlined text-[8px]">support_agent</span>
-                                    <div class="font-bold scale-90 origin-left">Asistente DP</div>
-                                </div>
-                                <div class="flex flex-col gap-1.5 overflow-hidden">
-                                    <div class="bg-slate-100 p-1 rounded-md text-[6px] text-slate-600 max-w-[85%] font-medium">
-                                        ✓ WhatsApp Conectado
-                                    </div>
-                                    <div class="bg-slate-100 p-1 rounded-md text-[6px] text-slate-600 max-w-[85%] font-medium">
-                                        ✓ Stock Sincronizado
-                                    </div>
-                                    <div class="bg-blue-600 text-white p-1 rounded-md text-[6px] max-w-[85%] ml-auto font-medium shadow-sm">
-                                        ¡Reporte enviado! 🚀
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right: Solution Finder Form -->
-                    <div class="w-full lg:w-1/2">
-                        <span class="inline-block text-blue-600 font-headline font-black text-xs tracking-widest uppercase mb-3">
-                            Primer Paso
-                        </span>
-                        <h2 class="text-3xl md:text-4xl font-headline font-black text-slate-900 leading-tight mb-4">
-                            Cuéntanos tu problema.<br>Te mostramos la solución.
-                        </h2>
-                        <p class="text-slate-500 text-sm mb-8 leading-relaxed font-medium">
-                            Sin compromiso. Sin palabras vacías.
-                        </p>
-
-                        <!-- Input search container -->
-                        <div class="relative w-full max-w-md">
-                            <input type="text" id="solution-input" placeholder="¿Qué necesitas automatizar en tu negocio?"
-                                class="w-full bg-white border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-slate-800 rounded-full pl-6 pr-28 py-4 text-sm font-medium focus:outline-none transition-all shadow-sm">
-                            <button onclick="handleSubmit()" id="submit-btn" 
-                                class="absolute right-2 top-2 bottom-2 bg-[#050811] hover:bg-[#0c1830] text-white px-5 rounded-full font-headline font-bold text-sm transition-all flex items-center gap-1 active:scale-95 duration-150">
-                                Enviar
-                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                            </button>
-                        </div>
-
-                        <!-- Examples & suggestions below -->
-                        <div class="relative mt-6">
-                            <!-- Handwritten Arrow SVG (Points from text up to input) -->
-                            <svg class="absolute -top-12 -left-8 w-14 h-10 text-blue-500 hidden md:block" fill="none" viewBox="0 0 50 40">
-                                <path d="M10,35 C15,20 20,12 38,15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
-                                <path d="M30,11 L38,15 L32,22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"></path>
-                            </svg>
-
-                            <div class="text-xs text-slate-500 font-semibold tracking-wide flex flex-col gap-1.5 md:pl-8">
-                                <p class="text-slate-400">Ejemplos para hacer clic:</p>
-                                <div class="flex flex-wrap gap-x-3 gap-y-1.5 font-bold">
-                                    <button onclick="fillInput('Controlar mi taller')" class="text-slate-600 hover:text-accent-blue underline transition-all text-left">"Controlar mi taller"</button>
-                                    <button onclick="fillInput('Automatizar WhatsApp')" class="text-slate-600 hover:text-accent-blue underline transition-all text-left">"Automatizar WhatsApp"</button>
-                                    <button onclick="fillInput('Gestionar inventario')" class="text-slate-600 hover:text-accent-blue underline transition-all text-left">"Gestionar inventario"</button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="charla">
+              <div class="burbuja entra">¿Puedo cambiar de pasarela de pago? Mercado Pago nos ofrece un mejor trato. ¿Podemos adaptar la página?</div>
+              <div class="burbuja sale">Por supuesto. Es tu elección: <span class="chip mpago"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8" fill="#009ee3"/><rect x="3.2" y="4.8" width="9.6" height="6.8" rx="1.2" fill="#fff"/><rect x="3.2" y="6.5" width="9.6" height="1.35" fill="#009ee3"/></svg>Mercado Pago</span> <span class="chip webpay"><svg viewBox="0 0 16 16" aria-hidden="true"><rect width="16" height="16" rx="4" fill="#d20a11"/><path fill="#fff" d="M3.2 5.2h2.1l2.7 4.2 2.7-4.2h2.1L8 12.2z"/></svg>Webpay</span> <span class="chip haulmer"><svg viewBox="0 0 16 16" aria-hidden="true"><rect width="16" height="16" rx="4" fill="#171717"/><path fill="#ffe14a" d="M3.4 3.2h3.4v4.1h2.4V3.2h3.4v9.6h-3.4V8.6H6.8v4.2H3.4z"/></svg>Haulmer</span></div>
             </div>
-        </section>
-
-        <!-- Solution Diagnostics Modal (Hidden initially) -->
-        <div id="solution-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div class="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl border border-slate-100 relative transform transition-all duration-300 scale-95 opacity-0" id="modal-container">
-                <!-- Close Button -->
-                <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 focus:outline-none">
-                    <span class="material-symbols-outlined text-2xl">close</span>
-                </button>
-
-                <!-- Modal Content -->
-                <div class="flex flex-col gap-6">
-                    <div class="w-12 h-12 bg-blue-50 text-accent-blue rounded-2xl flex items-center justify-center">
-                        <span class="material-symbols-outlined text-2xl" id="modal-icon">smart_toy</span>
-                    </div>
-                    <div>
-                        <h3 class="text-xl md:text-2xl font-headline font-black text-slate-900 mb-3" id="modal-title">Propuesta de Automatización</h3>
-                        <p class="text-slate-600 text-sm leading-relaxed" id="modal-description">Analizando tu requerimiento...</p>
-                    </div>
-
-                    <!-- Divider -->
-                    <div class="h-px bg-slate-100 w-full"></div>
-
-                    <!-- Call To Action -->
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="#" id="modal-whatsapp-btn" target="_blank"
-                            class="flex-1 bg-[#050811] hover:bg-[#0c1830] text-white py-3 rounded-xl font-headline font-bold text-sm text-center transition-all flex items-center justify-center gap-1">
-                            Conversar por WhatsApp
-                            <span class="material-symbols-outlined text-sm">open_in_new</span>
-                        </a>
-                        <button onclick="closeModal()"
-                            class="bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 px-6 rounded-xl font-headline font-bold text-sm transition-all">
-                            Cerrar
-                        </button>
-                    </div>
+          </div>
+          <div class="mapa-ventana" id="mapa-ventana">
+            <div class="mapa-pista" id="mapa-pista">
+              <span class="mapa-eje" aria-hidden="true"><span class="mapa-eje-lleno" id="mapa-lleno"></span></span>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Contacto</h3>
+                  <p>Un local nos escribe, o lo contactamos. Ahí empieza.</p>
                 </div>
+              </article>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Falencias</h3>
+                  <p>Vemos qué falla en la forma de trabajar y, en ese mismo momento, planteamos una salida.</p>
+                </div>
+              </article>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Escuchamos</h3>
+                  <p>Todo negocio es distinto. La solución se tiene que adaptar al de ellos.</p>
+                </div>
+              </article>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Solución</h3>
+                  <p>La salida se plantea mientras se escucha, para que ese negocio no deje de funcionar.</p>
+                </div>
+              </article>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Entrega</h3>
+                  <p>El sistema queda en línea. Seguimos atentos a cualquier cosa.</p>
+                </div>
+              </article>
+              <article class="etapa">
+                <span class="etapa-punto"></span>
+                <div class="etapa-carta">
+                  <h3>Adaptación</h3>
+                  <p>Si quieren otra pasarela, el sistema cambia con ellos. Es su elección.</p>
+                </div>
+              </article>
             </div>
+          </div>
         </div>
-    </main>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#050811] text-white border-t border-white/5">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 px-6 md:px-8 py-16 max-w-7xl mx-auto font-body text-sm leading-relaxed">
-            <!-- Col 1: Logo & Description -->
-            <div class="flex flex-col gap-4">
-                <div>
-                    <img src="Diseño sin título (3).png" alt="DP Sistemas Logo" class="h-14 w-auto object-contain">
-                </div>
-                <p class="text-slate-400 text-xs leading-relaxed text-pretty">
-                    Desarrollamos sistemas y automatizaciones a medida para PYMEs que quieren crecer sin perder el control.
-                </p>
-            </div>
-            
-            <!-- Col 2: Contact details -->
-            <div>
-                <h4 class="font-headline font-bold text-white mb-4 text-xs tracking-wider uppercase">Contacto directo</h4>
-                <ul class="space-y-3 font-semibold">
-                    <li>
-                        <a class="text-slate-400 hover:text-white transition-colors flex items-center gap-2" href="https://wa.me/56974342276" target="_blank">
-                            <span class="material-symbols-outlined text-sm">sms</span>
-                            +56 9 7434 2276
-                        </a>
-                    </li>
-                    <li>
-                        <a class="text-slate-400 hover:text-white transition-colors flex items-center gap-2" href="mailto:contacto@dpsistemas.cl">
-                            <span class="material-symbols-outlined text-sm">mail</span>
-                            contacto@dpsistemas.cl
-                        </a>
-                    </li>
-                    <li class="text-slate-400 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">location_on</span>
-                        Viña del Mar, Chile
-                    </li>
-                </ul>
-            </div>
+  <section class="frase" aria-label="Qué hacemos">
+    <p><span>En <em class="dp">DP Sistemas</em>, con tecnología, recuperamos el tiempo y las horas de sueño del trabajo administrativo.</span><span>Automatizamos, digitalizamos y dejamos tu energía para el negocio.</span></p>
+  </section>
 
-            <!-- Col 3: Social media & Legal -->
-            <div>
-                <h4 class="font-headline font-bold text-white mb-4 text-xs tracking-wider uppercase">Síguenos</h4>
-                <div class="flex gap-4 mb-5">
-                    <a href="https://instagram.com" target="_blank" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
-                        <span class="material-symbols-outlined text-base">link</span>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
-                        <span class="material-symbols-outlined text-base">group</span>
-                    </a>
-                    <a href="https://wa.me/56974342276" target="_blank" class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all">
-                        <span class="material-symbols-outlined text-base">chat</span>
-                    </a>
-                </div>
-                <ul class="space-y-3 text-xs">
-                    <li><a class="text-slate-500 hover:text-white transition-colors" href="#">Política de Privacidad</a></li>
-                    <li><a class="text-slate-500 hover:text-white transition-colors" href="#">Términos de Servicio</a></li>
-                </ul>
-            </div>
-        </div>
+  <footer class="pie" id="contacto">
+    <div class="pie-cuerpo">
+      <div class="pie-marca">
+        <strong>DP Sistemas</strong>
+        <p>Sistemas y automatizaciones a la medida de cada negocio.</p>
+      </div>
+      <div class="pie-contacto">
+        <h2>Contacto</h2>
+        <a class="pie-boton" href="https://wa.me/56974342276?text=Hola%2C%20quisiera%20conversar%20sobre%20un%20sistema" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+        <a class="pie-mail" href="mailto:contacto@dpsistemas.cl">contacto@dpsistemas.cl</a>
+      </div>
+      <div class="pie-redes">
+        <h2>Redes</h2>
+        <a class="red" href="https://wa.me/56974342276" target="_blank" rel="noopener" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.15 6.4 2.15 11.83c0 1.74.46 3.44 1.34 4.94L2 22l5.39-1.4a10 10 0 0 0 4.65 1.18h.01c5.46 0 9.89-4.4 9.89-9.83C21.94 6.4 17.5 2 12.04 2zm5.76 13.85c-.24.68-1.4 1.3-1.94 1.38-.5.07-1.12.1-1.81-.11-.41-.13-.95-.31-1.64-.6-2.88-1.24-4.76-4.14-4.9-4.33-.14-.2-1.16-1.54-1.16-2.94s.73-2.08 1-2.37c.24-.27.64-.4 1.02-.4.12 0 .23 0 .33.01.3.01.44-.02.68.52.26.58.87 2 .95 2.15.08.14.13.31.03.5-.1.2-.16.31-.3.48-.14.16-.3.36-.43.48-.14.13-.29.28-.12.54.16.26.73 1.2 1.57 1.95 1.08.96 1.98 1.26 2.26 1.4.28.14.44.12.6-.07.17-.2.7-.81.88-1.09.19-.28.37-.23.62-.14.26.09 1.62.76 1.9.9.28.14.46.2.53.32.07.12.07.68-.17 1.36z"/></svg>
+        </a>
+        <p>Viña del Mar, Chile</p>
+      </div>
+    </div>
+    <p class="pie-legal">© 2026 DP Sistemas y Automatizaciones.</p>
+  </footer>
 
-        <!-- Bottom Copyright -->
-        <div class="max-w-7xl mx-auto px-6 md:px-8 pb-8">
-            <div class="bg-white/5 h-px w-full mb-8"></div>
-            <p class="text-slate-500 text-xs text-center">© 2026 DP Sistemas y Automatizaciones SpA. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+  <script>
+    const logo = document.querySelector(".logo");
+    const marca = logo.querySelector(".marca");
+    const lienzos = new Map();
 
-    <!-- Interactive Navigation and Connections Script -->
-    <script>
-        // Transparent to Scroll-Blur Navbar
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('bg-[#050811]/90', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/10', 'py-2');
-                nav.classList.remove('bg-transparent', 'py-4');
-            } else {
-                nav.classList.remove('bg-[#050811]/90', 'backdrop-blur-md', 'shadow-lg', 'border-b', 'border-white/10', 'py-2');
-                nav.classList.add('bg-transparent', 'py-4');
-            }
-        });
+    function luminancia(r, g, b) {
+      return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    }
 
-        // Mobile Nav Overlay Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+    function pixel(img, x, y) {
+      if (!img.naturalWidth) return null;
+      const rect = img.getBoundingClientRect();
+      const escala = Math.min(rect.width / img.naturalWidth, rect.height / img.naturalHeight);
+      const ancho = img.naturalWidth * escala;
+      const alto = img.naturalHeight * escala;
+      const origenX = rect.left + (rect.width - ancho) / 2;
+      const origenY = rect.top + (rect.height - alto) / 2;
+      if (x < origenX || y < origenY || x > origenX + ancho || y > origenY + alto) return null;
+      let lienzo = lienzos.get(img.src);
+      if (!lienzo) {
+        lienzo = document.createElement("canvas");
+        lienzo.width = 64;
+        lienzo.height = Math.max(1, Math.round(64 * img.naturalHeight / img.naturalWidth));
+        lienzo.getContext("2d").drawImage(img, 0, 0, lienzo.width, lienzo.height);
+        lienzos.set(img.src, lienzo);
+      }
+      const datos = lienzo.getContext("2d").getImageData(
+        Math.min(lienzo.width - 1, Math.max(0, Math.floor((x - origenX) / ancho * lienzo.width))),
+        Math.min(lienzo.height - 1, Math.max(0, Math.floor((y - origenY) / alto * lienzo.height))),
+        1, 1
+      ).data;
+      if (datos[3] < 16) return null;
+      return luminancia(datos[0], datos[1], datos[2]);
+    }
+
+    function tonoEn(x, y) {
+      for (const el of document.elementsFromPoint(x, y)) {
+        if (el.closest(".cabecera")) continue;
+        if (el.tagName === "IMG") {
+          let valor = null;
+          try { valor = pixel(el, x, y); } catch (error) { continue; }
+          if (valor != null) return valor;
+          continue;
         }
+        const color = getComputedStyle(el).backgroundColor;
+        const partes = color.match(/[\d.]+/g);
+        if (!partes) continue;
+        const alfa = partes.length > 3 ? Number(partes[3]) : 1;
+        if (alfa < 0.35) continue;
+        return luminancia(Number(partes[0]), Number(partes[1]), Number(partes[2]));
+      }
+      const fondo = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
+      if (!fondo) return 1;
+      return luminancia(Number(fondo[0]), Number(fondo[1]), Number(fondo[2]));
+    }
 
-        // Data for interactive transformation box
-        const transformationData = {
-            whatsapp: {
-                title: "WhatsApp Automatizado",
-                problem: "Clientes esperando respuesta por horas fuera de horario laboral, perdiendo oportunidades de venta frente a la competencia.",
-                solution: "Agentes de IA que responden de forma instantánea 24/7 y agendan citas de manera integrada a tu calendario."
-            },
-            clientes: {
-                title: "Clientes Centralizados",
-                problem: "Información de contactos dispersa en cuadernos, chats y planillas, imposibilitando el seguimiento y la fidelización.",
-                solution: "Base de datos unificada donde cada interacción, compra e historial se registra automáticamente en su perfil."
-            },
-            inventario: {
-                title: "Inventario Actualizado",
-                problem: "Vender productos sin stock real o cometer errores manuales de inventario que causan quejas y cancelaciones.",
-                solution: "Sincronización bidireccional en tiempo real entre tus locales físicos, bodegas y tiendas virtuales (E-commerce)."
-            },
-            factura: {
-                title: "Facturación Electrónica",
-                problem: "Generar facturas o emitir boletas manualmente consume tiempo administrativo valioso y produce errores tributarios.",
-                solution: "Emisión e integración automática de boletas o facturas con el SII en el momento exacto en que se concreta la venta."
-            },
-            recordatorio: {
-                title: "Recordatorios Automáticos",
-                problem: "Clientes que olvan sus turnos o citas agendadas, lo que genera horas vacías y pérdidas directas de ingresos.",
-                solution: "Notificaciones automatizadas vía WhatsApp para confirmar o reagendar de forma autónoma con un solo clic."
-            },
-            reportes: {
-                title: "Reportes Inteligentes",
-                problem: "Tomar decisiones de negocio a ciegas sin conocer tu rentabilidad real, flujo de caja o productos más vendidos.",
-                solution: "Paneles visuales y resúmenes automáticos de rendimiento financiero enviados directamente a tu correo o WhatsApp."
-            },
-            pagos: {
-                title: "Pagos y Cobros Registrados",
-                problem: "Conciliación manual de transferencias bancarias versus pedidos recibidos, consumiendo horas de trabajo administrativo diario.",
-                solution: "Conciliación automática que detecta el abono en tu cuenta bancaria y marca la venta como pagada al instante."
-            }
+    const nombre = logo.querySelector(".nombre");
+    let marcaLista = false;
+
+    function luzMedia(caja) {
+      const muestras = [0.25, 0.5, 0.75].map((n) => tonoEn(caja.left + caja.width * n, caja.top + caja.height * 0.5));
+      return muestras.reduce((suma, valor) => suma + valor, 0) / muestras.length;
+    }
+
+    function tintaNegra(actual, luz) {
+      if (!marcaLista) return luz > 0.58;
+      return actual ? luz > 0.4 : luz > 0.72;
+    }
+
+    const menuLateral = document.getElementById("menu-lateral");
+    const menuFondo = document.getElementById("menu-fondo");
+    const menuAbrir = document.querySelector(".menu-abrir");
+
+    function fijarMenu(abierto) {
+      menuLateral.classList.toggle("abierto", abierto);
+      menuFondo.classList.toggle("abierto", abierto);
+      document.body.classList.toggle("menu-abierto", abierto);
+      menuAbrir.setAttribute("aria-expanded", abierto ? "true" : "false");
+    }
+
+    menuAbrir.addEventListener("click", () => fijarMenu(!menuLateral.classList.contains("abierto")));
+    menuFondo.addEventListener("click", () => fijarMenu(false));
+    menuLateral.querySelector(".menu-cerrar").addEventListener("click", () => fijarMenu(false));
+    menuLateral.querySelectorAll("a").forEach((enlace) => enlace.addEventListener("click", () => fijarMenu(false)));
+    document.addEventListener("keydown", (evento) => {
+      if (evento.key === "Escape") fijarMenu(false);
+    });
+
+    function ajustarVidrios() {
+      document.querySelectorAll(".vidrio").forEach((boton) => {
+        const caja = boton.getBoundingClientRect();
+        if (caja.right < 0 || caja.left > window.innerWidth || caja.bottom < 0 || caja.top > window.innerHeight) return;
+        const luz = luzMedia(caja);
+        const oscuro = boton.classList.contains("sobre-oscuro");
+        const fondoOscuro = marcaLista
+          ? (oscuro ? luz < 0.68 : luz < 0.42)
+          : luz < 0.55;
+        boton.classList.toggle("sobre-oscuro", fondoOscuro);
+      });
+    }
+
+    function ajustarMarca() {
+      ajustarVidrios();
+      const pNegra = tintaNegra(logo.classList.contains("p-negra"), luzMedia(marca.getBoundingClientRect()));
+      const textoNegro = tintaNegra(logo.classList.contains("texto-negro"), luzMedia(nombre.getBoundingClientRect()));
+      const p = pNegra ? "p-negra" : "p-blanca";
+      const texto = textoNegro ? "texto-negro" : "texto-blanco";
+      const cambioP = marcaLista && !logo.classList.contains(p);
+      if (logo.classList.contains(p) && logo.classList.contains(texto)) {
+        marcaLista = true;
+        return;
+      }
+      logo.classList.remove("p-negra", "p-blanca", "texto-negro", "texto-blanco", "sobre-oscuro", "gira");
+      logo.classList.add(p, texto);
+      if (cambioP) {
+        void logo.offsetWidth;
+        logo.classList.add("gira");
+      }
+      marcaLista = true;
+    }
+
+    let marco = 0;
+    function pedirMarca() {
+      cancelAnimationFrame(marco);
+      marco = requestAnimationFrame(ajustarMarca);
+    }
+
+    window.addEventListener("scroll", pedirMarca, { passive: true });
+    window.addEventListener("resize", pedirMarca);
+    window.addEventListener("load", pedirMarca);
+    pedirMarca();
+
+    const catalogo = {
+      lomasrico: ["tienda", "Tienda web", "salon", "Salón", "cocina", "Cocina", "caja", "Caja", "reparto", "Reparto", "inventario", "Inventario", "clientes", "Clientes", "resumen", "Resumen"],
+      psicocupacional: ["club", "Club", "noticias", "Noticias", "fotos", "Fotos", "videos", "Videos", "galeria", "Galería", "recursos", "Recursos", "contacto", "Contacto"],
+      camping: ["tarifas", "Tarifas", "mapa", "Mapa", "parcelas", "Parcelas", "reservas", "Reservas", "reglamento", "Reglamento", "contacto", "Contacto"],
+      dojo: ["resumen", "Resumen", "alumnos", "Alumnos", "asistencia", "Asistencia", "finanzas", "Finanzas", "biblioteca", "Biblioteca", "comunicaciones", "Comunicaciones", "sitio", "Sitio web"],
+      calipso: ["resumen", "Resumen", "catalogo", "Catálogo", "caja", "Caja", "inventarios", "Inventarios", "compras", "Compras", "reportes", "Reportes", "proveedores", "Proveedores", "personal", "Personal"],
+      bravium: ["facturas", "Facturas", "cartolas", "Cartolas", "conciliacion", "Conciliación", "pagos", "Pagos", "proveedores", "Proveedores", "exportacion", "Exportación"],
+      academias: ["resumen", "Resumen", "alumnos", "Alumnos", "horarios", "Horarios", "asistencia", "Asistencia", "grados", "Grados", "finanzas", "Finanzas", "eventos", "Eventos", "biblioteca", "Biblioteca"]
+    };
+    const frente = { lomasrico: "cocina", psicocupacional: "fotos", camping: "reservas", dojo: "alumnos", calipso: "caja", bravium: "conciliacion", academias: "alumnos" };
+    const resumenes = {
+      lomasrico: {
+        tienda: "La tienda web. El cliente arma su pedido y ese pedido entra a cocina junto con los demás canales.",
+        salon: "Las mesas del local. El pedido del salón llega a cocina igual que el de la web.",
+        cocina: "En este módulo ingresan los pedidos desde todos los canales: la caja, la web, Uber Eats y PedidosYa. Se imprime una comanda física al instante y un sonido avisa al personal.",
+        caja: "El cobro del local. Lo que se vende queda registrado, en efectivo o con el medio de pago del momento.",
+        reparto: "El despacho. Desde aquí se ve qué pedido sale y se apoya en repartidores cuando el local no da abasto.",
+        inventario: "El stock baja según lo que se vende. Se ve qué falta antes de que se acabe.",
+        clientes: "Quién compra y cómo contactarlo, sin llevarlo en una planilla aparte.",
+        resumen: "El día en una vista: ventas, pedidos y lo que hay que mirar."
+      },
+      psicocupacional: {
+        club: "El espacio del grupo: actividades y lo que se comparte con las familias.",
+        noticias: "Avisos y novedades que el centro publica por su cuenta.",
+        fotos: "Las fotos de las actividades. Se suben y quedan visibles para las familias.",
+        videos: "Los videos de las sesiones, para mostrar el trabajo real del centro.",
+        galeria: "Fotos y videos juntos, listos para recorrer.",
+        recursos: "Material para las familias y para el trabajo del centro.",
+        contacto: "Cómo llegar y cómo escribir. Desde aquí se toma contacto."
+      },
+      camping: {
+        tarifas: "Los precios del camping, publicados para consultarlos sin llamar.",
+        mapa: "El terreno y cómo llegar a cada sector.",
+        parcelas: "Las parcelas y cómo está armado el camping.",
+        reservas: "La reserva directa, con las fechas, sin pasar por otra plataforma.",
+        reglamento: "Las reglas del lugar, a la vista antes de llegar.",
+        contacto: "Cómo llegar y cómo escribir para reservar."
+      },
+      dojo: {
+        resumen: "El día del dojo: alumnos, pagos y lo que hay que revisar.",
+        alumnos: "La ficha de cada alumno, su grado y su estado.",
+        asistencia: "Quién vino a clase. Se marca y queda el registro.",
+        finanzas: "Mensualidades y pagos, con fecha y monto, sin anotarlos a mano.",
+        biblioteca: "Material de consulta para alumnos y profesores.",
+        comunicaciones: "Avisos del dojo a los alumnos y a las familias.",
+        sitio: "La página pública: horarios, clases y cómo inscribirse."
+      },
+      calipso: {
+        resumen: "El día de la ferretería: ventas, stock y lo pendiente.",
+        catalogo: "Los productos y sus precios, para vender sin buscar en una lista.",
+        caja: "El cobro en el mesón. Cada venta queda registrada.",
+        inventarios: "Qué hay en bodega y qué hay que reponer.",
+        compras: "Los pedidos a proveedores cuando falta mercadería.",
+        reportes: "Ventas y movimiento, para ver cómo va el mes.",
+        proveedores: "Quién abastece y cómo contactarlo.",
+        personal: "El equipo del local y su acceso al sistema."
+      },
+      bravium: {
+        facturas: "Las facturas del negocio, reunidas para revisarlas.",
+        cartolas: "Los movimientos del banco, listos para compararlos con lo registrado.",
+        conciliacion: "Se cruza lo del banco con lo del negocio y se ve qué falta por cuadrar.",
+        pagos: "Los pagos a proveedores y el registro de cada uno.",
+        proveedores: "A quién se le paga y el historial de ese pago.",
+        exportacion: "La información lista para llevarla a la contabilidad."
+      },
+      academias: {
+        resumen: "La sede en una vista: alumnos, clases y pagos.",
+        alumnos: "La ficha de cada alumno y su avance.",
+        horarios: "Las clases de la semana, por sede.",
+        asistencia: "La lista de la clase. Se marca y queda guardada.",
+        grados: "El grado de cada alumno y cuándo corresponde el siguiente.",
+        finanzas: "Mensualidades y pagos de la academia.",
+        eventos: "Seminarios, exámenes y actividades de la sede.",
+        biblioteca: "Material de estudio para alumnos y profesores."
+      }
+    };
+    const radioX = 13;
+    const radioY = 40;
+    const pivote = 110;
+    const velo = document.createElement("button");
+    velo.type = "button";
+    velo.className = "velo";
+    velo.setAttribute("aria-label", "Cerrar");
+    document.body.appendChild(velo);
+    velo.addEventListener("click", () => {
+      const abierta = document.querySelector("body > .modulo.elegido.al-frente");
+      if (abierta) abierta.click();
+    });
+    let giroVelo = false;
+    velo.addEventListener("wheel", (evento) => {
+      if (window.matchMedia("(max-width: 720px)").matches) return;
+      const abierta = document.querySelector("body > .modulo.elegido.al-frente");
+      if (!abierta) return;
+      evento.preventDefault();
+      if (giroVelo) return;
+      const avance = evento.deltaY || evento.deltaX;
+      if (!avance) return;
+      const dueño = document.querySelector(`.banner[data-proyecto="${abierta.dataset.proyecto}"]:not([data-clon])`);
+      if (!dueño) return;
+      giroVelo = true;
+      dueño.dispatchEvent(new CustomEvent("dp-girar", { detail: avance > 0 ? 1 : -1 }));
+      window.setTimeout(() => { giroVelo = false; }, 480);
+    }, { passive: false });
+
+    document.querySelectorAll(".banner").forEach((banner) => {
+      const pares = catalogo[banner.dataset.proyecto];
+      const modulos = [];
+      for (let i = 0; i < pares.length; i += 2) modulos.push([pares[i], pares[i + 1]]);
+      const zona = banner.querySelector(".ventana");
+      const rueda = banner.querySelector(".rueda");
+      const paso = 360 / modulos.length;
+      let angulo = modulos.findIndex(([id]) => id === frente[banner.dataset.proyecto]) * paso;
+      let elegido = null;
+      let origenX = null;
+      let anguloAlPresionar = 0;
+      let arrastrandoRueda = false;
+      let fueGesto = false;
+
+      const fichas = modulos.map(([id, nombre], i) => {
+        const boton = document.createElement("button");
+        boton.type = "button";
+        boton.className = "modulo";
+        boton.dataset.id = id;
+        boton.dataset.proyecto = banner.dataset.proyecto;
+        boton.innerHTML = `<span class="modulo-nombre">${nombre}</span><span class="modulo-resumen">${resumenes[banner.dataset.proyecto][id]}</span>`;
+        rueda.appendChild(boton);
+        boton.addEventListener("click", () => {
+          if (fueGesto) {
+            fueGesto = false;
+            return;
+          }
+          if (Math.abs(gradosDe(i)) > paso / 2) {
+            elegido = id;
+            banner.dataset.modulo = id;
+            enfocar(i);
+            return;
+          }
+          elegido = elegido === id ? null : id;
+          banner.dataset.modulo = elegido || "";
+          colocar(true);
+        });
+        return boton;
+      });
+
+      function gradosDe(i) {
+        return ((i * paso - angulo) % 360 + 540) % 360 - 180;
+      }
+
+      function colocar(animar) {
+        const suave = animar && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const movil = window.matchMedia("(max-width: 720px)").matches;
+        const radio = movil ? 22 : radioX;
+        fichas.forEach((ficha, i) => {
+          const grados = gradosDe(i);
+          const rad = grados * Math.PI / 180;
+          const abierta = ficha.dataset.id === elegido && Math.abs(grados) < paso / 2;
+          const alFrente = Math.abs(grados) < paso / 2;
+          const enPantalla = abierta;
+          const veniaDePantalla = ficha.parentElement === document.body;
+          ficha.style.opacity = "";
+          ficha.style.pointerEvents = "";
+          ficha.style.width = "";
+          ficha.style.height = "";
+          ficha.style.maxHeight = "";
+          ficha.style.overflow = "";
+          ficha.classList.toggle("al-frente", alFrente);
+          ficha.classList.toggle("elegido", ficha.dataset.id === elegido);
+          ficha.setAttribute("aria-pressed", ficha.dataset.id === elegido ? "true" : "false");
+          if (enPantalla) {
+            ficha.style.transition = veniaDePantalla && suave ? "" : "none";
+            document.body.appendChild(ficha);
+            ficha.style.position = "fixed";
+            ficha.style.left = "50%";
+            ficha.style.top = "50%";
+            ficha.style.right = "";
+            ficha.style.bottom = "";
+            ficha.style.transform = "translate(-50%, -50%)";
+            ficha.style.zIndex = "140";
+            return;
+          }
+          ficha.style.transition = veniaDePantalla || !suave ? "none" : "";
+          if (ficha.parentElement !== rueda) rueda.appendChild(ficha);
+          ficha.style.position = "";
+          ficha.style.left = `${50 + Math.sin(rad) * radio}%`;
+          ficha.style.top = `${pivote - Math.cos(rad) * radioY}%`;
+          const subida = abierta ? -56 : -50;
+          ficha.style.transform = movil && alFrente
+            ? `translate(-50%, calc(-50% - 12px)) rotate(${grados}deg)`
+            : `translate(-50%, ${subida}%) rotate(${grados}deg)`;
+          ficha.style.zIndex = String(100 - Math.round(Math.abs(grados)));
+        });
+        velo.classList.toggle("activo", fichas.some((ficha) => ficha.classList.contains("elegido") && ficha.classList.contains("al-frente")));
+      }
+
+      function indiceFrente() {
+        let mejor = 0;
+        let menor = Infinity;
+        fichas.forEach((_, i) => {
+          const distancia = Math.abs(gradosDe(i));
+          if (distancia < menor) {
+            menor = distancia;
+            mejor = i;
+          }
+        });
+        return mejor;
+      }
+
+      function enfocar(i) {
+        let destino = i * paso;
+        while (destino < angulo - 180) destino += 360;
+        while (destino > angulo + 180) destino -= 360;
+        angulo = destino;
+        colocar(true);
+      }
+
+      function acercar() {
+        angulo = Math.round(angulo / paso) * paso;
+        if (elegido) {
+          elegido = fichas[indiceFrente()].dataset.id;
+          banner.dataset.modulo = elegido;
+        }
+        colocar(true);
+      }
+
+      function girar(delta) {
+        const siguiente = (indiceFrente() + delta + fichas.length) % fichas.length;
+        if (elegido) {
+          elegido = fichas[siguiente].dataset.id;
+          banner.dataset.modulo = elegido;
+        }
+        enfocar(siguiente);
+      }
+
+      zona.addEventListener("pointerdown", (evento) => {
+        if (evento.button !== 0) return;
+        origenX = evento.clientX;
+        anguloAlPresionar = angulo;
+        arrastrandoRueda = false;
+      });
+      zona.addEventListener("pointermove", (evento) => {
+        if (origenX == null) return;
+        const dx = evento.clientX - origenX;
+        if (!arrastrandoRueda && Math.abs(dx) < 8) return;
+        if (!arrastrandoRueda) {
+          arrastrandoRueda = true;
+          zona.setPointerCapture(evento.pointerId);
+          colocar(false);
+        }
+        angulo = anguloAlPresionar - dx / banner.clientWidth * 240;
+        colocar(false);
+      });
+      function soltar(evento) {
+        if (origenX == null) return;
+        origenX = null;
+        if (!arrastrandoRueda) return;
+        arrastrandoRueda = false;
+        fueGesto = true;
+        acercar();
+      }
+      zona.addEventListener("pointerup", soltar);
+      zona.addEventListener("pointercancel", soltar);
+      zona.addEventListener("click", (evento) => {
+        if (evento.target.closest(".modulo") || !elegido) return;
+        elegido = null;
+        banner.dataset.modulo = "";
+        colocar(true);
+      });
+      let giroPendiente = false;
+      zona.addEventListener("wheel", (evento) => {
+        if (!elegido || window.matchMedia("(max-width: 720px)").matches) return;
+        evento.preventDefault();
+        if (giroPendiente) return;
+        const avance = evento.deltaY || evento.deltaX;
+        if (!avance) return;
+        giroPendiente = true;
+        girar(avance > 0 ? 1 : -1);
+        window.setTimeout(() => { giroPendiente = false; }, 480);
+      }, { passive: false });
+      banner.addEventListener("dp-girar", (evento) => girar(evento.detail));
+      zona.addEventListener("keydown", (evento) => {
+        if (evento.key !== "ArrowRight" && evento.key !== "ArrowLeft") return;
+        evento.preventDefault();
+        evento.stopPropagation();
+        girar(evento.key === "ArrowRight" ? 1 : -1);
+      });
+      colocar(false);
+    });
+
+    const slider = document.getElementById("proyectos");
+    const pista = document.getElementById("pista");
+    const reales = [...pista.children];
+    const total = reales.length;
+    const clonUltimo = reales[total - 1].cloneNode(true);
+    const clonPrimero = reales[0].cloneNode(true);
+    [clonUltimo, clonPrimero].forEach((nodo) => {
+      nodo.dataset.clon = "1";
+      nodo.setAttribute("aria-hidden", "true");
+      nodo.querySelectorAll("button, [tabindex]").forEach((el) => { el.tabIndex = -1; });
+    });
+    pista.insertBefore(clonUltimo, reales[0]);
+    pista.appendChild(clonPrimero);
+    let indice = 1;
+    let arrastrando = false;
+    let origenSlide = 0;
+
+    function espejar(desde, hacia) {
+      desde.querySelectorAll(".modulo").forEach((mod, i) => {
+        const copia = hacia.querySelectorAll(".modulo")[i];
+        if (!copia) return;
+        copia.style.cssText = mod.style.cssText;
+        copia.className = mod.className;
+      });
+    }
+
+    let animacionSlide = null;
+    let turnoSlide = 0;
+
+    function mover(animar) {
+      const x = -indice * slider.clientWidth;
+      const destino = `translateX(${x}px)`;
+      if (animacionSlide) {
+        animacionSlide.cancel();
+        animacionSlide = null;
+      }
+      const suave = animar && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!suave) {
+        pista.style.transition = "none";
+        pista.style.transform = destino;
+        return Promise.resolve();
+      }
+      const animacion = pista.animate(
+        [{ transform: getComputedStyle(pista).transform }, { transform: destino }],
+        { duration: 850, easing: "ease", fill: "forwards" }
+      );
+      animacionSlide = animacion;
+      return new Promise((resolver) => {
+        const terminar = () => {
+          if (animacionSlide !== animacion) return;
+          pista.style.transition = "none";
+          pista.style.transform = destino;
+          animacion.cancel();
+          animacionSlide = null;
+          resolver();
         };
+        animacion.onfinish = terminar;
+        window.setTimeout(() => {
+          if (animacionSlide === animacion) animacion.finish();
+        }, 900);
+      });
+    }
 
-        const allCardIds = ['whatsapp', 'clientes', 'inventario', 'factura', 'recordatorio', 'reportes', 'pagos'];
-
-        // Show transformation details in the box
-        function showTransformation(cardId) {
-            const data = transformationData[cardId];
-            if (!data) return;
-            
-            const placeholder = document.getElementById('trans-placeholder');
-            const content = document.getElementById('trans-content');
-            
-            const updateTexts = () => {
-                const titleEl = document.getElementById('trans-title');
-                const problemEl = document.getElementById('trans-problem');
-                const solutionEl = document.getElementById('trans-solution');
-                
-                if (titleEl) {
-                    titleEl.innerHTML = `
-                        <span class="w-2.5 h-2.5 rounded-full bg-accent-blue inline-block mr-1"></span>
-                        ${data.title}
-                    `;
-                }
-                if (problemEl) problemEl.innerText = data.problem;
-                if (solutionEl) solutionEl.innerText = data.solution;
-            };
-
-            if (placeholder && !placeholder.classList.contains('hidden')) {
-                placeholder.classList.add('hidden');
-                content.classList.remove('hidden');
-                updateTexts();
-                setTimeout(() => {
-                    content.classList.remove('opacity-0', 'translate-y-1');
-                    content.classList.add('opacity-100', 'translate-y-0');
-                }, 10);
-                return;
-            }
-
-            // Smooth fade-out and fade-in transitions
-            content.classList.remove('opacity-100', 'translate-y-0');
-            content.classList.add('opacity-0', 'translate-y-1');
-            
-            setTimeout(() => {
-                updateTexts();
-                content.classList.remove('opacity-0', 'translate-y-1');
-                content.classList.add('opacity-100', 'translate-y-0');
-            }, 150);
+    function ir(delta) {
+      const turno = ++turnoSlide;
+      const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reducido) {
+        const actual = indice === 0 ? total : indice === total + 1 ? 1 : indice;
+        indice = ((actual - 1 + delta) % total + total) % total + 1;
+        mover(false);
+        return;
+      }
+      if (indice === 0 || indice === total + 1) {
+        indice = indice === 0 ? total : 1;
+        mover(false);
+      }
+      const destino = indice + delta;
+      if (destino === 0) espejar(reales[total - 1], clonUltimo);
+      if (destino === total + 1) espejar(reales[0], clonPrimero);
+      indice = destino;
+      mover(true).then(() => {
+        if (turno !== turnoSlide) return;
+        if (indice === total + 1) {
+          indice = 1;
+          mover(false);
+        } else if (indice === 0) {
+          indice = total;
+          mover(false);
         }
+        pedirMarca();
+      });
+    }
 
-        // Highlight selected node and line
-        function highlightCard(activeId) {
-            allCardIds.forEach(id => {
-                const card = document.getElementById('card-' + id);
-                const line = document.getElementById('line-' + id);
-                if (!card) return;
-                
-                if (id === activeId) {
-                    card.classList.add('border-blue-500', 'ring-2', 'ring-blue-100');
-                    card.classList.remove('border-slate-100');
-                    if (line) {
-                        line.setAttribute('stroke', '#2563eb');
-                        line.setAttribute('stroke-width', '3');
-                        line.removeAttribute('stroke-dasharray');
-                    }
-                } else {
-                    card.classList.remove('border-blue-500', 'ring-2', 'ring-blue-100');
-                    card.classList.add('border-slate-100');
-                    if (line) {
-                        line.setAttribute('stroke', '#cbd5e1');
-                        line.setAttribute('stroke-width', '1.5');
-                        line.setAttribute('stroke-dasharray', '4,4');
-                    }
-                }
-            });
+    document.getElementById("anterior").onclick = () => ir(-1);
+    document.getElementById("siguiente").onclick = () => ir(1);
+
+    slider.addEventListener("pointerdown", (evento) => {
+      if (evento.target.closest(".ventana") || evento.target.closest(".flecha")) return;
+      arrastrando = true;
+      origenSlide = evento.clientX;
+      slider.setPointerCapture(evento.pointerId);
+    });
+    slider.addEventListener("pointerup", (evento) => {
+      if (!arrastrando) return;
+      arrastrando = false;
+      const dx = evento.clientX - origenSlide;
+      if (dx <= -50) ir(1);
+      else if (dx >= 50) ir(-1);
+    });
+    slider.addEventListener("pointercancel", () => { arrastrando = false; });
+    pista.addEventListener("transitionend", (evento) => {
+      if (evento.target === pista) pedirMarca();
+    });
+    window.addEventListener("resize", () => mover(false));
+    mover(false);
+
+    const viaje = document.getElementById("mapa-viaje");
+    const ventana = document.getElementById("mapa-ventana");
+    const pistaMapa = document.getElementById("mapa-pista");
+    const llenoMapa = document.getElementById("mapa-lleno");
+    const etapas = [...document.querySelectorAll(".etapa")];
+    const charlas = [...document.querySelectorAll(".charla")];
+    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mensajesContacto = [
+      "Tengo un Excel. Soy profesor y no me da el tiempo para mantenerlo al día. Los pagos los anoto cuando me acuerdo.",
+      "Pago demasiado en comisiones con Mercat y Toteat. Las mensualidades me quitan los ingresos. No tengo inventario.",
+      "Quiero mejores fotos y explicar cómo llegar. Mostrar yo las fechas, sin Airbnb ni apps que cobran comisión y dejan más caro el alojamiento."
+    ];
+    const burbujaContacto = document.getElementById("mensaje-contacto");
+    let indiceContacto = Math.floor(Math.random() * mensajesContacto.length);
+    let relojContacto = null;
+    let contactoVisible = false;
+    let contactoYaVisto = false;
+    burbujaContacto.textContent = mensajesContacto[indiceContacto];
+
+    function otroMensaje() {
+      let siguiente = indiceContacto;
+      while (siguiente === indiceContacto) {
+        siguiente = Math.floor(Math.random() * mensajesContacto.length);
+      }
+      indiceContacto = siguiente;
+      if (reducido) {
+        burbujaContacto.textContent = mensajesContacto[indiceContacto];
+        return;
+      }
+      burbujaContacto.style.opacity = "0";
+      window.setTimeout(() => {
+        burbujaContacto.textContent = mensajesContacto[indiceContacto];
+        burbujaContacto.style.opacity = "1";
+      }, 320);
+    }
+
+    function vigilarContacto(activa) {
+      if (activa === contactoVisible) return;
+      contactoVisible = activa;
+      if (relojContacto) {
+        window.clearInterval(relojContacto);
+        relojContacto = null;
+      }
+      if (!activa || reducido) return;
+      if (contactoYaVisto) otroMensaje();
+      contactoYaVisto = true;
+      relojContacto = window.setInterval(otroMensaje, 4600);
+    }
+    let etapaActual = 0;
+    let progreso = 0;
+    let ocupado = false;
+    let toqueY = null;
+
+    function pasoMapa() {
+      return parseFloat(getComputedStyle(viaje).getPropertyValue("--paso")) || 96;
+    }
+
+    function pintarMapa(valor) {
+      progreso = valor;
+      const alto = etapas[0].offsetHeight;
+      const centro = ventana.clientHeight * (window.innerWidth <= 720 ? 0.36 : 0.5);
+      pistaMapa.style.transform = `translateY(${centro - (valor * alto + alto / 2)}px)`;
+      llenoMapa.style.height = `${(valor / (etapas.length - 1)) * 100}%`;
+      etapas.forEach((etapa, i) => {
+        const distancia = Math.abs(i - valor);
+        const zoom = Math.max(0.68, 1.16 - distancia * 0.46);
+        const carta = etapa.querySelector(".etapa-carta");
+        carta.style.transform = `scale(${zoom})`;
+        carta.style.opacity = String(Math.max(0.28, 1 - distancia * 0.62));
+        etapa.classList.toggle("activa", distancia < 0.5);
+      });
+      charlas.forEach((charla, i) => {
+        const distancia = Math.abs(i - valor);
+        charla.style.opacity = String(Math.max(0, 1 - distancia * 1.35));
+      });
+      const rectViaje = viaje.getBoundingClientRect();
+      const mapaEnVista = rectViaje.top < window.innerHeight * 0.7 && rectViaje.bottom > window.innerHeight * 0.3;
+      vigilarContacto(mapaEnVista && Math.abs(valor) < 0.5);
+    }
+
+    function animarMapa(destino) {
+      const inicio = progreso;
+      const t0 = performance.now();
+      function frame(ahora) {
+        const k = Math.min(1, (ahora - t0) / 460);
+        const eased = 1 - Math.pow(1 - k, 3);
+        pintarMapa(inicio + (destino - inicio) * eased);
+        if (k < 1) requestAnimationFrame(frame);
+        else ocupado = false;
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function irEtapa(indice) {
+      const destino = Math.max(0, Math.min(etapas.length - 1, indice));
+      etapaActual = destino;
+      ocupado = true;
+      const raiz = document.documentElement;
+      const previo = raiz.style.scrollBehavior;
+      raiz.style.scrollBehavior = "auto";
+      window.scrollTo({ top: viaje.offsetTop + destino * pasoMapa(), behavior: "instant" });
+      raiz.style.scrollBehavior = previo;
+      animarMapa(destino);
+    }
+
+    function mapaPegado() {
+      const rect = viaje.getBoundingClientRect();
+      return rect.top <= 2 && rect.bottom >= window.innerHeight - 2;
+    }
+
+    window.addEventListener("wheel", (evento) => {
+      if (reducido) return;
+      const dir = Math.sign(evento.deltaY || evento.deltaX);
+      if (!dir || !mapaPegado()) return;
+      if (dir > 0 && etapaActual >= etapas.length - 1) return;
+      if (dir < 0 && etapaActual <= 0) return;
+      evento.preventDefault();
+      if (ocupado) return;
+      irEtapa(etapaActual + dir);
+    }, { passive: false });
+
+    let gestoEnMapa = false;
+
+    viaje.addEventListener("touchstart", (evento) => {
+      toqueY = evento.touches[0].clientY;
+      gestoEnMapa = mapaPegado();
+    }, { passive: true });
+
+    viaje.addEventListener("touchmove", (evento) => {
+      if (reducido || toqueY == null || !gestoEnMapa) return;
+      const dy = toqueY - evento.touches[0].clientY;
+      const dir = Math.sign(dy);
+      if (!dir) return;
+      if (dir > 0 && etapaActual >= etapas.length - 1) return;
+      if (dir < 0 && etapaActual <= 0) return;
+      evento.preventDefault();
+    }, { passive: false });
+
+    viaje.addEventListener("touchend", (evento) => {
+      if (toqueY == null) return;
+      const dy = toqueY - evento.changedTouches[0].clientY;
+      const empezoDentro = gestoEnMapa;
+      toqueY = null;
+      gestoEnMapa = false;
+      if (reducido || !empezoDentro || Math.abs(dy) < 28 || ocupado) return;
+      const dir = Math.sign(dy);
+      if (dir > 0 && etapaActual >= etapas.length - 1) return;
+      if (dir < 0 && etapaActual <= 0) return;
+      irEtapa(etapaActual + dir);
+    });
+
+    window.addEventListener("scroll", () => {
+      if (reducido || ocupado) return;
+      const rect = viaje.getBoundingClientRect();
+      if (rect.top > 1) {
+        if (etapaActual !== 0 || progreso !== 0) {
+          etapaActual = 0;
+          pintarMapa(0);
         }
+        return;
+      }
+      if (!mapaPegado()) return;
+      const indice = Math.round(Math.min(Math.max(-rect.top, 0), pasoMapa() * (etapas.length - 1)) / pasoMapa());
+      if (indice === etapaActual) return;
+      etapaActual = indice;
+      pintarMapa(indice);
+    }, { passive: true });
 
-        // Draw connections for the graph
-        function drawConnections() {
-            const svg = document.getElementById('connections-svg');
-            if (!svg) return;
-            svg.innerHTML = '';
-            
-            // Check if SVG is currently hidden (on mobile)
-            const svgRect = svg.getBoundingClientRect();
-            if (svgRect.width === 0) return;
-            
-            const centerNode = document.getElementById('center-node');
-            if (!centerNode) return;
-            
-            const centerRect = centerNode.getBoundingClientRect();
-            
-            const cx = centerRect.left + centerRect.width / 2 - svgRect.left;
-            const cy = centerRect.top + centerRect.height / 2 - svgRect.top;
-            
-            allCardIds.forEach(id => {
-                const cardEl = document.getElementById('card-' + id);
-                if (!cardEl) return;
-                
-                const cardRect = cardEl.getBoundingClientRect();
-                
-                // Connection point is the center of the card
-                const ex = cardRect.left + cardRect.width / 2 - svgRect.left;
-                const ey = cardRect.top + cardRect.height / 2 - svgRect.top;
-                
-                // Create SVG Line
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', cx);
-                line.setAttribute('y1', cy);
-                line.setAttribute('x2', ex);
-                line.setAttribute('y2', ey);
-                line.setAttribute('stroke', '#cbd5e1'); // default slate-300
-                line.setAttribute('stroke-width', '1.5');
-                line.setAttribute('stroke-dasharray', '4,4');
-                line.setAttribute('id', 'line-' + id);
-                
-                svg.appendChild(line);
-                
-                // Event listener for hover / selection
-                const triggerHighlight = () => {
-                    highlightCard(id);
-                    showTransformation(id);
-                };
-                
-                cardEl.addEventListener('mouseenter', triggerHighlight);
-                cardEl.addEventListener('click', triggerHighlight);
-            });
+    window.addEventListener("resize", () => { if (!reducido) pintarMapa(progreso); });
+    if (!reducido) pintarMapa(0);
 
-            // Maintain the active state layout
-            const activeCard = allCardIds.find(id => {
-                const card = document.getElementById('card-' + id);
-                return card && card.classList.contains('border-blue-500');
-            }) || 'whatsapp';
-            
-            highlightCard(activeCard);
-            showTransformation(activeCard);
-        }
-
-        // Draw initially and on resize
-        window.addEventListener('load', () => {
-            drawConnections();
-            // Start default transformation
-            highlightCard('whatsapp');
-            showTransformation('whatsapp');
-        });
-        window.addEventListener('resize', drawConnections);
-        // Double trigger after short delay to ensure rendering completes
-        setTimeout(drawConnections, 300);
-
-        // Solution Finder Input auto fill
-        function fillInput(text) {
-            const input = document.getElementById('solution-input');
-            input.value = text;
-            input.focus();
-        }
-
-        // Solution finder Form Submit Handling
-        function handleSubmit() {
-            const input = document.getElementById('solution-input');
-            const query = input.value.trim();
-            if (!query) {
-                input.focus();
-                return;
-            }
-
-            // Tailored Solution Content based on Query Keywords
-            let title = "Solución a tu medida";
-            let description = "Diseñamos un flujo de datos que conecta tus herramientas para eliminar el trabajo manual. Evaluemos tu caso en una llamada diagnóstica.";
-            let icon = "settings_input_component";
-            
-            const lowerQuery = query.toLowerCase();
-            
-            if (lowerQuery.includes('taller') || lowerQuery.includes('servicio') || lowerQuery.includes('mecanic') || lowerQuery.includes('orden')) {
-                title = "Gestión Automatizada de Talleres y Servicios 🛠️";
-                description = "Integramos el control de inventario de repuestos, estados de reparación en tiempo real y notificaciones automáticas por WhatsApp para avisar a tus clientes cuando su pedido está listo.";
-                icon = "build";
-            } else if (lowerQuery.includes('whatsapp') || lowerQuery.includes('chat') || lowerQuery.includes('bot') || lowerQuery.includes('asistente')) {
-                title = "Asistentes de WhatsApp con Inteligencia Artificial 💬";
-                description = "Implementamos agentes virtuales en tu línea de WhatsApp empresarial para atender dudas 24/7, agendar turnos de forma automática e integrada a tu calendario, y enviar alertas automáticas.";
-                icon = "smart_toy";
-            } else if (lowerQuery.includes('inventario') || lowerQuery.includes('stock') || lowerQuery.includes('ventas') || lowerQuery.includes('producto')) {
-                title = "Sincronización Inteligente de Stock e Inventario 📦";
-                description = "Centraliza y actualiza tu stock en tiempo real en todos tus canales (Físico, E-commerce, Marketplace). Genera alertas automáticas de bajo stock y órdenes de compra automáticas.";
-                icon = "inventory_2";
-            } else if (lowerQuery.includes('pago') || lowerQuery.includes('cobro') || lowerQuery.includes('conciliacion') || lowerQuery.includes('banc')) {
-                title = "Conciliación de Pagos y Finanzas Automática 💰";
-                description = "Conecta tus cuentas bancarias, pasarelas de pago y facturación electrónica en un solo flujo. Identifica cobros pendientes, envía recordatorios automáticos de pago y genera facturas al instante.";
-                icon = "payments";
-            }
-
-            // Fill Modal Content
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-description').innerText = description;
-            document.getElementById('modal-icon').innerText = icon;
-            
-            // Set WhatsApp Link dynamic prefill
-            const whatsappBtn = document.getElementById('modal-whatsapp-btn');
-            const prefilledText = encodeURIComponent(`Hola DP Sistemas, acabo de enviar mi diagnóstico en el sitio web y me interesa la solución para: "${query}".`);
-            whatsappBtn.href = `https://wa.me/56974342276?text=${prefilledText}`;
-
-            // Show Modal
-            openModal();
-        }
-
-        // Handle Enter key on input field
-        document.getElementById('solution-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleSubmit();
-            }
-        });
-
-        // Modal Functions
-        function openModal() {
-            const modal = document.getElementById('solution-modal');
-            const container = document.getElementById('modal-container');
-            
-            modal.classList.remove('hidden');
-            // Trigger transition
-            setTimeout(() => {
-                container.classList.remove('scale-95', 'opacity-0');
-                container.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('solution-modal');
-            const container = document.getElementById('modal-container');
-            
-            container.classList.remove('scale-100', 'opacity-100');
-            container.classList.add('scale-95', 'opacity-0');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
-        }
-
-        // Case switcher data
-        const casesData = {
-            bravium: {
-                name: "Bravium",
-                badge: "SISTEMAS CONTABLES",
-                logo: "logo-bravium.png",
-                logoBg: "bg-slate-950",
-                logoBorder: "border-slate-800",
-                desc: "Plataforma contable integral para centralizar, auditar y automatizar los flujos financieros de tu negocio.",
-                features: [
-                    "<strong>Ingesta y lectura automática de cartolas:</strong> Procesamiento con Inteligencia Artificial que digitaliza cartolas bancarias sin digitación manual.",
-                    "<strong>Dashboard de conciliación en tiempo real:</strong> Panel interactivo con alertas de pagos pendientes, diferencias de montos y transacciones sin documento.",
-                    "<strong>Reportabilidad y exportación avanzada:</strong> Filtros de búsqueda avanzados y descarga de reportes detallados en Excel formateado para auditorías."
-                ],
-                visual: `<img src="Bravium Mockup.png" alt="Bravium Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
-            },
-            psicocupacional: {
-                name: "Psicocupacional",
-                badge: "PORTAL DE INFORMACIÓN AUTOGESTIONABLE",
-                logo: "logo-psicocupacional.png",
-                logoBg: "bg-white",
-                logoBorder: "border-slate-200",
-                desc: "Página web y plataforma autogestionable para un centro de terapia ocupacional, diseñada para administrar de forma autónoma recursos, información y material multimedia.",
-                features: [
-                    "<strong>Gestor de contenidos autónomo:</strong> Panel administrativo sencillo que permite al cliente subir, actualizar o retirar fotos, videos de actividades reales y material técnico sin depender de un programador.",
-                    "<strong>Galería multimedia dinámica:</strong> Visualización fluida de carruseles de fotos y reproductores de video que se actualizan automáticamente al cargar nuevo contenido.",
-                    "<strong>Estructura 100% responsiva y contacto rápido:</strong> Diseño adaptado a móviles que facilita a las familias explorar el contenido y agendar evaluaciones directamente por WhatsApp."
-                ],
-                visual: `<img src="PSICOCUPACIONAL MOCKUP.png" alt="Psicocupacional Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
-            },
-            lomasrico: {
-                name: "Lo Mas Rico",
-                badge: "E-commerce & Restaurante",
-                logo: "logo-lomasrico.png",
-                logoBg: "bg-white",
-                logoBorder: "border-slate-200",
-                desc: "Plataforma modular a medida que unifica toda la operación de un restaurante, conectando tienda online, POS físico y KDS en cocina en tiempo real.",
-                features: [
-                    "<strong>E-commerce y POS Unificados:</strong> Sincronización automática de ventas físicas, online y visualización en tiempo real de comandas en pantallas de cocina.",
-                    "<strong>Integración Multicanal Automatizada:</strong> Conexión nativa con PedidosYa Envíos API y Uber Eats Bridge para despachos automáticos y centralización de pedidos.",
-                    "<strong>Control por Receta y Pagos Directos:</strong> Descuento inteligente de inventario por porción en cada venta y cobros automatizados con MercadoPago Checkout Pro."
-                ],
-                visual: `<img src="Lo mas Rico Mockup.png" alt="Lo Mas Rico Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
-            },
-            escorial: {
-                name: "Camping Escorial",
-                badge: "Portal Web & Reservas",
-                logo: "Diseño sin título (4).png",
-                logoBg: "bg-white",
-                logoBorder: "border-slate-200",
-                desc: "Sitio web del camping con módulo de información y reservas directas para evitar cobro de comisiones de intermediarios.",
-                features: [
-                    "Página web responsiva con tarifas, mapas, disponibilidad de parcelas y reglamentos.",
-                    "Módulo de contacto y reservas directas vía formulario y WhatsApp.",
-                    "Alojamiento optimizado en VPS de alta velocidad con dominio propio (.cl)."
-                ],
-                visual: `<img src="Camping escorial mockup.png" alt="Camping Escorial Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
-            },
-            ranas: {
-                name: "Dojo Las Ranas",
-                badge: "Gestión de Alumnos & Cobros",
-                logo: "logo-ranapp.jpg",
-                logoBg: "bg-slate-950",
-                logoBorder: "border-slate-800",
-                desc: "Un ecosistema a medida que libera a la administración del control manual de cobros and asistencia, mientras ofrece al alumno un portal flexible para pagar con comodidad, consultar horarios y seguir su progreso en tiempo real.",
-                features: [
-                    "<strong>Automatización de mensualidades:</strong> Sistema autónomo de cobranzas y alertas que evita la revisión de transferencias una a una y recordatorios manuales de cobro.",
-                    "<strong>Portal del Alumno y Progreso:</strong> Acceso dinámico a horarios actualizados y control de avance motivador (cinturón, ingreso y graduación).",
-                    "<strong>Pasarela de Pago Flexible:</strong> Pagos rápidos integrados con Mercado Pago aceptando tarjetas de crédito, débito y transferencias bancarias."
-                ],
-                visual: `<img src="DOJO LAS RANAS MOCKUP.png" alt="Dojo Las Ranas Mockup" class="w-full h-full object-contain rounded-xl select-none pointer-events-none">`
-            }
-        };
-
-        // Switch active case in the case switcher section
-        function switchCase(caseId) {
-            const data = casesData[caseId];
-            if (!data) return;
-
-            // Remove active classes from all tab buttons
-            const tabButtons = document.querySelectorAll('.case-tab-btn');
-            tabButtons.forEach(btn => {
-                btn.classList.remove('active-tab', 'border-accent-blue/30');
-                btn.classList.add('border-transparent');
-            });
-
-            // Add active classes to selected tab button
-            const activeTab = document.getElementById('tab-' + caseId);
-            if (activeTab) {
-                activeTab.classList.remove('border-transparent');
-                activeTab.classList.add('active-tab', 'border-accent-blue/30');
-            }
-
-            // Animate details box fade-out, update and fade-in
-            const contentBox = document.getElementById('case-content');
-            if (contentBox) {
-                contentBox.classList.remove('opacity-100', 'translate-y-0');
-                contentBox.classList.add('opacity-0', 'translate-y-2');
-
-                setTimeout(() => {
-                    // Update content inside box
-                    const logoContainer = document.getElementById('case-logo-container');
-                    const logoImg = document.getElementById('case-logo');
-                    const nameEl = document.getElementById('case-name');
-                    const badgeEl = document.getElementById('case-badge');
-                    const descEl = document.getElementById('case-desc');
-                    const featuresEl = document.getElementById('case-features');
-                    const visualContainer = document.getElementById('case-visual');
-
-                    if (logoContainer) {
-                        logoContainer.className = `w-14 h-14 ${data.logoBg} rounded-2xl flex items-center justify-center p-1.5 border ${data.logoBorder}`;
-                    }
-                    if (logoImg) {
-                        logoImg.src = data.logo;
-                        logoImg.alt = data.name;
-                    }
-                    if (nameEl) nameEl.innerText = data.name;
-                    if (badgeEl) badgeEl.innerText = data.badge;
-                    if (descEl) descEl.innerText = data.desc;
-                    
-                    if (featuresEl) {
-                        featuresEl.innerHTML = data.features.map(f => `
-                            <li class="flex items-start gap-2.5 text-xs text-slate-600 font-medium">
-                                <span class="material-symbols-outlined text-emerald-500 text-sm shrink-0">check_circle</span>
-                                ${f}
-                            </li>
-                        `).join('');
-                    }
-
-                    if (visualContainer) {
-                        visualContainer.innerHTML = data.visual;
-                    }
-
-                    // Fade back in
-                    contentBox.classList.remove('opacity-0', 'translate-y-2');
-                    contentBox.classList.add('opacity-100', 'translate-y-0');
-                }, 150);
-            }
-        }
-
-        // Toggle mobile accordion solution in Con DP section
-        function toggleMobileSolution(solId) {
-            const content = document.getElementById('content-mobile-' + solId);
-            const arrow = document.getElementById('arrow-mobile-' + solId);
-            const card = document.getElementById('card-mobile-' + solId);
-            if (!content) return;
-
-            const isHidden = content.classList.contains('hidden');
-
-            // Close all other mobile accordions first
-            const allContents = document.querySelectorAll('[id^="content-mobile-"]');
-            allContents.forEach(c => c.classList.add('hidden'));
-
-            const allArrows = document.querySelectorAll('[id^="arrow-mobile-"]');
-            allArrows.forEach(a => {
-                a.classList.remove('rotate-180');
-            });
-            
-            const allCards = document.querySelectorAll('.mobile-sol-card');
-            allCards.forEach(c => {
-                c.classList.remove('border-blue-500', 'ring-2', 'ring-blue-100');
-                c.classList.add('border-slate-200/80');
-            });
-
-            // Open if it was hidden
-            if (isHidden) {
-                content.classList.remove('hidden');
-                if (arrow) arrow.classList.add('rotate-180');
-                if (card) {
-                    card.classList.remove('border-slate-200/80');
-                    card.classList.add('border-blue-500', 'ring-2', 'ring-blue-100');
-                }
-            }
-        }
-    </script>
+  </script>
 </body>
-
 </html>

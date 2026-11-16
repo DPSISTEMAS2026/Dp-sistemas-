@@ -13,3 +13,6 @@ output.*
 output2.txt
 get_dimensions.*
 find_images.*
+
+# Documentos tributarios e identidad: no van al repositorio
+*.pdf
