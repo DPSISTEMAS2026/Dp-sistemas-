@@ -365,32 +365,6 @@ async function handleCheckout(e) {
         return;
     }
 
-    if (new URLSearchParams(location.search).get('demo') === '1') {
-        const totalDemo = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const order = {
-            id: 'demo',
-            order_number: String(20 + Math.floor(Math.random() * 70)),
-            order_status: 'nuevo',
-            timestamp: new Date().toISOString(),
-            total: totalDemo,
-            paymentMethod,
-            items: cart.map(item => ({
-                name: item.name,
-                quantity: item.qty,
-                category: 'cocina'
-            })),
-            notes: `Pago: ${paymentMethod}`
-        };
-        localStorage.setItem('dp-demo-pedido', JSON.stringify(order));
-        cart = [];
-        updateCart();
-        saveCartToStorage();
-        closeCheckoutModal();
-        showToast('Pedido en cocina. No se envió a ningún sistema real.');
-        window.location.href = 'kitchen.html?demo=1';
-        return;
-    }
-
     const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
     // Crear objeto del pedido
@@ -614,7 +588,7 @@ function initChatbox() {
         const wrapper = document.createElement('div');
         wrapper.className = `message ${from === 'user' ? 'user' : 'bot'} new`;
         if (from === 'bot') {
-            wrapper.innerHTML = `<img class="avatar" src="../assets/marca/logo-dp.svg" alt="LoMas Rico"><div class="bubble">${text}</div>`;
+            wrapper.innerHTML = `<img class="avatar" src="../logo-dp.svg" alt="LoMas Rico"><div class="bubble">${text}</div>`;
         } else {
             wrapper.innerHTML = `<div class="bubble">${text}</div>`;
         }
@@ -841,34 +815,11 @@ function mapCategoryToGridId(product) {
 let modalProduct = null;
 let modalQty = 1;
 
-function catalogoDemo() {
-    const foto = (nombre) => `Fotos_Restaurante/${nombre}`;
-    const proteinas = ['Reineta', 'Camarón', 'Pulpo', 'Salmón'].map((nombre, i) => ({
-        id: `prot-${i}`, option_type: 'protein', option_name: nombre, price_modifier: 0, is_required: true
-    }));
-    const extras = ['Palta', 'Choclo', 'Ají limo'].map((nombre, i) => ({
-        id: `ext-${i}`, option_type: 'addon', option_name: nombre, price_modifier: 0, is_required: false
-    }));
-    return [
-        { number: 1, name: 'Ceviche LoMASRico 500g', description: 'Elige la proteína y los extras.', price: 11900, category: 'CEVICHE LOMASRICO', img: foto('Ceviche LoMASRico.jpg'), active: true, options: proteinas.concat(extras) },
-        { number: 2, name: 'Ceviche tropical de mango', description: 'Mango, cebolla y proteína a elección.', price: 12900, category: 'TROPICAL', img: foto('Ceviche Tropical Mango.jpg'), active: true, options: proteinas.concat(extras) },
-        { number: 3, name: 'Leche de tigre', description: 'Vaso de leche de tigre.', price: 4500, category: 'CEVICHE LOMASRICO', img: foto('Leche de Tigre.jpg'), active: true, options: [] },
-        { number: 4, name: 'Handroll de pollo', description: 'Handroll apanado.', price: 4500, category: 'HAND ROLLS', img: foto('Handroll de Pollo.jpg'), active: true, options: [] },
-        { number: 5, name: 'Empanada de queso', description: 'Frita, solo queso.', price: 2000, category: 'EMPANADAS', img: foto('Empanada Queso.jpg'), active: true, options: [] },
-        { number: 6, name: 'Limonada clásica', description: 'Limonada de la casa.', price: 3000, category: 'BEBIDAS', img: foto('Limonada Clásica.jpg'), active: true, options: [] }
-    ];
-}
-
 async function loadProductsFromAPI() {
     try {
-        let products;
-        if (new URLSearchParams(location.search).get('demo') === '1') {
-            products = catalogoDemo();
-        } else {
-            const response = await fetch(`${API_URL}/api/products`);
-            if (!response.ok) return;
-            products = await response.json();
-        }
+        const response = await fetch(`${API_URL}/api/products`);
+        if (!response.ok) return;
+        const products = await response.json();
 
         // 1. Limpiar grids (quitar loaders)
         document.querySelectorAll('.products-grid').forEach(grid => grid.innerHTML = '');
@@ -899,11 +850,11 @@ async function loadProductsFromAPI() {
                 else if (nameLower.includes('veg')) badgeHTML = '<span class="product-badge vegan">🌱</span>';
 
                 // Imagen fallback
-                const imgUrl = p.img || '../assets/marca/logo-dp.svg';
+                const imgUrl = p.img || '../logo-dp.svg';
 
                 card.innerHTML = `
                     <div class="product-img">
-                        <img src="${imgUrl}" alt="${p.name}" loading="lazy" onerror="this.src='../assets/marca/logo-dp.svg'">
+                        <img src="${imgUrl}" alt="${p.name}" loading="lazy" onerror="this.src='../logo-dp.svg'">
                         ${badgeHTML}
                         <div class="product-number">${p.number}</div>
                     </div>
@@ -1083,7 +1034,7 @@ if (confirmBtn) confirmBtn.onclick = () => {
         finalName += ` (${selectedNames.join(', ')})`;
     }
 
-    const imgUrl = modalProduct.img || '../assets/marca/logo-dp.svg';
+    const imgUrl = modalProduct.img || '../logo-dp.svg';
 
     addToCart(finalName, finalPrice, imgUrl, modalQty);
     showToast(`Agregado: ${finalName}`);

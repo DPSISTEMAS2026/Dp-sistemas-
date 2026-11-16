@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="../assets/marca/logo-dp.svg">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="admin.css">
 </head>
@@ -20,7 +20,7 @@
         <!-- SIDEBAR NAVIGATION -->
         <aside class="admin-sidebar">
             <div class="sidebar-logo" style="display: flex; align-items: center; gap: 10px; padding: 15px;">
-                <img src="../assets/marca/logo-dp.svg" alt="Logo"
+                <img src="../logo-dp.svg" alt="Logo"
                     style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
                 <span
                     style="font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px;">DP
@@ -882,29 +882,6 @@
         }
 
         async function loadKPIs() {
-            if (new URLSearchParams(location.search).get('demo') === '1') {
-                const order = JSON.parse(localStorage.getItem('dp-demo-pedido') || 'null');
-                const total = order ? Number(order.total || 0) : 0;
-                const texto = '$' + total.toLocaleString('es-CL');
-                const sales = document.getElementById('kpi-sales');
-                const orders = document.getElementById('kpi-orders');
-                const ticket = document.getElementById('kpi-ticket');
-                if (sales) sales.textContent = texto;
-                if (orders) orders.textContent = order ? '1' : '0';
-                if (ticket) ticket.textContent = texto;
-                const list = document.getElementById('top-products-list');
-                if (list) {
-                    const items = order && Array.isArray(order.items) ? order.items : [];
-                    list.innerHTML = items.length
-                        ? items.map((p) => `
-                            <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem;background:#f7fafc;border-radius:8px;">
-                                <span style="font-weight:600;color:#2d3748;">${p.name}</span>
-                                <span style="background:#1f2937;color:white;padding:0.5rem 1rem;border-radius:8px;font-weight:700;">${p.quantity} unidades</span>
-                            </div>`).join('')
-                        : '<p style="text-align:center;padding:2rem;color:#999;">Sin ventas en esta demo</p>';
-                }
-                return;
-            }
             try {
                 const res = await fetch(`${API_URL}/api/admin/kpis?timeframe=${currentTimeframe}`);
                 if (!res.ok) return;

@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="../assets/marca/logo-dp.svg">
+    <link rel="icon" type="image/svg+xml" href="../logo-dp.svg">
 
     <style>
         :root {
@@ -292,27 +292,7 @@
         const WS_URL = API_URL.replace('http', 'ws');
         let ws;
 
-        function esDemo() {
-            return new URLSearchParams(location.search).get('demo') === '1';
-        }
-
-        function renderDemo() {
-            const raw = localStorage.getItem('dp-demo-pedido');
-            if (!raw) {
-                renderOrders([]);
-                return;
-            }
-            renderOrders([JSON.parse(raw)]);
-            document.getElementById('new-order-alert').classList.add('show');
-        }
-
         function init() {
-            if (esDemo()) {
-                document.getElementById('status-text').textContent = 'Demo en este navegador';
-                document.getElementById('status-dot').classList.add('connected');
-                renderDemo();
-                return;
-            }
             loadOrders();
             // Polling interval
             setInterval(loadOrders, 5000);
@@ -404,14 +384,6 @@
         }
 
         async function updateStatus(id, status) {
-            if (esDemo()) {
-                const order = JSON.parse(localStorage.getItem('dp-demo-pedido') || 'null');
-                if (!order) return;
-                order.order_status = status;
-                localStorage.setItem('dp-demo-pedido', JSON.stringify(order));
-                renderDemo();
-                return;
-            }
             try {
                 await fetch(`${API_URL}/api/orders/${id}/status`, {
                     method: 'PATCH',
