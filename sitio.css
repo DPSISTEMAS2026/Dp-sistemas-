@@ -35,8 +35,25 @@ a { color: inherit; }
 }
 
 .logo,
-.menu,
-.menu-abrir { pointer-events: auto; }
+.redes-cabecera { pointer-events: auto; }
+
+.redes-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.redes-cabecera a {
+  display: block;
+  line-height: 0;
+  filter: drop-shadow(0 8px 16px rgba(20, 24, 28, 0.22));
+}
+
+.redes-cabecera svg {
+  width: 60px;
+  height: 60px;
+  display: block;
+}
 
 .menu-abrir.vidrio,
 .menu-cerrar,
@@ -310,6 +327,17 @@ body.menu-abierto { overflow: hidden; }
   transition: max-height 0.55s cubic-bezier(0.22, 1, 0.3, 1) 0.08s, opacity 0.4s ease 0.14s, margin-top 0.45s ease 0.08s;
 }
 
+.modulo-mockup {
+  display: none;
+}
+
+.modulo.elegido.al-frente.con-mockup .modulo-mockup {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 14px;
+}
+
 .banner:has(.modulo.elegido.al-frente) .ventana {
   overflow: visible;
   mask-image: none;
@@ -440,12 +468,13 @@ body.menu-abierto { overflow: hidden; }
 }
 
 .frase {
+  scroll-margin-top: 96px;
   padding: 64px 28px;
   background: var(--papel);
   text-align: center;
 }
 
-.frase p {
+.frase h1 {
   max-width: 1080px;
   margin: 0 auto;
   font-family: var(--fuente);
@@ -455,7 +484,7 @@ body.menu-abierto { overflow: hidden; }
   letter-spacing: -0.03em;
 }
 
-.frase p > span { display: block; }
+.frase h1 > span { display: block; }
 
 .frase .dp {
   font-style: normal;
@@ -662,6 +691,9 @@ body.menu-abierto { overflow: hidden; }
   .nombre strong { font-size: 16px; }
   .nombre span { font-size: 11px; }
 
+  .redes-cabecera { gap: 10px; }
+  .redes-cabecera svg { width: 48px; height: 48px; }
+
   .menu-abrir.vidrio {
     display: grid;
     place-items: center;
@@ -852,7 +884,14 @@ body.menu-abierto { overflow: hidden; }
   #charla-contacto .burbuja { align-self: center; }
 
   .frase { padding: 40px 20px; }
-  .frase p { font-size: 16px; }
+  .frase h1 { font-size: 16px; }
+
+  .modulo.elegido.al-frente.con-mockup {
+    width: min(94vw, 520px);
+    max-width: min(94vw, 520px);
+    max-height: min(88svh, 740px);
+    padding: 16px 14px 14px;
+  }
   .pie { padding: 36px 16px 22px; }
   .pie-cuerpo { grid-template-columns: 1fr; gap: 28px; }
 
@@ -929,6 +968,12 @@ body.menu-abierto { overflow: hidden; }
     font-size: 14.5px;
     line-height: 1.45;
     max-height: none;
+  }
+
+  .modulo.elegido.al-frente.con-mockup {
+    width: min(880px, 88vw);
+    max-height: min(90vh, 840px);
+    padding: 22px 18px 18px;
   }
 
   .charlas {
