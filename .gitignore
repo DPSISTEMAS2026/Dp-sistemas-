@@ -16,3 +16,7 @@ find_images.*
 
 # Documentos tributarios e identidad: no van al repositorio
 *.pdf
+panels/
+contabilidad.html
+cazador-leads.html
+experiencia/
