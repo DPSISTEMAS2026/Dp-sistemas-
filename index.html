@@ -36,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="sitio.css?v=85">
+  <link rel="stylesheet" href="sitio.css?v=100">
 </head>
 <body id="inicio">
   <header class="cabecera">
@@ -79,32 +79,32 @@
 
   <section class="slider" id="proyectos" aria-label="Proyectos">
     <div class="pista" id="pista">
-      <article class="banner" data-proyecto="lomasrico">
-        <img class="banner-fondo" src="assets/proyectos/lomasrico/banner.png" alt="Lo Más Rico">
+      <article class="banner con-vertical" data-proyecto="lomasrico">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/lomasrico/vertical.webp"><img class="banner-fondo" src="assets/proyectos/lomasrico/banner.png" alt="Lo Más Rico"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Lo Más Rico"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="psicocupacional">
-        <img class="banner-fondo" src="assets/proyectos/psicocupacional/banner.png" alt="Psicocupacional">
+      <article class="banner con-vertical" data-proyecto="psicocupacional">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/psicocupacional/vertical.webp"><img class="banner-fondo" src="assets/proyectos/psicocupacional/banner.png" alt="Psicocupacional"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Psicocupacional"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="camping">
-        <img class="banner-fondo" src="assets/proyectos/camping-escorial/banner.png" alt="Camping Escorial">
+      <article class="banner con-vertical" data-proyecto="camping">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/camping-escorial/vertical.webp"><img class="banner-fondo" src="assets/proyectos/camping-escorial/banner.png" alt="Camping Escorial"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Camping Escorial"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="dojo">
-        <img class="banner-fondo" src="assets/proyectos/dojo-las-ranas/banner.png" alt="Dojo Las Ranas">
+      <article class="banner con-vertical" data-proyecto="dojo">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/dojo-las-ranas/vertical.webp"><img class="banner-fondo" src="assets/proyectos/dojo-las-ranas/banner.png" alt="Dojo Las Ranas"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Dojo Las Ranas"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="calipso">
-        <img class="banner-fondo" src="assets/proyectos/ferreteria-calipso/banner.png" alt="Ferretería Calipso">
+      <article class="banner con-vertical" data-proyecto="calipso">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/ferreteria-calipso/vertical.webp"><img class="banner-fondo" src="assets/proyectos/ferreteria-calipso/banner.png" alt="Ferretería Calipso"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Ferretería Calipso"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="bravium">
-        <img class="banner-fondo" src="assets/proyectos/bravium/banner.png" alt="Bravium">
+      <article class="banner con-vertical" data-proyecto="bravium">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/bravium/vertical.webp"><img class="banner-fondo" src="assets/proyectos/bravium/banner.png" alt="Bravium"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de Bravium"><div class="rueda"></div></div>
       </article>
-      <article class="banner" data-proyecto="academias">
-        <img class="banner-fondo" src="assets/proyectos/academias/banner.png" alt="DP Academias">
+      <article class="banner con-vertical" data-proyecto="academias">
+        <picture><source media="(max-width: 720px)" srcset="assets/proyectos/academias/vertical.webp"><img class="banner-fondo" src="assets/proyectos/academias/banner.png" alt="DP Academias"></picture>
         <div class="ventana" tabindex="0" aria-roledescription="carrusel" aria-label="Módulos de DP Academias"><div class="rueda"></div></div>
       </article>
     </div>
@@ -341,86 +341,163 @@
     pedirMarca();
 
     const catalogo = {
-      lomasrico: ["tienda", "Tienda web", "salon", "Salón", "cocina", "Cocina", "caja", "Caja", "reparto", "Reparto", "inventario", "Inventario", "clientes", "Clientes", "resumen", "Resumen"],
+      lomasrico: ["tienda", "Tienda web", "salon", "Salón", "cocina", "Cocina", "caja", "Caja", "reparto", "Reparto", "catalogo", "Catálogo", "inventario", "Inventario", "clientes", "Clientes", "resumen", "Resumen"],
       psicocupacional: ["club", "Club", "noticias", "Noticias", "fotos", "Fotos", "videos", "Videos", "galeria", "Galería", "recursos", "Recursos", "contacto", "Contacto"],
       camping: ["tarifas", "Tarifas", "mapa", "Mapa", "parcelas", "Parcelas", "reservas", "Reservas", "reglamento", "Reglamento", "contacto", "Contacto"],
       dojo: ["resumen", "Resumen", "alumnos", "Alumnos", "asistencia", "Asistencia", "finanzas", "Finanzas", "biblioteca", "Biblioteca", "comunicaciones", "Comunicaciones", "sitio", "Sitio web"],
-      calipso: ["resumen", "Resumen", "catalogo", "Catálogo", "caja", "Caja", "inventarios", "Inventarios", "compras", "Compras", "reportes", "Reportes", "proveedores", "Proveedores", "personal", "Personal"],
+      calipso: ["tienda", "Tienda", "resumen", "Resumen", "catalogo", "Catálogo", "caja", "Caja", "inventarios", "Inventarios", "compras", "Compras", "reportes", "Reportes", "proveedores", "Proveedores", "personal", "Personal"],
       bravium: ["facturas", "Facturas", "cartolas", "Cartolas", "conciliacion", "Conciliación", "pagos", "Pagos", "proveedores", "Proveedores", "exportacion", "Exportación"],
-      academias: ["resumen", "Resumen", "alumnos", "Alumnos", "horarios", "Horarios", "asistencia", "Asistencia", "grados", "Grados", "finanzas", "Finanzas", "eventos", "Eventos", "biblioteca", "Biblioteca"]
+      academias: ["resumen", "Resumen", "alumnos", "Alumnos", "horarios", "Horarios", "asistencia", "Asistencia", "grados", "Grados", "finanzas", "Finanzas", "eventos", "Eventos", "comunicaciones", "Comunicaciones", "biblioteca", "Biblioteca"]
     };
     const frente = { lomasrico: "cocina", psicocupacional: "fotos", camping: "reservas", dojo: "alumnos", calipso: "caja", bravium: "conciliacion", academias: "alumnos" };
     const mockups = {
-      "lomasrico/tienda": ["assets/mockups/tienda.webp?v=2", "Tienda web de Lo Más Rico en computador y celular", 1400, 788],
-      "lomasrico/cocina": ["assets/mockups/cocina.webp?v=2", "Módulo de cocina de Lo Más Rico en computador y celular", 1400, 700],
-      "lomasrico/reparto": ["assets/mockups/reparto.webp?v=2", "Módulo de reparto de Lo Más Rico en computador y celular", 1400, 839],
-      "lomasrico/clientes": ["assets/mockups/clientes.webp?v=2", "Módulo de clientes de Lo Más Rico en computador y celular", 1400, 747],
-      "psicocupacional/*": ["assets/mockups/psicocupacional.webp?v=2", "Sitio de Psicocupacional TEA en computador y celular", 1400, 717]
+      "lomasrico/tienda": ["assets/mockups/lomasrico/tienda.webp", "Tienda web de Lo Más Rico en computador y celular", 1670, 941],
+      "lomasrico/salon": ["assets/mockups/lomasrico/salon.webp", "Salón de Lo Más Rico en el celular", 1600, 1100],
+      "lomasrico/cocina": ["assets/mockups/lomasrico/cocina.webp", "Cocina de Lo Más Rico en computador y celular", 1774, 887],
+      "lomasrico/caja": ["assets/mockups/lomasrico/caja.webp", "Caja de Lo Más Rico en el computador", 1600, 1100],
+      "lomasrico/reparto": ["assets/mockups/lomasrico/reparto.webp", "Reparto de Lo Más Rico en computador y celular", 1620, 971],
+      "lomasrico/catalogo": ["assets/mockups/lomasrico/catalogo.webp", "Catálogo de Lo Más Rico en el computador", 1600, 1100],
+      "lomasrico/clientes": ["assets/mockups/lomasrico/clientes.webp", "Clientes de Lo Más Rico en computador y celular", 1717, 916],
+      "lomasrico/resumen": ["assets/mockups/lomasrico/resumen.webp", "Resumen de Lo Más Rico", 1600, 1100],
+      "psicocupacional/*": ["assets/mockups/psicocupacional/inicio.webp", "Sitio de Psicocupacional TEA en computador y celular", 1752, 897],
+      "camping/*": ["assets/mockups/camping/inicio.webp", "Sitio de Camping Escorial en computador y celular", 2048, 2048],
+      "dojo/sitio": ["assets/mockups/ranas/inicio.webp", "Sitio de Ranas Jiu Jitsu en computador y celular", 1536, 1024],
+      "dojo/*": ["assets/mockups/ranas/acceso.webp", "Acceso de miembros de Ranas Jiu Jitsu", 1536, 1024],
+      "calipso/tienda": ["assets/mockups/calipso/tienda.webp", "Tienda de Ferretería Calipso en computador y celular", 1024, 512],
+      "calipso/catalogo": ["assets/mockups/calipso/catalogo.webp", "Catálogo de Ferretería Calipso en computador y celular", 1024, 512],
+      "calipso/caja": ["assets/mockups/calipso/caja.webp", "Caja de Ferretería Calipso en el computador", 1024, 512],
+      "bravium/*": ["assets/mockups/bravium/general.webp", "Resumen general de Bravium en computador y celular", 1536, 1024],
+      "academias/resumen": ["assets/mockups/academias/resumen.webp", "Resumen de la academia en computador y celular", 1536, 1024],
+      "academias/alumnos": ["assets/mockups/academias/alumnos.webp", "Alumnos de la academia en computador y celular", 1536, 1024],
+      "academias/horarios": ["assets/mockups/academias/horarios.webp", "Horarios de la academia en computador y celular", 1536, 1024],
+      "academias/asistencia": ["assets/mockups/academias/asistencia.webp?v=2", "Asistencia de la academia en computador y celular", 1536, 1024],
+      "academias/grados": ["assets/mockups/academias/grados.webp", "Grados de la academia en computador y celular", 1536, 1024],
+      "academias/finanzas": ["assets/mockups/academias/finanzas.webp", "Finanzas de la academia en computador y celular", 1536, 1024],
+      "academias/eventos": ["assets/mockups/academias/eventos.webp", "Eventos de la academia en computador y celular", 1536, 1024],
+      "academias/comunicaciones": ["assets/mockups/academias/comunicaciones.webp", "Comunicaciones de la academia en computador y celular", 1536, 1024],
+      "academias/biblioteca": ["assets/mockups/academias/biblioteca.webp", "Biblioteca de la academia en computador y celular", 1024, 682]
     };
+    function ficha(titulo, bajada, puntos, logos) {
+      const items = puntos.map((punto) => `<span>${punto}</span>`).join("");
+      const marcas = logos ? `<span class="modulo-logos">${logos}</span>` : "";
+      return `<span class="modulo-ficha"><strong class="modulo-titulo">${titulo}</strong><span class="modulo-bajada">${bajada}</span><span class="modulo-puntos">${items}</span>${marcas}</span>`;
+    }
     const resumenes = {
       lomasrico: {
-        tienda: "La tienda web. El cliente arma su pedido y ese pedido entra a cocina junto con los demás canales.",
-        salon: "Las mesas del local. El pedido del salón llega a cocina igual que el de la web.",
-        cocina: "En este módulo ingresan los pedidos desde todos los canales: la caja, la web, Uber Eats y PedidosYa. Se imprime una comanda física al instante y un sonido avisa al personal.",
-        caja: "El cobro del local. Lo que se vende queda registrado, en efectivo o con el medio de pago del momento.",
-        reparto: "El despacho. Desde aquí se ve qué pedido sale y se apoya en repartidores cuando el local no da abasto.",
-        inventario: "El stock baja según lo que se vende. Se ve qué falta antes de que se acabe.",
-        clientes: "Quién compra y cómo contactarlo, sin llevarlo en una planilla aparte.",
-        resumen: "El día en una vista: ventas, pedidos y lo que hay que mirar."
+        tienda: "Tienda web es el módulo donde el cliente arma su pedido, en el computador o en el celular. Elige los productos y ese pedido entra a cocina junto con los del salón, la caja, Uber Eats y PedidosYa.",
+        salon: "Salón es el módulo de la atención del local. Muestra las mesas, cuáles están libres y cuáles ocupadas. El pedido de la mesa entra a cocina igual que el de la web.",
+        cocina: "Cocina es el módulo donde entran los pedidos de todos los canales: la caja, la web, Uber Eats y PedidosYa. Se imprime la comanda física al instante y un sonido avisa al personal.",
+        caja: "Caja es el módulo de cobro del mesón. Se arma la comanda desde el catálogo y se cobra en efectivo, con Mercado Pago, por transferencia o con tarjeta de alimentación. Lo vendido queda registrado y pasa a cocina.",
+        reparto: "Reparto es el módulo del repartidor del local. Waze o Maps se integran acá: abre la ruta, y si tiene que llamar o escribirle por WhatsApp al cliente, lo tiene a mano. Cuando el repartidor no puede salir, o hay muchos pedidos, se usa la integración con PedidosYa Envíos: salen repartidores de la aplicación y el local sigue entregando.",
+        catalogo: "Catálogo es el módulo de la carta. Ahí están las categorías, los productos y los precios. Lo que se edita acá es lo que se vende en la tienda y en la caja.",
+        inventario: "Inventario es el módulo de stock. Cada venta descuenta el producto y se ve qué queda y qué hay que reponer antes de que se acabe.",
+        clientes: "Clientes guarda la ficha de quién compra. Se busca por nombre, correo o teléfono, y se ve el consumo, los puntos y si el cliente es nuevo, regular o está en riesgo.",
+        resumen: "Resumen junta el período que se elija: ventas, pedidos, ticket promedio, propinas y lo pagado al repartidor. También muestra en qué horas se concentra el local."
       },
       psicocupacional: {
-        club: "El espacio del grupo: actividades y lo que se comparte con las familias.",
-        noticias: "Avisos y novedades que el centro publica por su cuenta.",
-        fotos: "Las fotos de las actividades. Se suben y quedan visibles para las familias.",
-        videos: "Los videos de las sesiones, para mostrar el trabajo real del centro.",
-        galeria: "Fotos y videos juntos, listos para recorrer.",
-        recursos: "Material para las familias y para el trabajo del centro.",
-        contacto: "Cómo llegar y cómo escribir. Desde aquí se toma contacto."
+        club: "Club es el módulo del grupo. Ahí quedan las actividades y lo que el centro comparte con las familias.",
+        noticias: "Noticias es el módulo donde el centro publica avisos y novedades, directo en su sitio.",
+        fotos: "Fotos es el módulo de las actividades. Se suben y quedan visibles para las familias.",
+        videos: "Videos es el módulo de las sesiones. El centro publica el trabajo real, en su sitio.",
+        galeria: "Galería junta las fotos y los videos para recorrerlos en un solo lugar.",
+        recursos: "Recursos deja el material del centro a las familias y al equipo, publicado en el sitio.",
+        contacto: "Contacto deja cómo llegar y cómo escribir. Desde ahí la familia toma contacto con el centro."
       },
       camping: {
-        tarifas: "Los precios del camping, publicados para consultarlos sin llamar.",
-        mapa: "El terreno y cómo llegar a cada sector.",
-        parcelas: "Las parcelas y cómo está armado el camping.",
-        reservas: "La reserva directa, con las fechas, sin pasar por otra plataforma.",
-        reglamento: "Las reglas del lugar, a la vista antes de llegar.",
-        contacto: "Cómo llegar y cómo escribir para reservar."
+        tarifas: "Tarifas publica los precios del camping en el sitio, para consultarlos sin llamar.",
+        mapa: "Mapa muestra el terreno y cómo llegar a cada sector.",
+        parcelas: "Parcelas explica cómo está armado el camping y qué sector corresponde a cada una.",
+        reservas: "Reservas es la reserva directa. El cliente elige las fechas en el sitio del camping, sin pasar por otra plataforma.",
+        reglamento: "Reglamento deja las reglas del lugar publicadas, para leerlas antes de llegar.",
+        contacto: "Contacto muestra cómo llegar y cómo escribir para reservar."
       },
       dojo: {
-        resumen: "El día del dojo: alumnos, pagos y lo que hay que revisar.",
-        alumnos: "La ficha de cada alumno, su grado y su estado.",
-        asistencia: "Quién vino a clase. Se marca y queda el registro.",
-        finanzas: "Mensualidades y pagos, con fecha y monto, sin anotarlos a mano.",
-        biblioteca: "Material de consulta para alumnos y profesores.",
-        comunicaciones: "Avisos del dojo a los alumnos y a las familias.",
-        sitio: "La página pública: horarios, clases y cómo inscribirse."
+        resumen: "Resumen deja el día del dojo en una vista: alumnos, pagos y lo que hay que revisar.",
+        alumnos: "Alumnos es la ficha de cada alumno: grado, estado y datos de contacto, sin llevarlo en una planilla.",
+        asistencia: "Asistencia es la lista de la clase. Se marca quién vino y el registro queda guardado.",
+        finanzas: "Finanzas registra la mensualidad con fecha y monto. Se ve quién pagó y quién quedó pendiente.",
+        biblioteca: "Biblioteca deja el material de consulta para alumnos y profesores.",
+        comunicaciones: "Comunicaciones manda los avisos del dojo a los alumnos y a las familias.",
+        sitio: "Sitio web es la página pública del dojo: horarios, clases y cómo inscribirse."
       },
       calipso: {
-        resumen: "El día de la ferretería: ventas, stock y lo pendiente.",
-        catalogo: "Los productos y sus precios, para vender sin buscar en una lista.",
-        caja: "El cobro en el mesón. Cada venta queda registrada.",
-        inventarios: "Qué hay en bodega y qué hay que reponer.",
-        compras: "Los pedidos a proveedores cuando falta mercadería.",
-        reportes: "Ventas y movimiento, para ver cómo va el mes.",
-        proveedores: "Quién abastece y cómo contactarlo.",
-        personal: "El equipo del local y su acceso al sistema."
+        tienda: ficha(
+          "Tienda del local",
+          "La ferretería publicada para que el cliente busque y entre por rubro, en computador y en celular.",
+          [
+            "Búsqueda por nombre y acceso por categoría: gasfitería, electricidad, fijaciones, herramientas, pinturas y el resto.",
+            "Se ve el horario y si el local está abierto.",
+            "Desde la cabecera se escribe por WhatsApp o se abre Instagram."
+          ],
+          `<img src="assets/marca/whatsapp.svg" alt="WhatsApp" width="32" height="32"><img src="assets/marca/instagram.svg" alt="Instagram" width="32" height="32">`
+        ),
+        resumen: ficha(
+          "El día de la ferretería",
+          "Una vista para ver cómo va el local sin abrir cada módulo.",
+          ["Ventas del turno.", "Stock que hay que mirar.", "Lo que quedó pendiente."]
+        ),
+        catalogo: ficha(
+          "Catálogo por rubro",
+          "Los productos que ve el cliente, ordenados por categoría, con foto y medida.",
+          [
+            "Cada rubro abre su listado, el mismo en computador y en celular.",
+            "La ficha muestra la pieza, el nombre y la medida.",
+            "Desde aquí se revisa el ítem antes de ir al local o escribir."
+          ]
+        ),
+        caja: ficha(
+          "Caja del mesón",
+          "El cobro se arma sobre el catálogo. El turno parte con el monto inicial.",
+          [
+            "Se abre la caja y se busca el producto por categoría.",
+            "Se cobra en efectivo, débito o crédito.",
+            "Al cobrar, la venta queda registrada en el turno."
+          ]
+        ),
+        inventarios: ficha(
+          "Stock de bodega",
+          "Lo que hay y lo que hay que reponer, atado a lo que se vende en caja.",
+          ["Se ve la existencia de cada producto.", "La venta descuenta el stock.", "Queda marcado lo que hay que pedir."]
+        ),
+        compras: ficha(
+          "Pedido al proveedor",
+          "Cuando falta mercadería, el pedido sale desde el stock.",
+          ["Se arma con lo que inventario marca para reponer.", "Queda a qué proveedor se le pidió.", "Al recibir, el stock se actualiza."]
+        ),
+        reportes: ficha(
+          "Movimiento del mes",
+          "Ventas y salidas para ver cómo cerró el período.",
+          ["Ventas por el rango de fechas.", "Qué se movió en caja y en bodega.", "El cierre para revisar el mes."]
+        ),
+        proveedores: ficha(
+          "Quién abastece",
+          "La ficha de cada proveedor y cómo contactarlo.",
+          ["Nombre y datos de contacto.", "Qué se le compra.", "El historial queda junto al pedido de compras."]
+        ),
+        personal: ficha(
+          "Equipo y acceso",
+          "Quién entra al sistema y qué puede hacer.",
+          ["Cada persona tiene su acceso.", "Se define qué módulo usa.", "La sesión se cierra al salir."]
+        )
       },
       bravium: {
-        facturas: "Las facturas del negocio, reunidas para revisarlas.",
-        cartolas: "Los movimientos del banco, listos para compararlos con lo registrado.",
-        conciliacion: "Se cruza lo del banco con lo del negocio y se ve qué falta por cuadrar.",
-        pagos: "Los pagos a proveedores y el registro de cada uno.",
-        proveedores: "A quién se le paga y el historial de ese pago.",
-        exportacion: "La información lista para llevarla a la contabilidad."
+        facturas: "Facturas recibe los DTE del negocio y los deja procesados para revisar el período.",
+        cartolas: "Cartolas carga el movimiento del banco. Con la sincronización activa, queda listo para cruzarlo con lo registrado.",
+        conciliacion: "Conciliación cruza el banco con el negocio. Marca lo conciliado, lo pendiente y lo que no cuadra.",
+        pagos: "Pagos registra cada pago a proveedores y lo deja en el período.",
+        proveedores: "Proveedores guarda a quién se le paga y el historial de ese pago.",
+        exportacion: "Exportación deja facturas, cartolas y lo conciliado listos para pasarlos a la contabilidad."
       },
       academias: {
-        resumen: "La sede en una vista: alumnos, clases y pagos.",
-        alumnos: "La ficha de cada alumno y su avance.",
-        horarios: "Las clases de la semana, por sede.",
-        asistencia: "La lista de la clase. Se marca y queda guardada.",
-        grados: "El grado de cada alumno y cuándo corresponde el siguiente.",
-        finanzas: "Mensualidades y pagos de la academia.",
-        eventos: "Seminarios, exámenes y actividades de la sede.",
-        biblioteca: "Material de estudio para alumnos y profesores."
+        resumen: "Resumen deja la sede en una vista: alumnos, clases del día y pagos.",
+        alumnos: "Alumnos es la ficha de cada alumno y su avance en la sede.",
+        horarios: "Horarios arma las clases de la semana, por sede.",
+        asistencia: "Asistencia es la lista de la clase. Se marca quién vino y el registro queda guardado.",
+        grados: "Grados lleva el ingreso y la evaluación de cada alumno, por color de cinturón, con la fecha de evaluación.",
+        finanzas: "Finanzas es el control de pagos de la sede. Si la mensualidad entra por transferencia, el sistema la detecta y la deja anotada en el día del alumno. Si pagan en efectivo o por otra vía, se marca con un botón, desde el celular.",
+        eventos: "Eventos registra seminarios, exámenes y actividades de la sede.",
+        comunicaciones: "Comunicaciones redacta el aviso y lo manda al portal de los alumnos y al correo. El aviso del portal no consume créditos de email.",
+        biblioteca: "Biblioteca deja el material de estudio para alumnos y profesores."
       }
     };
     const radioX = 13;
@@ -450,6 +527,47 @@
       dueño.dispatchEvent(new CustomEvent("dp-girar", { detail: avance > 0 ? 1 : -1 }));
       window.setTimeout(() => { giroVelo = false; }, 480);
     }, { passive: false });
+    const pasos = document.createElement("div");
+    pasos.className = "pasos-modulo";
+    pasos.innerHTML = `<button class="paso-modulo paso-prev" type="button" aria-label="Módulo anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 8 12l6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="paso-modulo paso-next" type="button" aria-label="Módulo siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 16 12l-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+    document.body.appendChild(pasos);
+    function ubicarPasos() {
+      const abierta = document.querySelector("body > .modulo.elegido.al-frente");
+      pasos.classList.toggle("activo", Boolean(abierta));
+      if (!abierta) return;
+      const r = abierta.getBoundingClientRect();
+      const prev = pasos.querySelector(".paso-prev");
+      const next = pasos.querySelector(".paso-next");
+      const lado = prev.offsetWidth || 48;
+      const y = Math.max(12, Math.min(r.top + r.height / 2 - lado / 2, window.innerHeight - lado - 12));
+      prev.style.top = `${y}px`;
+      next.style.top = `${y}px`;
+      prev.style.left = `${Math.max(10, r.left - lado - 16)}px`;
+      next.style.left = `${Math.min(window.innerWidth - lado - 10, r.right + 16)}px`;
+    }
+    function avanzarModulo(delta) {
+      const abierta = document.querySelector("body > .modulo.elegido.al-frente");
+      if (!abierta) return;
+      const dueño = document.querySelector(`.banner[data-proyecto="${abierta.dataset.proyecto}"]:not([data-clon])`);
+      if (!dueño) return;
+      dueño.dispatchEvent(new CustomEvent("dp-girar", { detail: delta }));
+    }
+    pasos.addEventListener("click", (evento) => {
+      const boton = evento.target.closest(".paso-modulo");
+      if (!boton) return;
+      evento.stopPropagation();
+      avanzarModulo(boton.classList.contains("paso-next") ? 1 : -1);
+    });
+    document.addEventListener("keydown", (evento) => {
+      if (evento.key !== "ArrowRight" && evento.key !== "ArrowLeft") return;
+      if (!document.querySelector("body > .modulo.elegido.al-frente")) return;
+      evento.preventDefault();
+      avanzarModulo(evento.key === "ArrowRight" ? 1 : -1);
+    });
+    window.addEventListener("resize", ubicarPasos);
+    document.body.addEventListener("load", (evento) => {
+      if (evento.target.classList && evento.target.classList.contains("modulo-mockup")) ubicarPasos();
+    }, true);
 
     document.querySelectorAll(".banner").forEach((banner) => {
       const pares = catalogo[banner.dataset.proyecto];
@@ -472,12 +590,12 @@
         boton.dataset.id = id;
         boton.dataset.proyecto = banner.dataset.proyecto;
         const pieza = mockups[`${banner.dataset.proyecto}/${id}`] || mockups[`${banner.dataset.proyecto}/*`];
-        boton.innerHTML = `<span class="modulo-nombre">${nombre}</span><span class="modulo-resumen">${resumenes[banner.dataset.proyecto][id]}</span>`;
+        boton.innerHTML = `<span class="modulo-nombre">${nombre}</span><span class="ver-modulo">Ver módulo<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h12M13 6.5 18.5 12 13 17.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="modulo-resumen">${resumenes[banner.dataset.proyecto][id]}</span>`;
         if (pieza) {
           boton.classList.add("con-mockup");
           const foto = document.createElement("img");
           foto.className = "modulo-mockup";
-          foto.src = pieza[0];
+          foto.src = pieza[0] + (pieza[0].includes("?") ? "&v=5" : "?v=5");
           foto.alt = pieza[1];
           foto.width = pieza[2];
           foto.height = pieza[3];
@@ -501,6 +619,19 @@
           colocar(true);
         });
         return boton;
+      });
+
+      const guia = document.createElement("div");
+      guia.className = "guia-giro";
+      guia.innerHTML = `<button class="giro-flecha giro-prev" type="button" aria-label="Girar la tómbola"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 6.5 8.5 12l6 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="giro-flecha giro-next" type="button" aria-label="Girar la tómbola"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 6.5 15.5 12l-6 5.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
+      banner.appendChild(guia);
+      guia.querySelector(".giro-prev").addEventListener("click", (evento) => {
+        evento.stopPropagation();
+        girar(-1);
+      });
+      guia.querySelector(".giro-next").addEventListener("click", (evento) => {
+        evento.stopPropagation();
+        girar(1);
       });
 
       function gradosDe(i) {
@@ -551,7 +682,37 @@
           ficha.style.zIndex = String(100 - Math.round(Math.abs(grados)));
         });
         velo.classList.toggle("activo", fichas.some((ficha) => ficha.classList.contains("elegido") && ficha.classList.contains("al-frente")));
+        banner.classList.toggle("modulo-abierto", Boolean(elegido));
+        if (suave) window.setTimeout(ubicarGuia, 560);
+        else ubicarGuia();
+        window.requestAnimationFrame(ubicarPasos);
       }
+
+      function ubicarGuia() {
+        const caja = banner.getBoundingClientRect();
+        if (caja.width < 20) return;
+        let izquierda = null;
+        let derecha = null;
+        fichas.forEach((ficha, i) => {
+          const grados = gradosDe(i);
+          if (Math.abs(grados) < paso / 2) return;
+          if (grados < 0 && (izquierda == null || grados > gradosDe(izquierda))) izquierda = i;
+          if (grados > 0 && (derecha == null || grados < gradosDe(derecha))) derecha = i;
+        });
+        const poner = (boton, indice, lado) => {
+          const r = fichas[indice].getBoundingClientRect();
+          const alto = boton.offsetHeight || 32;
+          const ancho = boton.offsetWidth || 72;
+          const y = r.top - caja.top + r.height / 2 - alto / 2;
+          let x = lado < 0 ? r.left - caja.left - ancho - 8 : r.right - caja.left + 8;
+          x = Math.max(8, Math.min(x, caja.width - ancho - 8));
+          boton.style.top = `${y}px`;
+          boton.style.left = `${x}px`;
+        };
+        if (izquierda != null) poner(guia.querySelector(".giro-prev"), izquierda, -1);
+        if (derecha != null) poner(guia.querySelector(".giro-next"), derecha, 1);
+      }
+      window.addEventListener("resize", ubicarGuia);
 
       function indiceFrente() {
         let mejor = 0;
@@ -744,7 +905,7 @@
     document.getElementById("siguiente").onclick = () => ir(1);
 
     slider.addEventListener("pointerdown", (evento) => {
-      if (evento.target.closest(".ventana") || evento.target.closest(".flecha")) return;
+      if (evento.target.closest(".ventana") || evento.target.closest(".flecha") || evento.target.closest(".guia-giro")) return;
       arrastrando = true;
       origenSlide = evento.clientX;
       slider.setPointerCapture(evento.pointerId);
@@ -834,9 +995,19 @@
         carta.style.opacity = String(Math.max(0.28, 1 - distancia * 0.62));
         etapa.classList.toggle("activa", distancia < 0.5);
       });
+      const movil = window.innerWidth <= 720;
       charlas.forEach((charla, i) => {
         const distancia = Math.abs(i - valor);
-        charla.style.opacity = String(Math.max(0, 1 - distancia * 1.35));
+        if (movil) {
+          const activa = distancia < 0.5;
+          charla.style.opacity = activa ? "1" : "0";
+          charla.style.visibility = activa ? "visible" : "hidden";
+          charla.style.position = activa ? "relative" : "absolute";
+        } else {
+          charla.style.visibility = "";
+          charla.style.position = "";
+          charla.style.opacity = String(Math.max(0, 1 - distancia * 1.35));
+        }
       });
       const rectViaje = viaje.getBoundingClientRect();
       const mapaEnVista = rectViaje.top < window.innerHeight * 0.7 && rectViaje.bottom > window.innerHeight * 0.3;
